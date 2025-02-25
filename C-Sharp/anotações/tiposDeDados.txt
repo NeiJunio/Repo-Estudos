@@ -1,18 +1,17 @@
 -- 24/02/2025 --
 
-## TIPOS NÚMERICOS
+## TIPOS DE DADOS
 
+## TIPOS NÚMERICOS  ----------------------------------
 -> INTEIROS: sem vírgula. Ex: 1, 2, 3, 10, etc
 -> PONTOS FLUTUANTES: com vírgula. Ex: 3.12, 5/2, etc
 
 
-## BOOLEANOS (bool)
-
+## BOOLEANOS (bool)  ---------------------------------
 -> Somente VERDADEIRO ou FALSO (true ou false)
 -> usado para verificações e validações
 
 
-## TIPOS TEXTO
-
+## TIPOS TEXTO  --------------------------------------
 -> char: apenas um caracter
 -> string: cadeia de caracteres

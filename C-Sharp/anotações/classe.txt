@@ -1,6 +1,0 @@
--- 24/02/2025 --
-
-## CLASSE
-
--> é um molde para construir um objeto
--> define características, propriedades e comportamentos(que serão transformados em funções)

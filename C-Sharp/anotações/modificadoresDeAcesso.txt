@@ -1,17 +1,17 @@
 -- 24/02/2025 --
 
-## MODIFICADORES DE ACESSO (FUNÇÕES)
+## MODIFICADORES DE ACESSO (FUNÇÕES)  ------------------------------------
 
-utilizados para definir os acessos dos membros de uma classe (pode ser propriedade ou método) em relação à classe e o mundo externo
+-> utilizados para definir os acessos dos membros de uma classe (pode ser propriedade ou método) em relação à classe e o mundo externo
 
--> public: qualquer outra classe que possuir uma instância dessa mesma classe (que transformar essa classe em um objeto real), pode acessar essa a função que estiver definida como public
--> private: somente a classe na qual a função se encontra, é que pdoe acessar essa função
--> internal: somente as classe que estão dentro do mesmo project é que podem acessar essa função
-
+->  public: qualquer outra classe que possuir uma instância dessa mesma classe (que transformar essa classe em um objeto real), pode acessar essa a função que estiver definida como public
+->  private: somente a classe na qual a função se encontra, é que pdoe acessar essa função
+->  internal: somente as classe que estão dentro do mesmo project é que podem acessar essa função
 
 OBS: se não definir o modificador de acesso da função, ele fica definido como Private
 
-## MODIFICADORES DE ACESSO (CLASSES)
+
+## MODIFICADORES DE ACESSO (CLASSES)  ------------------------------------
 
 -> public: a classe pode ser utilizada dentro do mesmo, ou até em por outro projeto
 -> internal: somente classes do mesmo projeto ficam acessíveis entre si

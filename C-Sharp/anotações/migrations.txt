@@ -1,0 +1,28 @@
+-- 24/02/2025 -- 
+
+## MIGRATIONS USANDO ENTITY FRAMEWORK
+
+
+## Criar arquivo de migração (scripts)  ----------------------------------------
+   
+   -> dotnet ef migrations add <nome do arquivo>
+
+
+## Aplicar o arquivo de migração no banco  -------------------------------------
+   
+   -> dotnet ef database update
+
+
+## Verificar migrations criadas  -----------------------------------------------
+   -> dotnet ef migrations list
+
+
+## Aplicar um migration já existente (lembrar de trocar a url do banco)  -------
+   
+   -> dotnet ef database update <Nome da Migration>
+
+
+## Para remover o Pending da migration  ----------------------------------------
+   
+   -> aplica a migration ja existente
+   -> aplica o arquivo de migração

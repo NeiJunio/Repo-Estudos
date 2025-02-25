@@ -1,0 +1,48 @@
+-- 24/02/2025 -- 
+
+## SOLUTION  ---------------------------------------------------
+
+-> Espécie de container onde vai agrupar os projetos relacionados
+
+
+## PROJECT  ----------------------------------------------------
+
+-> Onde implementa os nossos códigos, classes, funções, imagens e etc. 
+
+
+## NAMESPACE  --------------------------------------------------
+
+-> Forma de organizar nossas classes, conteúdos e arquivos dentro do projeto
+-> Ajuda no endereçamento direto de determinadas classes e objetos
+
+
+## CLASS  ------------------------------------------------------
+
+-> É um molde para construir um objeto
+-> Define características, propriedades e comportamentos(que serão transformados em funções)
+
+
+## FUNÇÃO  -----------------------------------------------------
+
+-> Define o passo a passo para um determinada ação
+-> Os nomes das funções são Case Sensitive
+-> A Main é o ponto de entrada do sistema (o arquivo .exe busca essa função Main na hora de rodar o projeto)
+
+-> void: representa uma função que executa uma ação e não retornada nada;
+    ex: 
+
+    class Program
+    {
+        static void ExibirMensagem()
+        {
+            Console.WriteLine("Olá, mundo!");
+        }
+
+        static void Main()
+        {
+            ExibirMensagem(); // Chamando o método
+        }
+    }
+
+    --> O método ExibirMensagem() tem o tipo de retorno void, então ele não retorna nada. Ele apenas executa uma ação (imprimir uma mensagem no console).
+    --> No Main(), chamamos ExibirMensagem(), que imprime "Olá, mundo!".
