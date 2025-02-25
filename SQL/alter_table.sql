@@ -12,7 +12,7 @@
 
 --> Alterar o nome de uma coluna --------------------------------------------------
 	
-    SP_RENAME 'nome_tabela.nome_coluna', 'novo_nome_coluna', 'column';
+    SP_RENAME 'nome_tabela.nome_coluna', 'novo_nome_coluna', 'COLUMN';
 
 
 --> Renomear tabela ---------------------------------------------------------------

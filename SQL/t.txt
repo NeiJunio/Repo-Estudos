@@ -1,85 +1,92 @@
---> Selecione todos os campos de uma tabela
-	select * from nome_tabela
+gere um pdf com o seguinte conteudo:
 
+Aqui está uma Stored Procedure completa no SQL Server que realiza operações CRUD (Create, Read, Update, Delete) para uma tabela de Clientes.
 
---> Selecione apenas as colunas de determinada tabela
-	select nome_coluna,nome_coluna from nome tabela
+1️⃣ Criando a Tabela
+sql
+Copiar
+Editar
+CREATE TABLE Clientes (
+    cliente_id INT IDENTITY(1,1) PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    telefone VARCHAR(20) NULL
+);
+2️⃣ Criando a Procedure com CRUD Completo
+Esta procedure permite inserir, buscar, atualizar e deletar clientes com base em uma ação passada como parâmetro.
 
+sql
+Copiar
+Editar
+CREATE PROCEDURE GerenciarCliente
+    @acao        VARCHAR(10),  -- Pode ser 'INSERIR', 'LER', 'ATUALIZAR' ou 'DELETAR'
+    @cliente_id  INT = NULL,   -- Obrigatório para 'LER', 'ATUALIZAR' e 'DELETAR'
+    @nome        VARCHAR(100) = NULL, -- Obrigatório para 'INSERIR' e 'ATUALIZAR'
+    @email       VARCHAR(100) = NULL, -- Obrigatório para 'INSERIR' e 'ATUALIZAR'
+    @telefone    VARCHAR(20) = NULL   -- Opcional
+AS
+BEGIN
+    SET NOCOUNT ON;
 
---> Selecione uma coluna de uma determinada tabela mediante uma condição
-	select nome_coluna from nome_tabela where condicao (ex: preco >5)
+    IF @acao = 'INSERIR'
+    BEGIN
+        INSERT INTO Clientes (nome, email, telefone)
+        VALUES (@nome, @email, @telefone);
 
+        PRINT 'Cliente inserido com sucesso!';
+    END
+    ELSE IF @acao = 'LER'
+    BEGIN
+        IF @cliente_id IS NULL
+            SELECT * FROM Clientes;  -- Retorna todos os clientes
+        ELSE
+            SELECT * FROM Clientes WHERE cliente_id = @cliente_id;  -- Retorna um cliente específico
+    END
+    ELSE IF @acao = 'ATUALIZAR'
+    BEGIN
+        UPDATE Clientes
+        SET nome = @nome, email = @email, telefone = @telefone
+        WHERE cliente_id = @cliente_id;
 
---> Selecione todos os campos cujo título comece com a letra ‘o’
-	select * from nome_tabela where nome_coluna like 'o%'
+        PRINT 'Cliente atualizado com sucesso!';
+    END
+    ELSE IF @acao = 'DELETAR'
+    BEGIN
+        DELETE FROM Clientes WHERE cliente_id = @cliente_id;
 
-
---> Selecione todos os campos cujo título termina com a letra ‘o’
-	select * from nome_tabela where nome_coluna like '%o'
-
-
---> Selecione todos os campos ad tabela e ordena que uma coluna se organize em letra decrescente
-	select * from nome_tabela
-	order by nome_coluna desc
-
-
---> Renomear tabela
-	sp_rename 'nome_atual','novo_nome'
-
-
---> Adicionar coluna em uma tabela, com nome e tipo de dado
-	alter table nome_tabela add nome_nova_coluna tipo_dado;
-
-
---> Alterar o tipo de dados de uma coluna em determinada tabela
-	alter table nome_tabela alter column nome_coluna novo_tipo_dado;
-
-
---> Alterar o valor de um campo da tabela
-	update nome_tabela
-	set nome_coluna=novo_valor_do_campo
-	where nome_coluna = valor_coluna; (essa é a condição)
-
-	ex:
-	update fornecedor
-	set estado='RJ'
-	where cidade='Rio de Janeiro';
-	(altera o valor da coluna estado, cuja cidade seja Rio de Janeiro)
-
-
---> Alterar o nome de uma coluna
-	sp_rename 'nome_tabela.nome_coluna', 'novo_nome_coluna', 'column';
-
-
---> Apagar um campo da tabela
-	alter table nome_coluna drop column nome_coluna;
-
-
---> Apagar todos os dados de uma linha com determinada condição
-	delete from nome_tabela where condição;
-
-
---> Apagar dados de várias linhas com determinada condição
-	delete from nome_tabela where condição_comum_em_vários_campos;
-
-
---> mostrar informações da tabela
-	sp_help nome_tabela
-
-
---> Criar uma nova tabela (apenas para visualização) ordenando por tipo (nome da coluna)
-	select nome_primeira_coluna, SUM(nome_coluna_a_reunir_informações)As'nome da coluna para visualização'
-	from nome_tabela
-	group by nome_primeira_coluna
-
-	ex:
-	select tipo, SUM(quantidade)As'Quantidade em estoque'
-	from produtos
-	group by tipo
-
---> GROUP BY: usado para agregar dados e obter insights deles (usado em combinação com outras funções para  cálculos específicos sobre grupos de dados)
-	select tipo, SUM(quantidade)As'Quantidade em estoque'
-	from produtos
-	group by tipo
-
---> HAVING: 
+        PRINT 'Cliente deletado com sucesso!';
+    END
+    ELSE
+    BEGIN
+        PRINT 'Ação inválida. Use INSERIR, LER, ATUALIZAR ou DELETAR.';
+    END
+END;
+3️⃣ Como Usar a Procedure
+🔹 Inserindo um Cliente
+sql
+Copiar
+Editar
+EXEC GerenciarCliente @acao = 'INSERIR', @nome = 'João Silva', @email = 'joao@email.com', @telefone = '11999999999';
+🔹 Lendo Todos os Clientes
+sql
+Copiar
+Editar
+EXEC GerenciarCliente @acao = 'LER';
+🔹 Lendo um Cliente Específico
+sql
+Copiar
+Editar
+EXEC GerenciarCliente @acao = 'LER', @cliente_id = 1;
+🔹 Atualizando um Cliente
+sql
+Copiar
+Editar
+EXEC GerenciarCliente @acao = 'ATUALIZAR', @cliente_id = 1, @nome = 'João Pedro Silva', @email = 'joaopedro@email.com', @telefone = '11988888888';
+🔹 Deletando um Cliente
+sql
+Copiar
+Editar
+EXEC GerenciarCliente @acao = 'DELETAR', @cliente_id = 1;
+Procedures no SQL Server – Explicação Completa
+O que é uma Procedure no SQL Server?
+Uma Stored Procedure no SQL Server é um conjunto de comandos SQL armazenados no banco de dados que pode ser executado sempre que necessário. Elas permitem encapsular lógica de negócios, reduzir a repetição de código e melhorar a performance das aplicações.

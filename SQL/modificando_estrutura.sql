@@ -17,4 +17,4 @@
 
 --> Apagar um campo da tabela  ----------------------------------------------------
 	
-    alter table nome_coluna drop column nome_coluna;
+    ALTER TABLE nome_coluna DROP COLUMN nome_coluna;
