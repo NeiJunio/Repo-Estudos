@@ -5,7 +5,7 @@ public class Program2
 {
     static void Main()
     {
-        DateOnly dia = new DateOnly(2025, 2, 25);
+        DateOnly dia = new DateOnly(2025, 2, 25); // DateOnly é somente data
 
         string diaEmTextoToShort = dia.ToShortDateString(); // saída: 25-2-2025 
         string diaEmTextoToLong = dia.ToLongDateString(); // saída: Segunda-Feria, 02 de fevereiro de 2025 
@@ -16,7 +16,7 @@ public class Program2
 
 
         @*----------------------------------------------------------------------------------*@
-        DateTime dia = new DateTime(2008, 6, 15, 21, 15, 07);
+        DateTime dia = new DateTime(2008, 6, 15, 21, 15, 07); // DataTime é  data e hora
 
         string formatoPadrao = dia.ToString(new CultureInfo("pt-BR")); // saída: 15/06/2008
         Console.WriteLine(formatoPadrao);
@@ -82,5 +82,27 @@ public class Program2
 
         string formatoPersonalizado6 = dia.ToString("HH:mm:ss.ffffzzz", new CultureInfo("pt-BR")); // saída: 21:15:07.0000-03:00
         Console.WriteLine(formatoPersonalizado6);
+
+
+        @*----------------------------------------------------------------------------------*@
+        DateTime hoje = DateTime.Now(); // Captura o dia e hora de hoje (no momento da execução)
+
+        DateTime hoje = DateTime.UtcNow(); // Captura o dia e hora de hoje (captura um horário universal)
+
+        DateTime hoje = DateTime.Today(); // Captura o dia de hoje (no momento da execução)
+
+        DateTime dataAtual = DateTime.Now;
+
+        DateTime novaData1 = dataAtual.AddDays(10);           // Adiciona 10 dias
+        DateTime novaData2 = dataAtual.AddHours(5);           // Adiciona 5 horas
+        DateTime novaData3 = dataAtual.AddMicroseconds(500);  // Adiciona 500 microssegundos (C# 8.0+)
+        DateTime novaData4 = dataAtual.AddMilliseconds(500);  // Adiciona 500 milissegundos
+        DateTime novaData5 = dataAtual.AddMinutes(30);        // Adiciona 30 minutos
+        DateTime novaData6 = dataAtual.AddMonths(2);          // Adiciona 2 meses
+        DateTime novaData7 = dataAtual.AddSeconds(15);        // Adiciona 15 segundos
+        DateTime novaData8 = dataAtual.AddTicks(1000000);     // Adiciona 1.000.000 de ticks (1 tick = 100 nanossegundos)
+        DateTime novaData9 = dataAtual.AddYears(1);           // Adiciona 1 ano
+
+
     }
 }
