@@ -1,0 +1,103 @@
+-- 03/01/2025 -- 
+
+## PALAVRAS RESERVADAS
+
+-> Controle de Fluxo
+    -if
+    -else
+    -elseif
+    -endif
+    -switch
+    -case
+    -default
+    -break
+    -continue
+    -while
+    -do
+    -for
+    -foreach
+    -endwhile
+    -endfor
+    -endforeach
+    -declare
+    -exit
+    -die
+    -return
+    -yield
+
+
+-> Declaração de Funções e Classes
+    -function
+    -class
+    -interface
+    -trait
+    -extends
+    -implements
+    -abstract
+    -final
+    -public
+    -protected
+    -private
+    -static
+    -var
+    -const
+    -global
+    -namespace
+    -use
+    -as
+    -new
+    -clone
+    -instanceof
+    -self
+    -parent
+
+
+-> Manipulação de Exceções
+    -try
+    -catch
+    -finally
+    -throw
+
+
+-> Operadores Lógicos e de Comparação
+    -and
+    -or
+    -xor
+    -not
+    -true
+    -false
+    -null
+
+
+-> Manipulação de Tipos
+    -bool
+    -int
+    -float
+    -string
+    -array
+    -object
+    -callable
+    -iterable
+    -void
+    -mixed
+    -never
+
+
+-> Outras Palavras Reservadas
+    -echo
+    -print
+    -include
+    -require
+    -include_once
+    -require_once
+    -list
+    -unset
+    -isset
+    -empty
+    -eval
+    -match
+    -fn (para funções anônimas na versão PHP 7.4+)
+    -enum (introduzido no PHP 8.1)
+    -__DIR__
+    -__FILE__
+    

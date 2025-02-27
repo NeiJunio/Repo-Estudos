@@ -1,0 +1,83 @@
+-- 02/01/2025 --
+
+## Execução PHP no windows
+
+-> todos os arquivos que serão executados devem estar dentro de uma pasta específica
+
+-> o software vem configurado para rodar na pasta htdocs, e os arquivos que aí estão podem ser acessados pelo navegador no endereço localhost
+
+
+## Instalação e Execução PHP no Linux
+
+-> Interessante fazer a instalação da pilha Lamp
+
+no terminal do linux:
+    
+    --> sudo apt update
+    --> sudo apt install apache2
+    --> sudo ufw app list
+    --> sudo ufw app info "Apache Full"
+    --> sudo ufw allow in "Apache Full"
+
+após isso, vai instalar o MySQL:
+
+    --> sudo apt install mysql-server
+    
+após isso, vai instalar o PHP:
+
+    --> sudo apt install php libapache2-mod-php php-mysql
+
+após isso, vai reiniciar o Apache:
+
+    --> sudo systemctl restart apache2
+    --> sudo systemctl status apache2
+
+
+
+Para criar um arquivo: 
+
+    --> cd /var/www/html (para acessar a pasta raiz)
+    --> vim teste.php
+    --> sudo nano teste.php
+
+
+
+
+## Instalando o PHP mais recente no Linux:
+
+atualizar os pacotes do sistema:
+
+    --> sudo apt updade
+    --> sudo apt upgrade
+
+
+instalar um PPA ("Personal Package Archive" - Arquivo de Pacotes Pessoal - que é um sistema de gerenciamento de pacotes que facilita a adição e o gerenciamento seguro de repositórios adicionais. Isso inclui autenticação de certificados e gerenciamento de propriedades de software.):
+
+    --> sudo apt install ca-certificates apt-transport-https software-properties-common lsb-release -y
+
+
+após isso, onfigurar o PPA com o repositório de pacotes de Ondřej Surý, pois tanto o PHP quanto o Apache estarão em suas últimas versões: 
+
+    --> sudo add-apt-repository ppa:ondrej/php -y
+
+
+novamente, atualizar os pacotes do sistema:
+
+    --> sudo apt updade
+    --> sudo apt upgrade
+
+
+instalar PHP e o Apache:
+
+    --> sudo apt install php8.3 libapache2-mod-php8.3
+
+
+após isso, reiniciar o Apache para integrar o novo módulo PHP 8.3:
+
+    --> sudo systemctl restart apache2
+
+
+para saber se está tudo ok:
+
+    --> sudo systemctl status apache2 (deve trazer status OK)
+    --> php -v (deve trazer o número da versão)

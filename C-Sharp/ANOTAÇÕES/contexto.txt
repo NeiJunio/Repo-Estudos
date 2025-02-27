@@ -1,0 +1,10 @@
+-- 24/02/2025 -- 
+
+## C# (C sharp)
+-> Linguagem de alto nível (próximas ao idioma e entendimento humano)
+-> Orientada a objetos
+-> Tem seu próprio coletor de lixo (libera espaço de memória)
+-> Linguagem tipada (específica o tip da variável, e o compilador tbm confere)
+
+-> .NET framework é uma plataforma que contém as bibliotecas necessárias para cada tipo de desenvolvimento (suporta só windows)
+-> .NET Core é suporte a windows, linux e mac

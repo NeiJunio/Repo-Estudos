@@ -1,0 +1,46 @@
+-- 13/01/2025 --
+
+## OPERADORES
+
+-> São recursos que utilizamos para compor expressões mais complexas
+
+-> Exemplos: +, -, **, /, ++, >, <, >=, <= e etc..
+
+-> Estas operações podem ser matemáticas ou até mesmo comparações
+
+-> A ideia principal é que um novo valor é gerado ou que um booleano seja retornado
+
+-> parênteses serve para agrupar partes das expressões
+
+-> Ordem dos Operadores em PHP:
+
+    --> Parênteses ( ) - Maior precedência
+
+    --> Exponenciação **
+
+    --> Negação ! (lógico)
+
+    --> Multiplicação, Divisão e Módulo * / %
+
+    --> Adição e Subtração + -
+
+    --> Concatenação .
+
+    --> Deslocamento de Bits << >>
+
+    --> Comparação == != === !== < > <= >= <=>
+
+    --> Lógicos AND e OR Bitwise & ^ |
+
+    --> Lógicos AND, OR e XOR && || xor
+
+    --> Ternário ?:
+
+    --> Atribuição = += -= *= /= %= .= &= |= ^= <<= >>=
+    (== checa os valores; === checa os valores e os tipos)
+
+    --> Execução ` ` (backticks, comando shell)
+
+    --> Retorno return - Menor precedência
+
+    --> auto incremento/decremento ++ ou -- (ex $n++ ou $x--) -> muito usado em estruturas de repetição

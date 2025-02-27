@@ -1,0 +1,7 @@
+-- 13/01/2025 --
+
+## EXPRESSÃO
+
+-> Uma instrução de código será avaliada e resultará um valor
+
+-> Uma simples impressão de um texto é uma expressão, assim como uma soma ou operação aritmética

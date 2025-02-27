@@ -1,0 +1,35 @@
+-- 03/01/2025 --
+
+## OBSERVAÇÕES
+
+-> PHP só diferencia maiúsculas e minúsculas (case sensitive) em nomes de variáveis. De resto, maiúsculas e minúsculas são tratadas iguais, como echo = ECHO
+
+
+-> Não é case sensitive para instruções da linguagem:
+
+    <?php
+
+        echo "teste <br>";
+        eChO "teste 1 <br>";
+        ECHO "teste 2 <br>";
+
+    ?>
+
+
+-> É case sensitive para variáveis:
+
+    <?php
+
+        $nome = "Nei";
+        echo $nome
+
+    ?>
+
+
+-> Espaços em branco são ignorados, desde que não gerem erro de sintaxe, ou quebre alguma sequência lógica existente
+
+
+-> comentários de uma linha são iniciados com //comentário ou #comentário
+
+
+-> comentários multi linhas são feitos com /* comentário */

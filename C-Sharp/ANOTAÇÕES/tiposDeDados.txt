@@ -1,0 +1,168 @@
+-- 24/02/2025 --
+
+## TIPOS DE DADOS
+
+## TIPOS NÚMERICOS  ----------------------------------
+    -> INTEIROS: sem vírgula. Ex: 1, 2, 3, 10, etc
+    -> PONTOS FLUTUANTES: com vírgula. Ex: 3.12, 5/2, etc
+
+
+## BOOLEANOS (bool)  ---------------------------------
+    -> Somente VERDADEIRO ou FALSO (true ou false)
+    -> usado para verificações e validações
+
+
+## TIPOS TEXTO  --------------------------------------
+    -> char: apenas um caracter (usa-se aspas simples)
+    -> string: cadeia de caracteres (usa-se aspas duplas)
+
+    Obs: 
+    --> concatenção: texto1 + "(espaço)" + texto2 ...
+    --> concatenção com interpolação, usa-se $: $"{texto1} {texto2}"; (a partir da versão 6 do C#)
+    
+    --> String.Builder stringBuilder = new string.Builder();
+        stringBuilder.Append(texto1);
+        stringBuilder.Append(texto2);
+
+        string resultadoStringBuilder = stringBuilder.ToString();
+        
+        Console.WriteLine(resultadoStringBuilder); // vai imprimir a junção de ambos os textos;
+
+    
+    --> String.Format com parâmetro (substitui os termos conforme a posição informada)
+
+        string textoComParametro = "O usuário {0} gosta de {1}";
+        string resultadoStringComParametro = string.Format(textoComParametro, "Nei", "estudar")
+        Console.WriteLine(resultadoStringComParametro); // vai imprimir "O usuário Nei gosta de estudar"
+    
+    
+    --> para imprimir texto com barra, usar duas barra (\\) ou um @ antes da string
+
+    ex: string caminho = "C:\\teste"; 
+        string caminho = @"C:\teste";
+
+
+## DATAS E HORAS  ------------------------------------
+
+    EX-1: 
+
+    --> DateOnly dia = new DateOnly(2025, 2, 25);
+
+    string diaEmTextoToShort = dia.ToShortDateString(); // saída: 25-2-2025 
+    string diaEmTextoToLong = dia.ToLongDateString(); // saída: Segunda-Feria, 02 de fevereiro de 2025 
+
+    Console.WriteLine(diaEmTextoToLong);
+    Console.WriteLine(diaEmTextoToShort);
+
+    EX-2:
+
+
+    --> DateTime dia = new DateTime(2008, 6, 15, 21, 15, 07);
+    string formato = dia.ToString("letra", new CultureInfo("pt-BR"));
+
+    //     d: 6/15/2008
+    //     D: Sunday, June 15, 2008
+    //     f: Sunday, June 15, 2008 9:15 PM
+    //     F: Sunday, June 15, 2008 9:15:07 PM
+    //     g: 6/15/2008 9:15 PM
+    //     G: 6/15/2008 9:15:07 PM
+    //     m: June 15
+    //     o: 2008-06-15T21:15:07.0000000
+    //     R: Sun, 15 Jun 2008 21:15:07 GMT
+    //     s: 2008-06-15T21:15:07
+    //     t: 9:15 PM
+    //     T: 9:15:07 PM
+    //     u: 2008-06-15 21:15:07Z
+    //     U: Monday, June 16, 2008 4:15:07 AM
+    //     y: June, 2008
+    //
+    //     'h:mm:ss.ff t': 9:15:07.00 P
+    //     'd MMM yyyy': 15 Jun 2008
+    //     'HH:mm:ss.f': 21:15:07.0
+    //     'dd MMM HH:mm:ss': 15 Jun 21:15:07
+    //     '\Mon\t\h\: M': Month: 6
+    //     'HH:mm:ss.ffffzzz': 21:15:07.0000-07:00
+
+
+    -- 26/02/2025 -- 
+
+    --> DateTime hoje = DateTime.Now(); // Captura o dia e hora de hoje (no momento da execução) [pega o horário do servidor, podendo dar conflito dependendo da região em que o servidor estiver hospedado]
+
+    --> DateTime hoje = DateTime.UtcNow(); // Captura o dia e hora de hoje (captura um horário universal, para evitar o conflito citado no tópico acima)
+
+    --> DateTime hoje = DateTime.Today(); // Captura o dia de hoje (no momento da execução)
+
+
+    --> DateTime dataAtual = DateTime.Now;
+
+    DateTime novaData1 = dataAtual.AddDays(10);           // Adiciona 10 dias
+    DateTime novaData2 = dataAtual.AddHours(5);           // Adiciona 5 horas
+    DateTime novaData3 = dataAtual.AddMicroseconds(500);  // Adiciona 500 microssegundos (C# 8.0+)
+    DateTime novaData4 = dataAtual.AddMilliseconds(500);  // Adiciona 500 milissegundos
+    DateTime novaData5 = dataAtual.AddMinutes(30);        // Adiciona 30 minutos
+    DateTime novaData6 = dataAtual.AddMonths(2);          // Adiciona 2 meses
+    DateTime novaData7 = dataAtual.AddSeconds(15);        // Adiciona 15 segundos
+    DateTime novaData8 = dataAtual.AddTicks(1000000);     // Adiciona 1.000.000 de ticks (1 tick = 100 ssegundos)
+    DateTime novaData9 = dataAtual.AddYears(1);           // Adiciona 1 ano
+
+
+## ENUM  ---------------------------------------------
+    -> Serve para definir quais são os valores possíveis para escolha (pré-definição de valores)
+    -> Não pode ser criado dentro de uma função
+    -> Podem ser definifidos números para as opções. Ex:
+
+    enum NivelDeDificuldade
+    {
+        Baixo,
+        Medio,
+        Alto
+
+        /* Pode definir números para as opções. EX:
+            Baixo = 1,
+            Medio = 2,
+            Alto = 3
+        */
+    }
+
+    obs: números sempre positivos e nunca duplicados
+
+
+## VAR  ----------------------------------------------
+    -> O próprio compilador vai analisar e inferir qual o tipo de dado, se string, bool ou int por exemplo
+    -> Deve sempre existir uma igualdade, pois var nãpo permite valor vazio(diferentemente de quando definimos o tipo de dado manualmente). Ex:
+
+    var nome = "Nei"; // CERTO
+    var nome; // ERRADO
+    string nome = "Nei"; // CERTO
+
+
+## OBJECTS  ------------------------------------------
+    -> A classe base de todos os tipos em C#
+    -> Qualquer tipo (seja um tipo primitivo como int, double, bool, ou um tipo complexo como classes e structs) pode ser atribuído a uma variável do tipo object.(contudo, o tipo de dado deve ser especificado)
+
+
+## NULL  ---------------------------------------------
+    -> Usado em campos opcionais
+    -> Valor "vazio"
+    -> A partir do momento que definir uma variável como "nulável", tem-se acesso aos HasValue, que retorna V ou F (se existe ou não valor), e Value (valor em si)
+
+
+## ARRAY  --------------------------------------------
+    -> Variável que armazena um conjunto de valores
+    -> Marcação para identificar array de uma dimenção é [] após o tipo de dado. Ex: int[10]
+    -> Marcação para identificar array de duas dimenções é [,] após o tipo de dado. Ex: int[10,10]
+    -> Sintaxe para definir quantia de posições: tipo_de_dado[] nome_do_array = new tipo_de_dado[tamanho];
+    -> Sintaxe para definir tamanho e valores exatos: tipo_de_dado[] nome_do_array = [valor1, valor2,valor3,...];
+    -> Coleções com tamanhos fixos
+    -> Para saber o tamanho, usa-se .Lenght
+
+
+## LIST  ---------------------------------------------
+    -> Coleção semelhante ao array
+    -> Permite remover elementos
+    -> Não tem tamanho fixo
+    -> Uma única dimensão
+    -> Para saber o tamanho, usa-se .Count (contagem de valores)
+    -> Também posso acessar os valores da lista através de sua posição/índice ([número_da_posição])
+    -> Se tentar acessar um elemento que não existe, dará erro no processo de execução
+    

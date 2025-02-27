@@ -1,0 +1,11 @@
+-- 03/01/2025 --
+
+## SINTAXE PHP
+
+-> Somente o código que está entre as tags de PHP serão interpretadas
+
+-> Abertura: <?PHP
+
+-> Fechamento: ?>
+
+-> Cada instrução de linha simples deve ser finalizada com ; (ponto e vírgula), enquanto blocos de condicionais não necessitam ser terminados em ; 

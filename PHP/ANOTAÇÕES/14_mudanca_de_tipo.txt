@@ -1,0 +1,9 @@
+-- 14/01/2025 --
+
+## AUTO CAST
+
+-> a divisão de 2 números inteiros acba gerando um float (número com vírgula)
+
+-> CONCEITO: conversão automática de tipos
+
+-> Acontece quando realizamos operações com diferentes tipos, como int e float, quando concatena strings com números e em comparações que envolvem diferentes tipos de dados

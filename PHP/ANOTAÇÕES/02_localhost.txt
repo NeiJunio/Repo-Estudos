@@ -1,0 +1,5 @@
+-- 02/01/2025 --
+
+## LOCALHOST
+
+-> é a forma de acessar o servidor local da nossa máquina, e equivale ao IP 127.0.0.1 (nosso próprio PC)

@@ -1,0 +1,44 @@
+-- 04/01/2025 --
+
+## TIPOS DE DADOS
+
+-> INTEIROS: números positivos e negativos, sem vírgula, ou casas decimais
+
+
+-> CHECAR SE O NÚMERO É INTEIRO: pode-se validar com a função is_int() --> se o número for inteiro retorna True, se não, retorna False
+    (precisa utilizar a estrutura if para validar o valor)
+
+
+-> FLOATS: todos os números com casas decimais, e a separação é feito com . (ponto) e não vírgula (ex: 1.12 ; 2.356)
+
+
+-> CHECAR SE O NÚMERO É FLOAT: pode-se validar com a função is_float() --> se o número for float retorna True, se não, retorna False
+    (precisa utilizar a estrutura if para validar o valor)
+
+
+-> STRINGS: são textos, e podem ser escritos em aspas simples ou duplas (obs: as aspas duplas interpretam variáveis )
+
+
+-> CHECAR SE O DADO É UMA STRING: pode-se validar com a função is_string() --> se o dado for string retorna True, se não, retorna False
+    (precisa utilizar a estrutura if para validar o valor)
+
+
+-> BOOLEAN: possui apenas 2 valores: TRUE OU FALSE (ex: 0, 0.0, "0",[], NULL)
+
+
+-> CHECAR SE O DADO É UM BOOLEANO: pode-se validar com a função is_boolean() --> se o dado for booleano retorna True, se não, retorna False
+    (precisa utilizar a estrutura if para validar o valor)
+
+
+-> ARRAY: agrupa um conjunto/lista de valores, podendo ser estes de varios tipos, sempre entre [] e separados por vírgula (usa-se a função print_r(parametro) para imprimir um array)
+
+
+-> ARRAY ASSOCIATIVO: é uym array com chave e valor, ex: $arr = ['nome' => 'Nei', 'idade' => 21] (obs: chave entre aspas, seta para apontar o valor e por último, o valor)
+
+
+-- 05/01/2025 --
+
+-> OBJETOS: possuem métodos que são suas ações e propriedades que são suas características
+
+
+-> NULL: possui apenas um valor, e serve para checar se uma variável tem valor ou não (usando a função is_null())
