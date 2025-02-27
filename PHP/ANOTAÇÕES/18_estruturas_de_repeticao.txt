@@ -1,0 +1,26 @@
+-- 27/02/2025 -- 
+
+## ESTRUTURAS DE REPETIÇÃO
+
+## WHILE  ------------------------------------------------
+
+    -> executa o código n vezes até satisfazer a sua condição
+    -> Geralmente é necessário um contador para atingir a condição
+    ->Ex:
+
+        while(condição){
+            // código
+        }
+
+### BREAK  -----------------------------------------------
+    -> Essa instrução serve para sair do loop while antes do seu fim
+    -> Geralmente utilizado de condições if
+
+## LOOP ANINHADO  ----------------------------------------
+    -> O contador deve ser único, para que um loop não afete o outro
+    -> O loop interno será executado tantas vezes quanto o loop externo for
+    -> Em cada uma da execução externa, serão passa em todas as etapas do loop interno
+
+## CONTINUE ----------------------------------------------
+    -> Pula uma execução do loop ao invés de interromper
+    -> Quando o interpretador encontrar essa instrução, a próxima etapa do loop será executada
