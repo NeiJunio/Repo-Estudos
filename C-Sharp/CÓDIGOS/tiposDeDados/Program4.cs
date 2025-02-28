@@ -37,5 +37,54 @@ public class Program4
         numeros.RemoveAt(2) // Remove o valor da posição 2
         numeros.Clear(); // Remove todos os elementos da lista de uma vez
 
+
+
+        List<string> strings = new List<string>();
+
+        strings.Add("Hello"); // Adiciona o valor "Hello" ao final da lista
+        strings.Remove("Hello"); // Remove o valor "Hello" da lista
+        strings.First(); // Seleciona o primeiro elemento
+        strings.Last(); // Seleciona o último elemento
+        strings.ElementAt(0) // Seleciona o elemento da posição 0
+        strings.RemoveAt(0) // Remove o valor da posição 0
+        strings.Clear(); // Remove todos os elementos da lista de uma vez
+
+        strings.resultado = strings.Join(" ", strings) // sintaxe (separados, coleção)
+
+
+        List<decimal> decimals = new List<decimal>();
+        decimals.Add(1.23M); // Adiciona o valor 1.23 ao final da lista
+
+        List<bool> bools = new List<bool>();
+        bools.Add(true); // Adiciona o valor true ao final da lista
+
+
+        List<object> objetos = new List<object>();
+        objetos.Add("Hello"); // Adiciona o valor "Hello" ao final da lista
+        objetos.Add(1); // Adiciona o valor 1 ao final da lista
+        objetos.Add(true); // Adiciona o valor true ao final da lista
+
+
+        // DICTIONARY
+        // sintaxe: Dictionary<chave, valor> nome_do_dicionario = new Dictionary<chave, valor>();
+        Dictionary<int, string> nomesNumeros = new Dictionary<int, string>();
+        nomesNumeros.Add(1, "Um"); // Adiciona o par chave-valor ao dicionário
+
+        string value = nomesNumeros[1]; // informa a chave (converte o valor da chave para uma string)
+        Console.WriteLine(value); // saída: Um
+
+        bool existe = nomesNumeros,ContainsKey
+        ["Dois"];
+        Console.WriteLine(existe); // saída: False
+
+
+        // HASHSET
+        // sintaxe: HashSet<tipo_de_dado> nome_do_conjunto = new HashSet<tipo_de_dado>();
+        HashSet<int> numerosUnicos = new HashSet<int>();
+        numerosUnicos.Add(1); // Adiciona o valor 1 ao conjunto
+        numerosUnicos.Add(2); // Adiciona o valor 2 ao conjunto
+        numerosUnicos.Add(1); // Adiciona o valor 1 ao conjunto
+
+        Console.WriteLine(numerosUnicos.Count); // saída: 2 (ignora o número 1 repetido)
     }
 }

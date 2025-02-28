@@ -165,4 +165,14 @@
     -> Para saber o tamanho, usa-se .Count (contagem de valores)
     -> Também posso acessar os valores da lista através de sua posição/índice ([número_da_posição])
     -> Se tentar acessar um elemento que não existe, dará erro no processo de execução
-    
+    -> Cada lista só pode armazenar valores do mesmo tipo, a menos que a lista seja do tipo object
+
+
+## DICTIONARY  ---------------------------------------
+    -> associa chave/valor
+    -> não pode ter chaves duplicadas
+
+
+## HASHSET  ------------------------------------------
+    -> Semelhante às listas
+    -> Não aceita valores duplicados   
