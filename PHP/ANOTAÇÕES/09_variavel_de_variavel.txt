@@ -1,22 +1,22 @@
 -- 06/01/2025 --
 
-## VARIÁVEL DE VARIÁVEL
+## VARIÁVEL DE VARIÁVEL  ---------------------------------------------------
+    -> Podemos criar uma variável por meio do nome de outra variável, com valor diferente
 
--> podemos criar uma variável por meio do nome de outra variável, com valor diferente
+    -> Usa-se o símbolo $$
 
--> usa-se o símbolo $$
+        $x = "Teste";
+        $$x = 5;
 
-    $x = "Teste";
-    $$x = 5;
+    -> Após a execução do código, a variável teste (conteúdo de $x), será craida com o valor 5
 
--> após a execução do código, a variável teste (conteúdo de $x), será craida com o valor 5
 
-OBS: EU USO O VALOR DE UMA VARIÁVEL COMO NOME DE OUTRA VARIÁVEL
+    -> OBS: EU USO O VALOR DE UMA VARIÁVEL COMO NOME DE OUTRA VARIÁVEL
 
-    $x = "nome";
+        $x = "nome";
 
-    echo "$x <br>"; // imprimi "nome" na tela
+        echo "$x <br>"; // imprimi "nome" na tela
 
-    $$x = "Nei"; // significa que criei uma variável cujo nome é o valor da variável X, ou seja, criei uma nova variável, agora com o nome dela "nome"
+        $$x = "Nei"; // significa que criei uma variável cujo nome é o valor da variável X, ou seja, criei uma nova variável, agora com o nome dela "nome"
 
-    echo "$nome ";// imprimi "Nei" na tela
+        echo "$nome ";// imprimi "Nei" na tela

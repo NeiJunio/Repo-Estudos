@@ -1,9 +1,9 @@
 <?php
 
 echo 4.15;
-echo"<br>";
+echo "<br>";
 echo 12.12;
-echo"<br>";
+echo "<br>";
 
 $c = -78.1;
 echo $c;

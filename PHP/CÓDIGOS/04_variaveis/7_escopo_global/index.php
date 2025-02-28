@@ -12,7 +12,8 @@ if (5 > 2) {
 
 echo "$teste global 2 <br>";
 
-function funcao(){
+function funcao()
+{
     $teste = "xxx";
 
     echo "$teste local <br>";
@@ -20,7 +21,8 @@ function funcao(){
 
 funcao();
 
-function testandoGlobal(){
+function testandoGlobal()
+{
     global $teste; // com essa instrução, consigo acessar uma variável global dentro do escopo local
 
     $teste = "yyy"; //porém, eu tambem consigo alterar o valor da funçaõ global por meio do escopo local (antes imprimia "asd", agora imprime "yyy")

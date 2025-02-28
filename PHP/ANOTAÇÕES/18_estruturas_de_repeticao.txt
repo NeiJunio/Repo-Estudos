@@ -12,14 +12,17 @@
             // código
         }
 
+
 ### BREAK  -----------------------------------------------
     -> Essa instrução serve para sair do loop while antes do seu fim
     -> Geralmente utilizado de condições if
+
 
 ## LOOP ANINHADO  ----------------------------------------
     -> O contador deve ser único, para que um loop não afete o outro
     -> O loop interno será executado tantas vezes quanto o loop externo for
     -> Em cada uma da execução externa, serão passa em todas as etapas do loop interno
+
 
 ## CONTINUE ----------------------------------------------
     -> Pula uma execução do loop ao invés de interromper

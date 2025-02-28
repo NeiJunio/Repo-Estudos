@@ -1,6 +1,6 @@
 <?php
 
-echo 5**2; //saída: 25
+echo 5 ** 2; //saída: 25
 echo "<br>";
 
 $a = 12;

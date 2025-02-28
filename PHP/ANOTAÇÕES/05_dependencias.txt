@@ -1,5 +1,4 @@
 -- 03/01/2025 --
 
-## DEPENDÊNCIAS PHP
-
--> A função phpinfo() exibe as versões dos pacotes instalados, assim como suas dependências
+## DEPENDÊNCIAS PHP  ----------------------------------------------------
+    -> A função phpinfo() exibe as versões dos pacotes instalados, assim como suas dependências

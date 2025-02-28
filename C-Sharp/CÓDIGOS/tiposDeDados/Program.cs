@@ -32,8 +32,8 @@ public class Program
 
         // STRING
         string texto = "Hello World!";
-        
-        char primeiraLetraDoTexto = texto[0]; 
+
+        char primeiraLetraDoTexto = texto[0];
         Console.WriteLine(primeiraLetraDoTexto); // vai imprimir H
 
         string meuNome = "         Nei           ";
@@ -94,8 +94,8 @@ public class Program
 
         // EVITANDO PROBLEMAS COM BARRA
         string caminho = "C:\teste"; // \t representa um tab, então não vai imprimir corretamente
-        string caminho = "C:\\teste"; 
-        string caminho = @"C:\teste"; 
+        string caminho = "C:\\teste";
+        string caminho = @"C:\teste";
     }
 }
 

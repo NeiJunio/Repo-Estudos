@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace C-Sharp.estruturas
+namespace C-Sharp.estruturas;
+
+public class classe
 {
-    public class classe
-    {
-        // regras
-    }
+    // regras
 }

@@ -1,12 +1,12 @@
 <?php
 
-    $carro = [
-        'marca' => 'BMW',
-        'rodas' => 4,
-        'cor' => 'preto',
-        'ano' => 2020,
-        'teto_solar'=> false // essa linha não aparece, pois tem valor False
-    ];
+$carro = [
+    'marca' => 'BMW',
+    'rodas' => 4,
+    'cor' => 'preto',
+    'ano' => 2020,
+    'teto_solar' => false // essa linha não aparece, pois tem valor False
+];
 
 print_r($carro);
 

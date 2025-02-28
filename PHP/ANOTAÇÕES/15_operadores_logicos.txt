@@ -1,21 +1,21 @@
 -- 24/01/2025 --
 
-## OPERADORES LÓGICOS
+## OPERADORES LÓGICOS  -----------------------------------------------
 
-**Ordem dos Operadores Lógicos em PHP**
+    -> Ordem dos Operadores Lógicos em PHP
 
-    --> 1. **Negacao Lógica** `!` - Inverte o valor lógico de uma expressão. Se a expressão for verdadeira, torna-se falsa, e vice-versa.
-        - Exemplo: `!true` retorna `false`.
+        --> 1. **Negacao Lógica** `!` - Inverte o valor lógico de uma expressão. Se a expressão for verdadeira, torna-se falsa, e vice-versa.
+            - Exemplo: `!true` retorna `false`.
 
-    --> 2. **AND Lógico** `&&` - Retorna verdadeiro apenas se ambas as expressões forem verdadeiras.
-        - Exemplo: `true && false` retorna `false`.
+        --> 2. **AND Lógico** `&&` - Retorna verdadeiro apenas se ambas as expressões forem verdadeiras.
+            - Exemplo: `true && false` retorna `false`.
 
-    --> 3. **OR Lógico** `||` - Retorna verdadeiro se pelo menos uma das expressões for verdadeira.
-        - Exemplo: `true || false` retorna `true`.
+        --> 3. **OR Lógico** `||` - Retorna verdadeiro se pelo menos uma das expressões for verdadeira.
+            - Exemplo: `true || false` retorna `true`.
 
 
- **Nota:**
---> - Use parênteses `( )` para garantir clareza e evitar ambiguidades ao trabalhar com expressões lógicas complexas.
+    -> Nota
+        --> Use parênteses `( )` para garantir clareza e evitar ambiguidades ao trabalhar com expressões lógicas complexas.
 
---> - A ordem pode variar ao combinar operadores lógicos e de comparação, então priorize organização e legibilidade no código.
+        --> A ordem pode variar ao combinar operadores lógicos e de comparação, então priorize organização e legibilidade no código.
 

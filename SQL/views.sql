@@ -5,7 +5,9 @@
 
 --> Criar uma view  -------------------------------------------------------------
     CREATE VIEW nome_view AS
-    SELECT coluna1, coluna2 FROM nome_tabela WHERE condicao;
+    SELECT coluna1, coluna2 
+      FROM nome_tabela
+     WHERE condicao;
 
 
 --> Consultar uma view  ---------------------------------------------------------

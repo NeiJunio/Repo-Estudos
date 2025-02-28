@@ -18,9 +18,9 @@ echo $e . "<br>";
 $f = (int) false;
 echo $f . "<br>";
 
-$g = (int) [1,2,3];
+$g = (int) [1, 2, 3];
 echo $g . "<br>";
 
-$h = (int) [1,2,3,4,5,6];
+$h = (int) [1, 2, 3, 4, 5, 6];
 echo $h . "<br>";
 

@@ -1,28 +1,25 @@
 -- 06/01/2025 --
 
-## ESCOPO
+## ESCOPO  ------------------------------------------------
+    -> Refere-se ao limite ou contexto onde uma variável, função ou objeto pode ser acessado e utilizado.
+    -> Escopo é a região do código onde uma variável ou função é válida e pode ser usada. Ele define a visibilidade e o tempo de vida das variáveis.
 
--> refere-se ao limite ou contexto onde uma variável, função ou objeto pode ser acessado e utilizado.
+    -> TIPOS DE ESCOPO:
 
--> Escopo é a região do código onde uma variável ou função é válida e pode ser usada. Ele define a visibilidade e o tempo de vida das variáveis.
+        --> Local:
+            ---> Definido: dentro de funções
+            ---> Pode ser acessado: somente dentro da função
 
+        --> Global:
+            ---> Definido: fora de funções
+            ---> Pode ser acessado: somente fora de funções (ou dentro com global)
+            ---> precisa usar a palavra "global" para acessar a variável (essa variável)
 
--> TIPOS DE ESCOPO:
+        --> Static (Estático):
+            ---> Definido: dentro de funções
+            ---> Pode ser acessado: Mantém o valor entre chamadas
+            ---> O valor da mesma é mantido e alterado a cada execução da função
 
-    --> Local:
-        ---> Definido: dentro de funções
-        ---> Pode ser acessado: somente dentro da função
-    
-    --> Global:
-        ---> Definido: fora de funções
-        ---> Pode ser acessado: somente fora de funções (ou dentro com global)
-        ---> precisa usar a palavra "global" para acessar a variável (essa variável)
-    
-    --> Static (Estático):
-        ---> Definido: dentro de funções
-        ---> Pode ser acessado: Mantém o valor entre chamadas
-        ---> O valor da mesma é mantido e alterado a cada execução da função
-
-    --> Parâmetro:
-        --->Definido: dentro de funções
-        ---> Pode ser acessado: somente dentro da função
+        --> Parâmetro:
+            --->Definido: dentro de funções
+            ---> Pode ser acessado: somente dentro da função

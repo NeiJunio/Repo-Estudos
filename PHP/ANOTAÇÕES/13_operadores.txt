@@ -1,46 +1,41 @@
 -- 13/01/2025 --
 
-## OPERADORES
+## OPERADORES  ------------------------------------------------------
+    -> Exemplos: +, -, **, /, ++, >, <, >=, <= e etc..
+    -> São recursos que utilizamos para compor expressões mais complexas
+    -> Estas operações podem ser matemáticas ou até mesmo comparações
+    -> A ideia principal é que um novo valor é gerado ou que um booleano seja retornado
+    -> parênteses serve para agrupar partes das expressões
 
--> São recursos que utilizamos para compor expressões mais complexas
+    -> Ordem dos Operadores em PHP:
 
--> Exemplos: +, -, **, /, ++, >, <, >=, <= e etc..
+        --> Parênteses ( ) - Maior precedência
 
--> Estas operações podem ser matemáticas ou até mesmo comparações
+        --> Exponenciação **
 
--> A ideia principal é que um novo valor é gerado ou que um booleano seja retornado
+        --> Negação ! (lógico)
 
--> parênteses serve para agrupar partes das expressões
+        --> Multiplicação, Divisão e Módulo * / %
 
--> Ordem dos Operadores em PHP:
+        --> Adição e Subtração + -
 
-    --> Parênteses ( ) - Maior precedência
+        --> Concatenação .
 
-    --> Exponenciação **
+        --> Deslocamento de Bits << >>
 
-    --> Negação ! (lógico)
+        --> Comparação == != === !== < > <= >= <=>
 
-    --> Multiplicação, Divisão e Módulo * / %
+        --> Lógicos AND e OR Bitwise & ^ |
 
-    --> Adição e Subtração + -
+        --> Lógicos AND, OR e XOR && || xor
 
-    --> Concatenação .
+        --> Ternário ?:
 
-    --> Deslocamento de Bits << >>
+        --> Atribuição = += -= *= /= %= .= &= |= ^= <<= >>=
+        (== checa os valores; === checa os valores e os tipos)
 
-    --> Comparação == != === !== < > <= >= <=>
+        --> Execução ` ` (backticks, comando shell)
 
-    --> Lógicos AND e OR Bitwise & ^ |
+        --> Retorno return - Menor precedência
 
-    --> Lógicos AND, OR e XOR && || xor
-
-    --> Ternário ?:
-
-    --> Atribuição = += -= *= /= %= .= &= |= ^= <<= >>=
-    (== checa os valores; === checa os valores e os tipos)
-
-    --> Execução ` ` (backticks, comando shell)
-
-    --> Retorno return - Menor precedência
-
-    --> auto incremento/decremento ++ ou -- (ex $n++ ou $x--) -> muito usado em estruturas de repetição
+        --> auto incremento/decremento ++ ou -- (ex $n++ ou $x--) -> muito usado em estruturas de repetição

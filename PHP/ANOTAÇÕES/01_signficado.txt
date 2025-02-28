@@ -1,11 +1,7 @@
 -- 02/01/2025 -- 
  
- ## PHP
-
- -> Personal Home Page (P) e Hypertext Preprocessor (HP)
-
- -> Linguagem de script e open source
-
- -> Desenvolvido para deixar o HTML dinâmico
-
- -> Executa programas em Server Side (no lado do servidor)
+ ## PHP  -----------------------------------------------------
+    -> Personal Home Page (P) e Hypertext Preprocessor (HP)
+    -> Linguagem de script e open source
+    -> Desenvolvido para deixar o HTML dinâmico
+    -> Executa programas em Server Side (no lado do servidor)

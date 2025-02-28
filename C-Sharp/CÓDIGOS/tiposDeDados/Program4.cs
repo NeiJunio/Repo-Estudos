@@ -22,7 +22,7 @@ public class Program4
 
         matriz[0, 0, 0] = 1; // Define o valor 1 para a primeira posição localizada na linha 1, coluna 1, profundidade 1;
 
-        matriz[0,4] = 2 // Define o valor 2 na posição linha 0, coluna 4
+        matriz[0, 4] = 2 // Define o valor 2 na posição linha 0, coluna 4
 
 
         // LIST

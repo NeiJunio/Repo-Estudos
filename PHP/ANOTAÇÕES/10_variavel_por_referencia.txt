@@ -1,12 +1,9 @@
 -- 06/01/2025 --
 
-## VARIÁVEL POR REFERÊNCIA
+## VARIÁVEL POR REFERÊNCIA  -----------------------------------------------------
+    -> Podemos criar uma variável com referência ao valor de outra
+    -> Usa-se o símbolo =&
+    -> Se mudamos a variável de referência, a referenciada muda o valor (ao contrário também gera a mudança)
 
--> podemos criar uma variável com referência ao valor de outra
-
--> usa-se o símbolo =&
-
--> Se mudamos a variável de referência, a referenciada muda o valor (ao contrário também gera a mudança)
-
-    $x = 2;
-    $y =& $x; // y também recebe o valor 2
+        $x = 2;
+        $y =& $x; // y também recebe o valor 2

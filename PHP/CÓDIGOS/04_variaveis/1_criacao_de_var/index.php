@@ -11,7 +11,7 @@ echo $num;
 echo "<br>";
 
 
-$_nome ="Nei";
+$_nome = "Nei";
 echo $_nome;
 
 //variável com 2 nomes, usa-se padrao camelCase ou snake_case

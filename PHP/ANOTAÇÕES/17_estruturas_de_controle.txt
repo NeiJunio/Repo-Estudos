@@ -1,54 +1,54 @@
 -- 29/01/2025 -- 
 
-## ESTRUTURAS DE CONTROLE
+## ESTRUTURAS DE CONTROLE  -------------------------------------------------------
 
---> if: checa se uma condição é verdadeira (pode usar op. lógicos nas expressões)
+    -> if: checa se uma condição é verdadeira (pode usar op. lógicos nas expressões)
 
-    if (expressão){
-        // bloco de código;
-    }
-
-
---> else: consiste em um bloco de código que é executado quando a expressão if é falsa (não inserimos expressões no else)
-
-    if (expressão){
-        // bloco de código if;
-    } else {
-        // bloco de código else;
-    }
-
-
---> if aninhado: um if dentro do outro, e vai executando os blocos de código conforme a condição é verdadeira ou não
-
-    if (expressão){
-        if (expressão 2){
-            // bloco de código do if 2;
+        if (expressão){
+            // bloco de código;
         }
-    }
 
 
---> else if: podemos criar um novo bloco de expressão, que será executado caso o primeiro if seja falso
+    -> else: consiste em um bloco de código que é executado quando a expressão if é falsa (não inserimos expressões no else)
 
-    if (expressão){
-        // bloco de código if;
-    } else if {
-        // bloco de código else if;
-    } else {
-        // bloco de código else;
-    } 
+        if (expressão){
+            // bloco de código if;
+        } else {
+            // bloco de código else;
+        }
 
 
---> switch: é uma estrutura de controle que verifica o valor de uma variável e executa um bloco de código correspondente. Ele é útil para substituir vários if else, deixando o código mais organizado
+    -> if aninhado: um if dentro do outro, e vai executando os blocos de código conforme a condição é verdadeira ou não
 
-    $dia = "segunda";
+        if (expressão){
+            if (expressão 2){
+                // bloco de código do if 2;
+            }
+        }
 
-    switch ($dia) {
-        case "segunda":
-            echo "Início da semana!";
-            break;
-        case "sexta":
-            echo "Sextou!";
-            break;
-        default:
-            echo "Dia comum.";
-    }
+
+    -> else if: podemos criar um novo bloco de expressão, que será executado caso o primeiro if seja falso
+
+        if (expressão){
+            // bloco de código if;
+        } else if {
+            // bloco de código else if;
+        } else {
+            // bloco de código else;
+        } 
+
+
+    -> switch: é uma estrutura de controle que verifica o valor de uma variável e executa um bloco de código correspondente. Ele é útil para substituir vários if else, deixando o código  mais organizado
+
+        $dia = "segunda";
+
+        switch ($dia) {
+            case "segunda":
+                echo "Início da semana!";
+                break;
+            case "sexta":
+                echo "Sextou!";
+                break;
+            default:
+                echo "Dia comum.";
+        }

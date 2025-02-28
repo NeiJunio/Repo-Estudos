@@ -1,11 +1,11 @@
 <?php
 
-    // function echo()  {
-    //     return true;
-    // }
-    
-    // function while()  {
-    //     return true;
-    // }
+// function echo()  {
+//     return true;
+// }
 
-    //estão acusando erro de sintaxe, pois são palavras reservadas
+// function while()  {
+//     return true;
+// }
+
+//estão acusando erro de sintaxe, pois são palavras reservadas

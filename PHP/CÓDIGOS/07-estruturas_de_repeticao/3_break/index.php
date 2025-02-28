@@ -13,7 +13,7 @@ while ($x < 10) {
     $x++;
 }
 
-echo "Saindo do loop"; 
+echo "Saindo do loop";
 /*
     imprime: 
     0

@@ -1,11 +1,7 @@
 -- 06/01/2025 --
 
-## VARIÁVEIS
-
--> é a forma de declarar um valor e salvá-lo na memória, e deve vir sempre precedida de $ ($nome = "Nei";)
-
--> pode armazenar qualquer tipo de dado
-
--> seus valores podem ser alterados no decorrer do programa
-
--> para imprimir o valor de uma variável, usamos echo
+## VARIÁVEIS  -------------------------------------------------------
+    -> É a forma de declarar um valor e salvá-lo na memória, e deve vir sempre precedida de $ ($nome = "Nei";)
+    -> Pode armazenar qualquer tipo de dado
+    -> Seus valores podem ser alterados no decorrer do programa
+    -> Para imprimir o valor de uma variável, usamos echo

@@ -1,62 +1,60 @@
 -- 24/01/2025 --
 
-## TABELA VERDADE
+## TABELA VERDADE  -------------------------------------------------
 
-    **Tabela Verdade do Operador NOT (Negação)**
-    +---------------+   
-    | A     | NOT A |
-    |-------|-------|
-    | true  | false |
-    | false | true  |
-    +---------------+
+    -> Tabela Verdade do Operador NOT (Negação)
+        +---------------+   
+        | A     | NOT A |
+        |-------|-------|
+        | true  | false |
+        | false | true  |
+        +---------------+
 
-    +-----------+
-    | A | NOT A |
-    |---|-------|
-    | 1 | 0     |
-    | 0 | 1     |
-    +-----------+
-
-
-
-    **Tabela Verdade do Operador AND (E Lógico)**
-
-    +-------------------------+
-    | A     | B     | A AND B |
-    |-------|-------|---------|
-    | true  | true  | true    |
-    | true  | false | false   |
-    | false | true  | false   |
-    | false | false | false   |
-    +-------------------------+
-
-    +-----------------+
-    | A | B | A AND B |
-    |---|---|---------|
-    | 1 | 1 |    1    |
-    | 1 | 0 |    0    |
-    | 0 | 1 |    0    |
-    | 0 | 0 |    0    |
-    +-----------------+
+        +-----------+
+        | A | NOT A |
+        |---|-------|
+        | 1 | 0     |
+        | 0 | 1     |
+        +-----------+
 
 
+    -> Tabela Verdade do Operador AND (E Lógico)
 
-    **Tabela Verdade do Operador OR (OU Lógico)**
+        +-------------------------+
+        | A     | B     | A AND B |
+        |-------|-------|---------|
+        | true  | true  | true    |
+        | true  | false | false   |
+        | false | true  | false   |
+        | false | false | false   |
+        +-------------------------+
 
-    +------------------------+
-    | A     | B     | A OR B |
-    |-------|-------|--------|
-    | true  | true  | true   |
-    | true  | false | true   |
-    | false | true  | true   |
-    | false | false | false  |
-    +------------------------+
+        +-----------------+
+        | A | B | A AND B |
+        |---|---|---------|
+        | 1 | 1 |    1    |
+        | 1 | 0 |    0    |
+        | 0 | 1 |    0    |
+        | 0 | 0 |    0    |
+        +-----------------+
 
-    +----------------+
-    | A | B | A OR B |
-    |---|---|--------|
-    | 1 | 1 |    1   |
-    | 1 | 0 |    1   |
-    | 0 | 1 |    1   |
-    | 0 | 0 |    0   |
-    +----------------+
+
+    -> Tabela Verdade do Operador OR (OU Lógico)
+
+        +------------------------+
+        | A     | B     | A OR B |
+        |-------|-------|--------|
+        | true  | true  | true   |
+        | true  | false | true   |
+        | false | true  | true   |
+        | false | false | false  |
+        +------------------------+
+
+        +----------------+
+        | A | B | A OR B |
+        |---|---|--------|
+        | 1 | 1 |    1   |
+        | 1 | 0 |    1   |
+        | 0 | 1 |    1   |
+        | 0 | 0 |    0   |
+        +----------------+

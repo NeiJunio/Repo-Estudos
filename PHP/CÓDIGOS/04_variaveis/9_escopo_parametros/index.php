@@ -1,6 +1,7 @@
 <?php
 
-function soma($a, $b){
+function soma($a, $b)
+{
 
     echo $a + $b;
     echo "<br>";

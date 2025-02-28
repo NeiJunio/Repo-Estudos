@@ -1,6 +1,7 @@
 <?php
 
-function teste(){
+function teste()
+{
     $a = 0;
     $a++;
 
@@ -13,10 +14,11 @@ teste();
 
 echo "------------------ <br>";
 
-function testeStatic(){
+function testeStatic()
+{
     static $a = 0;
     $a++;
-    
+
     echo "$a <br>";
 }
 

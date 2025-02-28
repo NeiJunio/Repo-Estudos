@@ -6,26 +6,26 @@ $idade3 = 21;
 
 $maioridade = 18;
 
-$msg= "Você é maior de idade <br>";
+$msg = "Você é maior de idade <br>";
 
-if($idade1 >= $maioridade) {
+if ($idade1 >= $maioridade) {
     echo "1 - ";
     echo $msg;
 } else {
     echo "1 - Você não é maior de idade <br>";
 }
 
-if($idade2 >= $maioridade) {
+if ($idade2 >= $maioridade) {
     echo "2 - ";
     echo $msg;
 } else {
     echo "2 - Você não é maior de idade <br>";
 }
 
-if($idade3 >= $maioridade) {
+if ($idade3 >= $maioridade) {
     echo "3 - ";
     echo $msg;
-}  else {
+} else {
     echo "3 - Você não é maior de idade <br>";
 }
 

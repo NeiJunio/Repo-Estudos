@@ -1,9 +1,9 @@
 <?php
 
-    echo NULL; //não imprimirá conteúdo
+echo NULL; //não imprimirá conteúdo
 
-    $nome = NULL;
+$nome = NULL;
 
-    if(is_null($nome)){
-        echo "o valor da variável nome é NULL";
-    }
+if (is_null($nome)) {
+    echo "o valor da variável nome é NULL";
+}

@@ -1,8 +1,8 @@
-<?php   
+<?php
 
-    // comentário de linha simples
+// comentário de linha simples
 
-    # comentário de linha simples
+# comentário de linha simples
 
-    /* comentário de bloco
-        com múltiplas linhas */
+/* comentário de bloco
+    com múltiplas linhas */

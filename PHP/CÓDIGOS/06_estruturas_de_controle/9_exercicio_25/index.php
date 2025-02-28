@@ -11,7 +11,7 @@ if (is_int($a) || is_float($a)) {
         echo "O resultado da multiplicação é maior que 100 <br>";
     } else {
         echo "O resultado da multiplicação é menor ou igual a 100 <br>";
-    } 
+    }
 } else {
     echo "Não é um número <br>";
 }
