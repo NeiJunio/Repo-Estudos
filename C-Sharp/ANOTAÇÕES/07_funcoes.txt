@@ -1,0 +1,46 @@
+-- 28/02/2025 --
+
+## FUNÇÕES
+    -> Sintaxe com parâmetros
+
+    public void nome_da_função(tipo_de_dado parâmetro_1, tipo_de_dado parâmetro_2)
+    {
+        var resultado = parâmetro_1 + parâmetro_2
+
+        Console.WriteLine(resultado);
+    }
+
+    no program: 
+
+    static void Main()
+    {
+        var matematica = new OperacoesMatematicas(); // chama a classe OperacoesMatematicas
+
+        matematica.nome_da_função(1, 7); // chama a função, passando valores como parametros
+
+        matematica.nome_da_função(valor1: 1, valor2: 7); // chama a função, passando valores nomeados como parametros
+
+    }
+
+
+    -> Retornando resultados nas funções:
+    
+    // Devolvendo resultado na função
+    public int Adicionar(int valor1, int valor2)
+    {
+        var resultado = valor1 + valor2
+
+        return resultado;
+        // Console.WriteLine(resultado); o console será chamado na main
+    }
+
+    no program:
+
+    static void Main()
+    {
+        var matematica = new OperacoesMatematicas(); // chama a classe OperacoesMatematica
+
+        var resultado = matematica.Adicionar(7, 1);
+        Console.WriteLine(resultado); // imprime o resultado da função, nesse caso, 8
+
+    }

@@ -1,0 +1,18 @@
+-- 28/02/2025 --
+
+## CLASSE
+    -> Molde para estar criando um objeto real, que poderá ser utilizado através de uma variável
+    -> modelo:
+
+    public class Carro
+    {
+        public required string Modelo { get; set; }
+        public DateOnly LancadoEm { get; set; }
+        public Cor cor { get; set; }
+    }
+
+    -> public: para que a variável fique acessível, para que a Main encontre-a
+    -> get: para recuperar o valor da variável
+    -> set: para alterar o valor da variável
+
+    -> required: torna o campo obrigatório
