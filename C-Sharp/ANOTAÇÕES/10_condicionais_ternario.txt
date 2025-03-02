@@ -1,0 +1,5 @@
+-- 01/03/2025 --
+
+## CONDICIONAIS (TERNÁRIO)  --------------------------------------------
+    -> Estrutura:
+        condição ? valor_se_verdadeiro : valor_se_falso;

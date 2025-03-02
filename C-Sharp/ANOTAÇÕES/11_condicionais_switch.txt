@@ -1,0 +1,43 @@
+-- 01/03/2025 --
+
+## CONDICIONAIS (SWITCH CASE)  --------------------------------------------
+    -> Estrutura:
+        switch (expressão)
+        {
+            case valor1:
+                {
+                    // Bloco de código para valor1
+                }
+                break;
+
+            case valor2:
+                {
+                    // Bloco de código para valor2
+                }
+                break;
+
+            // Outros casos...
+
+            default:
+                {
+                    // Bloco de código caso nenhum dos valores  anteriores seja correspondente
+                }
+                break;
+        }
+
+
+    -> Usando Ternário:
+        
+        int variavel = valor;
+        string resultado = "";
+
+        resultado = variavel switch
+        {
+            valor1 => "Mensagem1",
+            valor2 => "Mensagem2",
+            valor3 => "Mensagem3",
+            // Outros casos...
+            _ => "Mensagem padrão" // Caso não seja nenhum dos valores      anteriores
+        };
+
+        Console.WriteLine(resultado);

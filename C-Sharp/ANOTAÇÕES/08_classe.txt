@@ -1,6 +1,6 @@
 -- 28/02/2025 --
 
-## CLASSE
+## CLASSE  ---------------------------------------------------
     -> Molde para estar criando um objeto real, que poderá ser utilizado através de uma variável
     -> modelo:
 

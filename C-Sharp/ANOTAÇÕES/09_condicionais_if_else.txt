@@ -1,0 +1,21 @@
+-- 01/03/2025 --
+
+## CONDICIONAIS (IF ELSE)  --------------------------------------------
+    -> Estrutura:
+        if (expressão){
+            // bloco de código;
+        } else {
+            // bloco de código, se a condição for falsa 
+        }
+
+    -> Operadores:
+        --> > Maior
+        --> < Menor
+        --> >= Maior ou igual
+        --> <= Menor ou igual
+        --> != Diferente
+        --> == Igualdade
+        --> && AND (e) (todas as condições devem ser verdadeiras para acessar o bloco de código)
+        --> || OR (ou) (pelo menos uma das condições devem ser verdadeiras para acessar o bloco de código)
+        --> is null
+        --> is not null
