@@ -27,3 +27,46 @@
 ## CONTINUE ----------------------------------------------
     -> Pula uma execução do loop ao invés de interromper
     -> Quando o interpretador encontrar essa instrução, a próxima etapa do loop será executada
+
+
+-- 03/03/2025 -- 
+
+## DO WHILE  ---------------------------------------------
+    -> Sintaxe invertida, se comparar com a estrutura while
+    -> Estrutura:
+        do {
+            // bloco de código
+        } while (condição);
+
+        Obs: fazer algo (bloco de código), até que a condição chegue
+
+
+## FOR  --------------------------------------------------
+    -> Estrutura mais utilizada
+    -> Código mais limpo e menos poluído
+    -> Estrutura:
+        for(contator; condição;incremento ou decremento){
+            // bloco de código
+        }
+
+        ex:
+
+        for ($i = 0; $i < 20; $i++) {
+            echo "$i <br>";
+        } 
+
+        leitura: i inicia com zero, e enquanto i for menor que 20, vai imprimir a echo e aumentar 1 no valor de i
+
+
+## LOOP INFINITO  ----------------------------------------
+    -> Erro que pode ser ocasionado quando uma estrutura de repetição não tem uma condição de término que seja possível
+    -> Pode causar o travamento do software
+
+## FOREACH  ----------------------------------------------
+    -> É orientada a um array, ou seja, depende de um array ja existente
+    -> se repete em todos os elementos do array
+    -> Estrutura:
+
+        foreac($array as $item){
+            // bloco de código
+        } 
