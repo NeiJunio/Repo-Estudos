@@ -13,7 +13,7 @@
         }
 
 
-### BREAK  -----------------------------------------------
+## BREAK  ------------------------------------------------
     -> Essa instrução serve para sair do loop while antes do seu fim
     -> Geralmente utilizado de condições if
 
@@ -67,6 +67,6 @@
     -> se repete em todos os elementos do array
     -> Estrutura:
 
-        foreac($array as $item){
+        foreach($array as $item){
             // bloco de código
         } 

@@ -1,0 +1,65 @@
+-- 03/03/2025 --
+
+## LOOPING (LOOP)  --------------------------------------------
+    -> Execução em sequência do mesmo código
+
+
+## FOR  -------------------------------------------------------
+    -> Percorre todos os dados de um array
+    -> também pode ser utilizado para inserir dados em um array
+    -> Estrutura:
+         for(contator; condição;incremento ou decremento){
+            // bloco de código
+        }
+
+        ex:
+
+        for ($i = 0; $i < 20; $i++) {
+            echo "$i <br>";
+        } 
+
+        leitura: i inicia com zero, e enquanto i for menor que 20, vai imprimir a echo e aumentar 1 no valor de i
+
+
+## FOREACH  ---------------------------------------------------
+    -> Percorre um array ja existente
+    -> Estrutura:
+        foreach( var item in array){
+            // bloco de código
+        }
+
+
+## WHILE  -----------------------------------------------------
+    -> executa o código n vezes até satisfazer a sua condição
+    -> Geralmente é necessário um contador para atingir a   condição
+    -> Estrutura:
+        while(condição){
+            // código
+        }
+
+
+## DO WHILE  --------------------------------------------------
+    -> Sintaxe invertida, se comparar com a estrutura while
+    -> Estrutura:
+        do {
+            // bloco de código
+        } while (condição);
+
+        Obs: fazer algo (bloco de código), até que a condição chegue
+
+
+## BREAK  -----------------------------------------------------
+    -> Essa instrução serve para sair do loop while antes do seu fim
+    -> Geralmente utilizado de condições if
+    -> Obs: só pode ser utilizado dentro de um loop
+
+
+## CONTINUE  --------------------------------------------------
+    -> Pula uma execução do loop ao invés de interromper
+    -> Quando o interpretador encontrar essa instrução, a próxima etapa do loop será executada
+
+
+## RETURN  ----------------------------------------------------
+    -> "Retorna" um valor (na verdade ele vai agir como um break)
+    -> Também serve para parar um loop
+    -> Pode ser utilizado dentro de funções (lembre-se de capturar o valor, caso a função retorne valores)

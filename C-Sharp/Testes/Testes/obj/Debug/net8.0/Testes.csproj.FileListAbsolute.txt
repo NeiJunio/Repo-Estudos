@@ -1,0 +1,15 @@
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\bin\Debug\net8.0\Testes.exe
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\bin\Debug\net8.0\Testes.deps.json
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\bin\Debug\net8.0\Testes.runtimeconfig.json
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\bin\Debug\net8.0\Testes.dll
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\bin\Debug\net8.0\Testes.pdb
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.AssemblyInfoInputs.cache
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.AssemblyInfo.cs
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.csproj.CoreCompileInputs.cache
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.sourcelink.json
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.dll
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\refint\Testes.dll
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.pdb
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\Testes.genruntimeconfig.cache
+C:\Users\Nei Junio\Documents\Github\Repo-Estudos\C-Sharp\Testes\Testes\obj\Debug\net8.0\ref\Testes.dll
