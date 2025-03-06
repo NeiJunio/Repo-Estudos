@@ -1,0 +1,14 @@
+-- 05/03/2025 -- 
+
+## C# E .NET
+    -> CSharp: linguagem de programação
+    -> .Net: plataforma que reune diversas bibliotecas para desenvolvimento de projetos
+        -> todos os meses de novembro lança uma nova versão (nos anos impares lança LTS(Long Term Support - suporte de 3 anos apenas), e nos anos pares lança STS(Standard Term Support = suporte de 18 meses apenas))
+
+    -> Build: Consiste na compilação (verifica se no projeto tem algum erro ou não, e transforma em uma linguagem intermediária)
+    -> CLR (Common Language Runtime): converte o códgio que está em linguagem intermediária para Código nativo
+
+    .> arquivo .dll funciona em qualquer dispositivo, independente de versão, plataforma ou SO, enquanto o arquivo .exe depende diretamente
+
+    -> JIT (just-in-time) compila a .dll em tempo de execução
+    -> AOT (ahead-of-time) compila o código para código nativo antes da execução.
