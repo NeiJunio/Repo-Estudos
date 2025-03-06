@@ -1,0 +1,7 @@
+-- 06/03/2025 --
+
+## INSERINDO PHP NO HTML  ---------------------------------------
+    -> Podemos inserir código dinâmico entre as TAGS
+    -> Extensões para esses arquivos pode ser .php ou .phtml (arquivo híbrido)
+    -> Ex:
+        <h1><?= $titulo ?></h1>

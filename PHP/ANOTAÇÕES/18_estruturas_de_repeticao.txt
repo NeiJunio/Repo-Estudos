@@ -62,6 +62,7 @@
     -> Erro que pode ser ocasionado quando uma estrutura de repetição não tem uma condição de término que seja possível
     -> Pode causar o travamento do software
 
+
 ## FOREACH  ----------------------------------------------
     -> É orientada a um array, ou seja, depende de um array ja existente
     -> se repete em todos os elementos do array

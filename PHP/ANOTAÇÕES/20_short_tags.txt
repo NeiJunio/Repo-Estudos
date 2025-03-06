@@ -1,0 +1,20 @@
+-- 06/03/2025 --
+
+## SHORT TAGS -----------------------------------------
+    -> funcionalidade para adicionar código PHP em uma página
+    -> Depende de configuração no servidor para funcionar (uso desencorajado)
+    -> Ex:
+        <? echo "teste"; ?>
+
+    -> Para habilitar no servidor
+        --> Abra o XAMPP
+        --> Config do Apache
+        --> Abra o arquivo PHP.ini
+        --> Ctrl + F: short_open (enter 2x)
+        --> mude a linha short_open_tag=Off
+                    para short_open_tag=On
+
+    -> PREFERÊNCIA
+        <?php 
+            // bloco de código
+        ?>
