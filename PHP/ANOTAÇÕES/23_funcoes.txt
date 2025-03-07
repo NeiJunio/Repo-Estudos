@@ -1,0 +1,60 @@
+-- 07/03/2025 --
+
+## FUNÇÕES  ------------------------------------------------
+    -> Blocos de códigos, identificados por nomes
+    -> Realizam uma determinada ação, e podem ser reaproveitadas, evitando duplicidade de código
+    -> Podem receber parâmetros, que moldam sua execução
+    -> Estrutura:
+        function nome_da_função(){
+            // Bloco de código
+        }
+
+    -> Para chamar a função, basta colocar nome_da_função();
+    -> Existem algumas funções já prontas, como strlen, strtoupper, strotolower, print_r, var_dump
+
+
+## FUNÇÕES COM PARÂMETROS  ---------------------------------
+    -> Parâmetros  são como variáveis, armazenam valores que serão utilizados durante a execução da função
+    -> Não existe número máximo de parâmetros, mas o ideal é utilizar no máximo 3 (se precisa mais de 3 parâmetros, divida a função em outras funções menores)
+    -> Estrutura:
+        function nome_da_função(param1, param2){
+            // Bloco de código
+        }
+
+
+## RETURN  -------------------------------------------------
+    -> O objetivo é armazenar o valor de retorno dentro de uma variável e utilizá-lo depois no código
+    -> Estrutura:
+        function nome_da_função(param1, param2){
+           return algumaCoisa;
+        }
+
+
+## PARÂMETROS DEFAULT  -------------------------------------
+    -> Possuem um valor pré-determinado
+    -> Se o valor do parâmetro não for passado, o valor default entra em cena
+    -> Ex:
+        function nome_da_função($a = "padrão"){
+            // Bloco de código
+        }
+    
+    -> Sempre inserir os argumentos default por ultimo
+
+
+## func_get_arg  -------------------------------------------
+    -> Retorna uma lista com os argumentos de uma função
+
+
+## func_num_args  ------------------------------------------
+
+
+## Retornando múltiplos valores  ---------------------------
+    -> Podemos retornar um array de valores, e só precisa acessar os índices de forma isolada com a nova variável que contém o retorno
+    -> Ex:
+        function nome_da_função(){
+            return ["a", 10, true];
+        }
+
+
+## DEPURANDO VALORES  --------------------------------------
+    -> var_dump exibe de forma human readable
