@@ -1,0 +1,60 @@
+-- 06/03/2025 -- 
+
+## WEB API EM .NET  ----------------------------------
+
+
+## PROTOCOLO HTTP  -----------------------------------
+    -> Hypertext Transfer Protocol
+    -> Envio e recebimento de dados na web
+    -> Baseado em arquitetura client-server
+
+    -> HEADER: Informações complementares (metadados, tipo de conteúdo, tokens, cookies, preferências de idiomas, etc)
+    -> BODY: Contém dos dados enviados pelo client
+
+    -> MÉTODOS:
+        --> GET (buscar)
+        --> POST (criar)
+        --> PUT (editar)
+        --> DELETE (apagar)
+
+
+    -> SSL (Secure Sockets Layer): Protocolo que criptografa os dados trocados entre navegador e servidos
+
+
+## STATUS CODE  --------------------------------------
+    -> Código do status da resposta da requisição (se foi bem sucedida, se teve erro, warning)
+    -> mais comuns: 200, 201, 204, 400, 401, 403, 404, 500, etc
+
+
+## JSON  ---------------------------------------------
+    -> É um formato de arquivo e intercâmbio de dados muito leve que usa texto legível para armazenar e transmitir dados
+    -> Aceita dados: number, string, boolean, array, object e null
+    -> Estrutura:
+    {
+        "chave" : "valor",
+        "nome: "Nei",
+        "idade": 21,
+        "skills": [
+            "React",
+            "Node",
+            "Next"
+        ]
+    }
+
+
+## REST
+    -> Representational State Transfer: é um estilo de arquitetura para o desenvolvimento de APIs (Interfaces de Programação de Aplicações) baseado em padrões da web, como HTTP
+    -> Define princípios e restrições para a construção de serviços web escaláveis e eficientes.
+    -> Características:
+        --> Cliente-Servidor: A API REST separa o cliente (quem faz a requisição) do servidor (quem processa e retorna os dados).
+        --> Stateless (Sem estado): Cada requisição feita ao servidor deve conter todas as informações necessárias, sem depender de requisições anteriores.
+        --> Cacheável: As respostas podem ser armazenadas em cache para melhorar o desempenho.
+        --> Interface Uniforme: As APIs REST seguem convenções bem definidas, utilizando métodos HTTP padronizados.
+        --> Uso de Recursos: Os dados são representados como recursos, identificados por URLs.
+
+
+## CRUD
+    -> Create (criação)
+    -> Read (leitura)
+    -> Update (atualização)
+    -> Delete (exclusão)
