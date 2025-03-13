@@ -1,0 +1,33 @@
+-- 08/03/2025 --
+
+## MINHA PRIMEIRA API
+
+## Properties
+    -> Este arquivo armazena configurações para o modo debug
+    -> Modo debug não é otimizado para performance
+    -> Modo release é focado em performance, removendo coisas inúteis
+    -> no arquivo LaunchpSettings.json, posso definir perfis (profiles) para determinados tipos de execução
+
+
+## Program.cs
+    -> É uma classe 
+    -> Entry Point (ponto de entrada no arquivo)
+
+
+## AppSettings.json e AppSettings.Development.json
+    -> Contém informações de conexões, como Connection Strings, e algumas configurações de ambiente de desenvolvimento
+    -> .Development só executa no modo debug
+
+    -> Se tiver propriedades com os mesmos nomes em ambos os arquivos, vai permanecer os valores das propriedades informados no .Development
+    -> Se as propriedades tiverem nomes diferentes, elas se fundem, ou seja, ambas são acrescentadas e lidas, e nenhuma se sobrescreve
+
+    -> Posso unir todas as propriedades em uma única classe,e buscar por ela, usando GetSection
+    -> Também pode consultar o valor direto, usando GetValue e passando o caminho do objeto como string (Ex: "MyClass:Number") -> os : indica que está acessando um objeto
+
+
+## CONTROLLERS
+    -> É uma classe especial que contém funções (endpoints)
+    -> Um endpoint para cada funcionalidade específica
+    -> Cada controller deve conter endpoints relacionados com a mesma finalidade, por exemplo, um controller contendo todas as finalidades relacionados a clientes, outro relacionados a veiculos, etc...
+
+    _> :controllerBase serve para acessar, em forma de herança, algumas propriedades prontas do .net
