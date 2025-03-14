@@ -25,6 +25,8 @@
     	Métodos (só pode usar em funções ou dados/variáveis):
     	- private: somente a propria classe que pode ter acesso
     	- protected: somente a classe que tem esse atributo pode enxergar, utilizar, e tbm as classe filhas (que possuem herança nessa classe)
+        - virtual: serve para permitir que as classes derivadas (por herança) tem poder de sobrescrever o método (nesse caso, pode retornar outro texto por exemplo)
+        - sealed: serve para impedir que a classe Laptop seja uma classe base para outra classe (impede que outra classe tenha herança com a classe Laptop)
 
 
 ## ABSTRAÇÃO  -----------------------------------------------
@@ -35,3 +37,8 @@
 ## POLIMORFISMO  --------------------------------------------
     -> Várias formas
     -> Chama e utiza parâmetros que tem uma determinada herança com a função específica determinada
+
+
+## OBSERVAÇÕES  ---------------------------------------------
+    -> C# não permite heranças múltiplas
+    -> Se uma função ou classe for declarada abstrata, obrigatoriamente a classe deverá ser abstrata, mas se a classe abstrata, não necessariamente a função ou o método precisa ser

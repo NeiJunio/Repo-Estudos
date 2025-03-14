@@ -30,4 +30,6 @@
     -> Um endpoint para cada funcionalidade específica
     -> Cada controller deve conter endpoints relacionados com a mesma finalidade, por exemplo, um controller contendo todas as finalidades relacionados a clientes, outro relacionados a veiculos, etc...
 
-    _> :controllerBase serve para acessar, em forma de herança, algumas propriedades prontas do .net
+    -> :controllerBase serve para acessar, em forma de herança, algumas propriedades prontas do .net
+
+## NUNCA USAR DUAS VEZES O MESMO MÉTODO COM A MESMA URL, POIS GERA CONFLITO

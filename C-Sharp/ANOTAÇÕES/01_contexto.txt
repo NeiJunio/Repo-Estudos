@@ -8,3 +8,5 @@
 
     -> .NET framework é uma plataforma que contém as bibliotecas necessárias para cada tipo de desenvolvimento (suporta só windows)
     -> .NET Core é suporte a windows, linux e mac
+
+
