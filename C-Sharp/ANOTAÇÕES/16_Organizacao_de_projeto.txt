@@ -1,0 +1,8 @@
+-- 16/03/2025 --
+
+## ORGANIZAÇÃO DE PROJETOS E BIBLIOTECAS
+
+
+## BIBLIOTECA DE CLASSES
+    -> É um tipo de projeto
+    -> Reúne classes, cada qual com uma funcionalidade específica, a qual será utilizada pelo programa executável

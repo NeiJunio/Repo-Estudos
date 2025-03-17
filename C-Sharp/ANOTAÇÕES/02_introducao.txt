@@ -11,6 +11,7 @@
 ## NAMESPACE  --------------------------------------------------    
     -> Forma de organizar nossas classes, conteúdos e arquivos dentro do projeto
     -> Ajuda no endereçamento direto de determinadas classes e objetos
+    -> Botão direito em cima do project >  sync namespace (serve para sincronizar os nomes das pasta, caso tenha tido alteração em alguma pasta, dessa forma, o nome da pasta é corrigido dentro de todos os arquivo que referenciá-la)
 
 
 ## CLASS  ------------------------------------------------------

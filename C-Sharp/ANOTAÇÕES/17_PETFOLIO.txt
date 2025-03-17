@@ -1,0 +1,47 @@
+-- 08/03/2025 --
+
+## PETFOLIO
+    -> Continue without code
+    -> File > New> Project > Blank Solution (Nome: Petfolio)
+    -> Botão direito na solution > Add > New Project > ASP.NET Core Web Api (Nome: Petfolio.API)
+    -> Botão direito na solution > Add > New Project > Class Library (Nome: Petfolio.Communication)
+    -> Botão direito na solution > Add > New Project > Class Library (Nome: Petfolio.Application) "A responsabilidade desse arquivo é armazenar a regra de negócios (Regra de negócios é aonde a gente implementa códigos apra validar requisições)"
+    
+    -> Botão direito no project API >  marcar a opção "Set as Startup Project", para que, sempre que rodarmos o código, esse seja o projeto executado
+
+    -> Na pasta dependencies do Petfolio.API > botão direito > Add Project Reference > Selecione os dois outros projetos existentes (Dessa forma o project API "enxerga" os outros projetos)
+
+    -> Na pasta dependencies do Petfolio.Application > botão direito > Add Project Reference > Selecione o project Communication (Não pode selecionar o project API, pois o API ja depende do Application, entõa se o Application depender do API, vai gerar uma dependência cíclica entre os projetos)
+
+    -> OBS: o projetc Communication não precisa enxergar nenhum outro projeto, pois ele só vai conter as classes de Request e Response
+
+    -> Criar um API.Controller com o nome PetController
+    -> Criar uma classe RequestRegisterPetJson dentro da pasta Requests, e passar os dados que serão requisitados para o cadastro (POST) do pet
+    -> Criar uma classe ResponseRegisterPetJson dentro da pasta Response, e passar os dados que serão retornados para o cadastro (POST) do pet
+    -> Criar uma pasta Enums dentro do Pet.Communication, e criar um enum PetType (alterar internal class para public enum)
+
+    -> Alterar as classes RequestRegisterPetJson e ResponseRegisterPetJson de internal para public, pois só assim ele ficara disponível para ser usada dentro do projeto API (por enquanto ela só está acessível dentro do projeto Communication)
+     
+    -> Criar uma pasta UseCases dentro do project Application, onde armazenaremos as regras de negócios
+    -> Criar uma pasta com nome Pet, para agrupar-mos especificamente as regras de negócios relacionadas aos pets
+    -> Criar uma pasta para cada tipo de regra de negócios, ex: uma pasta Register, uma pasta Update, etc
+    -> Dentro da pasta Register, criar uma classe com nome RegisterPetUseCase, e alterar o internal para public (para que a classe fique acessível nos outros projetos)
+    (Dentro dos UseCases, todas as funções públicas terão nome de Execute)
+
+    -> Dentro do useCase Register, criar uma função public ResponseRegisterPetJson Execute(RequestRegisterPetJson request) { } -> pois o projeto API receberá uma requisição, repassar para a regra de negócios e devolver uma resposta
+        -> Deve receber como parâmento a RequestRegisterPetJson, pois é daí que virá os dados para serem validados
+
+    -> Dentro dessa função, retornar uma nova instância da classe ResponseRegisterPetJson (dessa forma: new ResponseRegisterPetJson {}), retornando um Id fictício, e o Name (Name=request.Name -> Dessa forma, retorna o mesmo nome que foi enviado na requisição request)
+
+
+    -> No Controller, criar uma instância com a classe RegisterPetUse ("var useCase = new RegisterPetUseCase();"). Em seguida, acessa a sua função Execute ("var response = useCase.execute(request);"), passando como parâmetro a request que contém os dados vindo (RequestRegisterPetJson)
+    -> Após isso, retornar a função Created passando como parâmetros string.Empty e a variável response. ("return Created(string.Empty, response);")
+
+     -> S: Single-Responsibility (princípio da responsabilidade única): cada classe vai representar apenas uma regra de negócios (uma pra registrar, uma pra editar, uma pra excluir e uma pra buscar por id)
+     -> O:
+     -> L:
+     -> I:
+     -> D:
+
+
+     
