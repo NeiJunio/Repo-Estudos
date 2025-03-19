@@ -1,6 +1,4 @@
-
---   Exercícios:
-
+--   Exercícios
 
 -- 1-) A equipe de produção de produtos precisa do nome de todas as peças que pesam mais que 500kg, mas não mais que 700kg, para inspeção
 

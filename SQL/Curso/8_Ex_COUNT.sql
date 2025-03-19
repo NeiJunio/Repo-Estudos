@@ -1,4 +1,4 @@
--- Exercícios:
+-- Exercícios
 
 -- 1-) Quantos produtos tem cadastrados na tabela produtos? (Production.Product) (R: 504)
 SELECT COUNT(*)

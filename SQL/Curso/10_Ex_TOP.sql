@@ -1,4 +1,4 @@
--- Exercícios:
+-- Exercícios
 
 -- 1-) Retorne os 10 primeiros produtos da tabela Production.Product
 SELECT TOP 10 *

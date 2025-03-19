@@ -1,4 +1,4 @@
--- Exercícios:
+-- Exercícios
 
 --  1-) Obtenha o ProductId dos 10 produtos mais caros cadastrados no sistema, listando do mais caro para o mais barato
 

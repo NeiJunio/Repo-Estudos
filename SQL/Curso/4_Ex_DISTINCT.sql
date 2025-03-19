@@ -1,4 +1,4 @@
---    Exercício:
+-- Exercícios
 
 -- 1-) Quantos nomes únicos existe na tabela person.Person?
 
