@@ -11,7 +11,7 @@
 
     -> Na pasta dependencies do Petfolio.API > botão direito > Add Project Reference > Selecione os dois outros projetos existentes (Dessa forma o project API "enxerga" os outros projetos)
 
-    -> Na pasta dependencies do Petfolio.Application > botão direito > Add Project Reference > Selecione o project Communication (Não pode selecionar o project API, pois o API ja depende do Application, entõa se o Application depender do API, vai gerar uma dependência cíclica entre os projetos)
+    -> Na pasta dependencies do Petfolio.Application > botão direito > Add Project Reference > Selecione o project Communication (Não pode selecionar o project API, pois o API ja depende do Application, então se o Application depender do API, vai gerar uma dependência cíclica entre os projetos)
 
     -> OBS: o projetc Communication não precisa enxergar nenhum outro projeto, pois ele só vai conter as classes de Request e Response
 
@@ -37,6 +37,76 @@
     -> No Controller, criar uma instância com a classe RegisterPetUse ("var useCase = new RegisterPetUseCase();"). Em seguida, acessa a sua função Execute ("var response = useCase.execute(request);"), passando como parâmetro a request que contém os dados vindo (RequestRegisterPetJson)
     -> Após isso, retornar a função Created passando como parâmetros string.Empty e a variável response. ("return Created(string.Empty, response);")
 
+
+    -> Dentro do Controller, criar um rota HttpPut para dar início ao endpoint de edição, passando id no ROUTE
+    -> Como parâmetro da função, passar o id no FromRoute, e o RequestPetJson no FromBody (Renomear a RequestRegisterPetJson para RequestPetJson -> Fazer isso para aproveitar o mesmo arquivo de request, tendo em vista que os dados utilizados serão os mesmos)
+    -> Criar uma pasta Update dentro da pasta UseCases, e dentro, criar uma classe UpdatePetUseCase, a qual deverá ser pública. Dentro dessa classe, criar uma classe Execute como void (que não exige retorno), e passar como parâmetro o id, e a classe RequestPetjson para que seja lido e identificados seus campos e valores
+    -> No Controller, criar uma variável useCase que fará uma nova instância na classe de useCase UpdatePetUseCase. Após isso, com a variável useCase, acessar a função Execute() passando como parâmetro o id e a request ("useCase.Execute(id, request);"). Esse endpoint retornará 204 (NoContent)
+
+
+    -> Para tratar os erros, criar uma classe public dentro da pasta Responses, com o nome ResponseErrosJson. Ela será uma lista de string, pois vamos tratar os erros como uma lista
+    -> No endpoint HttpPost, usar o ProducersType, referenciando a classe ResponseErrorsJson, com o status 400 (Bad Request)
+
+
+    -> Dentro da pasta Response, criar uma classe ResponseShortPetJson, para listar apenas as informações resumidades que deverão ser mostradas
+        -> Também posso criar uma classe ResponseAllPetJson, contendo apenas a public List<ResponseShortPetJson>, dessa forma, criamos uma classe que contem o objeto Pets com a lista de resultados
+        
+
+
+    -> No controller, criar o endpoint do tipo get, chamado GetAll. trazendo no ProducersType um typeof com List apontando para a classe ResponseShortPetJson, com um status 200 ("[ProducesResponseType(typeof(List<ResponseShortPetJson>), StatusCodes.Status200OK)]") e um ProducersType com um StatusCodes 204 NoContent ("[ProducesResponseType(StatusCodes.Status204NoContent)]") -> esse último é para o caso de a requisição der sucesso, mas não ter dados para retornar
+        -> Se usar a classe ResponseAllPetJson, no ProducersType do endpoint, deverá referenciá-la dessa forma: [ProducesResponseType(typeof(ResponseAllPetJson), StatusCodes.Status200OK)], pois a propria classe ResponseAllPetJson contém a lista de retorno resumido dos pets List<ResponseShortPetJson>
+
+
+    -> Na pasta UseCases, criar uma pasta GetAll, e dentro dela, uma classe pública com nome GetAllPetsUseCase
+    -> Na classe GetAllPetsUseCase, criar um classe Execute(), referenciando ResponseAllPetJson ("public ResponseAllPetJson Execute() { }").
+        ->  Dentro da classe Execute, deverá retornar uma nova instância na classe ResponseAllPetJson.
+        -> Dentro dessa instância, deverá acessar o objeto Pets instânciando uma nova list que referencie a classe ResponseShortPetJson.
+        -> Dentro dessa lista, criar novas instâncias contendo as informações necessárias prevista no ResponseShortPetJson. (Cada uma dessas instância representa um exemplo de resultado que seria retornado)
+
+            public class GetAllPetsUseCase
+            {
+                public ResponseAllPetJson Execute()
+                {
+                    return new ResponseAllPetJson
+                    {
+                        Pets = new List<ResponseShortPetJson>
+                        {
+                            new ResponseShortPetJson {
+                                Campo = valor,
+                                Campo = valor,
+                                Type = Communication.Enums.PetType.Dog
+                            },
+                        }
+                    };
+                }
+            }
+        
+    -> No controller, criar a variável useCase, que armazenará a instancia na classe GetAllPetsUseCase.
+    -> Criar uma variável response, que armazenará o acesso à função Execute da classe GetAllPetsUseCase ("var response = useCase.Execute();")
+
+    -> faz um if verificando se o response.Pets tem pelo menos um elemento por meio do .Any(). Se for true, deverá retornar ok com a response
+
+    -> fora do if deverá retornar um NoContent
+        -> Ou seja, se a response retornar pelo menos um dado, entrará no if e retornará Ok(response)
+        -> se não tiver nenhuma dado, ela ignora o if e vai direto para o NoContent();
+
+        [HttpGet]
+        [ProducesResponseType(typeof    (ResponseAllPetJson), StatusCodes.  Status200OK)]
+        [ProducesResponseType(StatusCodes.  Status204NoContent)]
+        public IActionResult GetAll()
+        {
+            var useCase = new GetAllPetsUseCase();
+    
+            var response = useCase.Execute(); //    dentro da classe ResponseAllPetJson,   acessa a função com nome Execute()
+    
+            if (response.Pets.Any())
+            {
+                return Ok(response);
+            }
+    
+            return NoContent();
+        }
+    
      -> S: Single-Responsibility (princípio da responsabilidade única): cada classe vai representar apenas uma regra de negócios (uma pra registrar, uma pra editar, uma pra excluir e uma pra buscar por id)
      -> O:
      -> L:
