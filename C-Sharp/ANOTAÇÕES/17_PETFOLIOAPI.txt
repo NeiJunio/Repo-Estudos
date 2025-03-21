@@ -1,0 +1,381 @@
+-- 08/03/2025 --
+
+## PETFOLIO
+
+1. Estrutura Inicial do Projeto
+    -> Criação de uma solução:
+        - Abra o Visual Studio e crie uma nova solução vazia:
+        - File > New > Project > Blank Solution
+        - Nomeie a solução como Petfolio.
+    
+    -> Adição dos projetos:
+        -->  Projeto API (Web API):
+            - Botão direito na solução Petfolio > Add > New Project > ASP.NET Core Web API.
+            - Nomeie o projeto como Petfolio.API.
+        --> Projeto Communication (para Requests e Responses):
+            - Botão direito na solução Petfolio > Add > New Project > Class Library.
+            - Nomeie o projeto como Petfolio.Communication.
+        --> Projeto Application (para a regra de negócios):
+            - Botão direito na solução Petfolio > Add > New Project > Class Library.
+            - Nomeie o projeto como Petfolio.Application.
+
+2. Configuração dos Projetos
+    -> Definir o projeto API como startup:
+        - Botão direito no projeto Petfolio.API > Set as Startup Project.
+    
+    -> Referências entre os projetos:
+        --> Petfolio.API:
+            - Na pasta Dependencies do Petfolio.API, botão direito > Add Project Reference > Selecione Petfolio.Communication e Petfolio.Application.
+        --> Petfolio.Application:
+            - Na pasta Dependencies do Petfolio.Application, botão direito > Add Project Reference > Selecione Petfolio.Communication.
+        --> Petfolio.Communication:
+            - Esse projeto não precisa referenciar nenhum outro projeto, pois ele apenas contém as classes de Request e Response.
+
+    -> Criar o PetController:
+        - Na pasta Controllers do Petfolio.API, crie o arquivo PetController.cs.
+
+3. Estrutura do Projeto Communication
+    -> Criar as pastas Requests e Responses
+
+    -> Estrutura e arquivos da pasta Request:
+        --> Criar a classe RequestPetJson:
+            - Dentro do projeto Petfolio.Communication, crie uma pasta chamada Requests e, dentro dela, crie a  classe RequestPetJson.cs.
+
+            public class RequestPetJson
+            {
+                public string Name { get; set; }
+                public DateTime Birthday { get; set; }
+                public PetType Type { get; set; }
+            }
+
+    -> Estrutura e arquivos da pasta Responses:   
+        --> Criar a classe ResponseRegisterPetJson:
+            - Na pasta Response, crie a classe ResponseRegisterPetJson.cs.
+
+            public class ResponseRegisterPetJson
+            {
+                public int Id { get; set; }
+                public string Name { get; set; }
+            }
+        
+        --> Criar a classe ResponseAllPetJson:
+            - Na pasta Response, crie a classe ResponseAllPetJson.cs.
+
+            public class ResponseAllPetJson
+            {
+                public List<ResponseShortPetJson> Pets { get; set; } = [];
+            }
+
+        --> Criar a classe ResponseShortPetJson:
+            - Na pasta Response, crie a classe ResponseShortPetJson.cs.
+
+            public class ResponseShortPetJson
+            {
+                public int Id { get; set; }
+                public string Name { get; set; } = string.Empty;
+                public PetType Type { get; set; }
+            }
+
+        --> Criar a classe ResponsePetJson:
+            - Na pasta Response, crie a classe ResponsePetJson.cs.
+
+            public class ResponsePetJson
+            {
+                public int Id { get; set; }
+                public string Name { get; set; } = string.Empty; // Nome nunca vai ser nulo, no máximo uma string vazia
+                public DateTime Birthday { get; set; }
+                public PetType Type { get; set; }
+            }
+
+        --> Criar a classe ResponseErrorsJson:
+            - Na pasta Response, crie a classe ResponseErrorsJson.cs.
+
+            public class ResponseErrorsJson
+            {
+                public List<string> Errors { get; set; } = []; 
+                // cria a lista vazia, mas não nula
+                // Quando a gente instanciar a classe ResponseErrorsJson, o Errors ja receberá uma instância vazia, ficando assim, pronto para receber os erros        
+            }
+
+    -> Criar o enum PetType:
+        - Na pasta Enums, crie o arquivo PetType.cs.
+
+        public enum PetType
+        {
+            Cat = 0,
+            Dog = 1,
+            Bird = 2
+        }
+
+4. Regras de Negócio no Petfolio.Application
+    -> Criar a pasta UseCases:
+        - Dentro do projeto Petfolio.Application, crie uma pasta chamada UseCases.
+    
+    -> Criar uma pasta Pet:
+        - Dentro de UseCases, crie uma pasta Pet para agrupar as regras de negócios dos pets.
+    
+    -> Criar os useCases (cada um em uma pasta separada):
+        - Dentro da pasta Register, crie a classe RegisterPetUseCase.cs.
+
+        public class RegisterPetUseCase
+        {
+            public ResponseRegisterPetJson Execute(RequestPetJson request)
+            {
+                // Lógica de registro fictícia
+                return new ResponseRegisterPetJson
+                {
+                    Id = 1,  // Id fictício
+                    Name = request.Name
+                };
+            }
+        }
+
+        - Dentro da pasta Update, crie a classe UpdatePetUseCase.cs.
+
+        public class UpdatePetUseCase
+        {
+            public void Execute(int id, RequestPetJson request)
+            {
+                // Lógica de atualização fictícia
+            }
+        }
+
+        - Dentro da pasta Update, crie a classe GetAllPetsUseCase.cs.
+
+        public class GetAllPetsUseCase
+        {
+            public ResponseAllPetJson Execute()
+            {
+                return new ResponseAllPetJson
+                {
+                    Pets = new List<ResponseShortPetJson>
+                    {
+                        new ResponseShortPetJson {
+                            Id = 1,
+                            Name = "Max",
+                            Type = Communication.Enums.PetType.Dog
+                        },
+                        new ResponseShortPetJson {
+                             Id = 2,
+                            Name = "Luna",
+                            Type = Communication.Enums.PetType.Cat
+                        }
+                    }
+                };
+            }
+        }
+
+        - Dentro da pasta Update, crie a classe GetPetByIdUseCase.cs.
+
+        public class GetPetByIdUseCase
+        {
+            public ResponsePetJson Execute(int id){
+                return new ResponsePetJson{
+                    Id = id,
+                    Name = "Luna",
+                    Type = Communication.Enums.PetType.Dog,
+                    Birthday = new DateTime(year: 2022, month: 01, day: 01)
+                };
+            }
+        }
+
+        - Dentro da pasta Update, crie a classe DeletePetByIdUseCase.cs.
+
+        public class DeletePetByIdUseCase
+        {
+            public void Execute(int id){
+                // Regra de negócios
+            }
+        }
+
+5. Controller - Criação dos Endpoints
+    -> Endpoint POST - Criar um Pet:
+        - Dentro de PetController, crie o endpoint POST para cadastrar um novo pet.
+        - Deverá ser passado os seguintes ProducesType: 
+            -- ProducesType com typeof referenciando a classe ResponseRegisterPetJson, e um status 201 de Created
+            -- ProducesType com typeof referenciando a classe ResponseErrorsJson, e um status 400 de BadRequest
+
+        [HttpPost]
+        [ProducesResponseType(typeof(ResponseRegisterPetJson), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
+        public IActionResult Register([FromBody] RequestPetJson request)
+        {
+            var useCase = new RegisterPetUseCase(); 
+            var response = useCase.Execute(request); 
+            return Created(string.Empty, response); 
+        }
+
+        --> public class RegisterPetUseCase
+        
+        public class RegisterPetUseCase
+        {
+            public ResponseRegisterPetJson Execute(RequestPetJson
+         request)
+            {
+                return new ResponseRegisterPetJson
+                {
+                    Id = 1,
+                    Name = request.Name,
+                };
+            }
+        }
+
+        --> public class ResponseRegisterPetJson
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } = string.Empty;
+        }
+
+
+    -> Endpoint PUT - Atualizar Pet:
+        - No PetController, crie o endpoint PUT para editar um pet.
+        - Obrigatório o uso do Route para inserir o id na rota
+        - Como parâmetros da função devemos passar o id pelo FromRoute, e a RequestPetJson, que contém todos os campos esperados, pelo FromBody
+        - Deverá ser passado os seguintes ProducesType:
+            -- status 204 de NoContent, para uma requisição que deu sucesso mas não retorna dados
+            -- ProducesType com typeof referenciando a classe ResponseErrorsJson, e um status 400 de BadRequest
+
+        [HttpPut]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status400BadRequest)]
+        public IActionResult Update([FromRoute] int id, [FromBody] RequestPetJson request)
+        {
+            var useCase = new UpdatePetUseCase();
+            useCase.Execute(id, request);
+            return NoContent();
+        }
+
+        --> Classe UpdatePetUseCase:
+
+            public class UpdatePetUseCase
+            {
+                public void Execute(int id, RequestPetJson request)
+                {
+                    // Lógica de atualização fictícia
+                }
+            }
+
+        --> public classResponseRegisterPetJson
+
+            public class ResponseRegisterPetJson
+            {
+                public int Id { get; set; }
+                public string Name { get; set; } = string.Empty;
+            }
+
+
+    -> Endpoint GET - Buscar Todos os Pets:
+        - Crie um endpoint GET para listar todos os pets.
+        - Deverá ser passado os seguintes ProducesType:
+            -- ProducesType com typeof referenciando a classe ResponseAllPetJson, e um status 200 (OK)
+            -- status 204 de NoContent, para uma requisição que deu sucesso mas não retorna dados
+
+
+        [HttpGet]
+        [ProducesResponseType(typeof(List<ResponseShortPetJson>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult GetAll()
+        {
+            var useCase = new GetAllPetsUseCase();
+            var response = useCase.Execute();
+
+            if (response.Pets.Any())
+            {
+                return Ok(response);
+            }
+
+            return NoContent();
+        }
+
+        --> Classe GetAllPetsUseCase:
+
+        public class GetAllPetsUseCase
+        {
+            public ResponseAllPetJson Execute()
+            {
+                return new ResponseAllPetJson
+                {
+                    Pets = new List<ResponseShortPetJson>
+                    {
+                        new ResponseShortPetJson { Name = "Luna", Type = PetType.Dog }
+                    }
+                };
+            }
+        }
+    
+        --> public class ResponseAllPetJson
+
+        public class ResponseAllPetJson
+        {
+            public List<ResponseShortPetJson> Pets { get; set; } = [];
+        }
+
+    -> Endpoint GET - Buscar Pet por ID:
+        - Crie o endpoint GET para buscar um pet específico por ID.
+        - Deverá ser passado os seguintes ProducesType:
+            -- ProducesType com typeof referenciando a classe ResponsePetJson, e um status 200 (OK)
+            -- ProducesType com typeof referenciando a classe ResponseErrorsJson, e status 404 de NotFound
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ResponsePetJson), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status404NotFound)]
+        public IActionResult GetById(int id)
+        {
+            var useCase = new GetPetByIdUseCase();
+            var response = useCase.Execute(id);
+
+            return Ok(response);
+        }
+
+        --> Classe GetPetByIdUseCase:
+
+        public class GetPetByIdUseCase
+        {
+            public ResponsePetJson Execute(int id)
+            {
+                return new ResponsePetJson
+                {
+                    Id = id,
+                    Name = "Luna",
+                    Type = PetType.Dog,
+                    Birthday = new DateTime(2022, 1, 1)
+                };
+            }
+        }
+
+
+    -> Endpoint DELETE - Deletar Pet:
+        - Crie o endpoint DELETE para remover um pet.
+        - Deverá ser passado os seguintes ProducesType:
+            -- status 204 (NoContent), para quand a requisição da sucesso mas não retorna dados
+            -- ProducesType com typeof referenciando a classe ResponseErrorsJson, e status 404 de NotFound
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status404NotFound)]
+        public IActionResult Delete(int id)
+        {
+            var useCase = new DeletePetByIdUseCase();
+            useCase.Execute(id);
+            return NoContent();
+        }
+
+        --> Classe DeletePetByIdUseCase:
+
+        public class DeletePetByIdUseCase
+        {
+            public void Execute(int id)
+            {
+                // Lógica de exclusão fictícia
+            }
+        }
+   
+6. Tratamento de Erros
+    -> Classe ResponseErrorsJson:
+        - Dentro da pasta Responses, crie a classe ResponseErrorsJson.cs para armazenar a lista de erros.
+
+        public class ResponseErrorsJson
+        {
+            public List<string> Errors { get; set; } = new List<string>();
+        }

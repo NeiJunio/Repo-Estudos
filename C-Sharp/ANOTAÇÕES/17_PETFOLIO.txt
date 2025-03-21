@@ -29,7 +29,7 @@
     (Dentro dos UseCases, todas as funções públicas terão nome de Execute)
 
     -> Dentro do useCase Register, criar uma função public ResponseRegisterPetJson Execute(RequestRegisterPetJson request) { } -> pois o projeto API receberá uma requisição, repassar para a regra de negócios e devolver uma resposta
-        -> Deve receber como parâmento a RequestRegisterPetJson, pois é daí que virá os dados para serem validados
+        -> Deve receber como parâmetro a RequestRegisterPetJson, pois é daí que virá os dados para serem validados
 
     -> Dentro dessa função, retornar uma nova instância da classe ResponseRegisterPetJson (dessa forma: new ResponseRegisterPetJson {}), retornando um Id fictício, e o Name (Name=request.Name -> Dessa forma, retorna o mesmo nome que foi enviado na requisição request)
 
@@ -44,7 +44,7 @@
     -> No Controller, criar uma variável useCase que fará uma nova instância na classe de useCase UpdatePetUseCase. Após isso, com a variável useCase, acessar a função Execute() passando como parâmetro o id e a request ("useCase.Execute(id, request);"). Esse endpoint retornará 204 (NoContent)
 
 
-    -> Para tratar os erros, criar uma classe public dentro da pasta Responses, com o nome ResponseErrosJson. Ela será uma lista de string, pois vamos tratar os erros como uma lista
+    -> Para tratar os erros, criar uma classe public dentro da pasta Responses, com o nome ResponseErrorsJson. Ela será uma lista de string, pois vamos tratar os erros como uma lista
     -> No endpoint HttpPost, usar o ProducersType, referenciando a classe ResponseErrorsJson, com o status 400 (Bad Request)
 
 
@@ -106,7 +106,47 @@
     
             return NoContent();
         }
+
+
+    -> No controller, criar um endpoint do tipo get, passando o id pelo Route ("[Route("{id}")]"). Usar ProducersType referenciando a nova classe response chamada ResponsePetJson, com status 200, e um ProducersType referenciando a ResponseErrorsJson, com status 404
+
+    -> na pasta response, criar uma classe com nome ResponsePetJson, e nela inserir todos os dados que serão retornados nas respostas.
+        public class ResponsePetJson
+        {
+            public int Id { get; set; }
+            public string Name { get; set; } =  string.Empty; // Nome nunca vai ser  nulo, no máximo uma string vazia
+            public DateTime Birthday { get; set; }
+            public PetType Type { get; set; }
+        }
     
+    -> Agora devemos criar a resposta simulada para essa requisição. Para isso criaremos um useCase com nome GetPetByIdUseCase. Dentro dele, devemos criar um classe public Execute, referenciando a classe ResponsePetJson, e passando como parâmetro o id.
+        -> Dentro dessa classe devemos retornar uma instância na classe ResponsePetJson, trazendo valores para todos os campos
+
+            public class GetPetByIdUseCase
+            {
+                public ResponsePetJson Execute(int id)      {
+                    return new ResponsePetJson{
+                        Id = id,
+                        Name = "Luna",
+                        Type = Communication.Enums.     PetType.Dog,
+                        Birthday = new DateTime(year:       2022, month: 01, day: 01)
+                    };
+                }
+            }
+
+    -> Voltando ao controller, criar a variável useCase, que armazenará a instancia na classe GetPetByIdUseCase().
+    -> Criar uma variável response, que armazenará o acesso à função Execute da classe GetPetByIdUseCase, passando o id como parâmetro ("var response = useCase.Execute(id);")
+    -> após isso, deverá retornar um Ok, passando a response como parâmetro
+
+
+    -> Para deletar, devemos criar um endpoint do tipo delete no controller, e passar o id pela Route. Para respostas utilizaremos um ProducersType com status 204, e um ProducersType referenciando a classe ResponseErrorsJson junto com um status 404
+        -> devemos passar o id como parâmetro da função IActionResult Delete
+        
+    -> Devemos criar um useCase com nome DeletePetByIdUseCase, e dentro desse useCase, criar uma classe Execute marcada como public void (pois não retornará nada), e passadno o id como parâmetro. (OBS: nesse caso, não precisamos inserir nada dentro dessa classe)
+     -> Voltando ao controller, criar a variável useCase, que armazenará a instancia na classe DeletePetByIdUseCase().
+    -> Criar uma variável response, que armazenará o acesso à função Execute da classe DeletePetByIdUseCase, passando o id como parâmetro ("var response = useCase.Execute(id);")
+    -> Por último, essa função não tem obrigação de retornar nenhum tipo de dado, então como resposta usaremos return NoContent();
+
      -> S: Single-Responsibility (princípio da responsabilidade única): cada classe vai representar apenas uma regra de negócios (uma pra registrar, uma pra editar, uma pra excluir e uma pra buscar por id)
      -> O:
      -> L:
