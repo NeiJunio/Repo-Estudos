@@ -1,0 +1,53 @@
+-- 24/03/2025 --
+
+## STRINGS
+
+## INTERPOLAÇÃO DE STRINGS
+    -> pode ser feitar com aspas duplas e a variável ou com chaves e a variável
+    -> ex:
+        - "Interpolando a variável$teste"
+        -  "Interpolando a variável{$teste}"
+    -> O ideal é manter o mesmopadrão durante todo o projeto
+    
+## VALORES DE ESCAPE
+    -> Existem algumas funções especiais em strings. Alguns deles são:
+        --> \n = nova linha;
+        --> \t = tab;
+        --> \\ = barra invertida;
+        --> \$ = sinal de dólar;
+    -> Em alguns casos precisa transformar o arquivo em texto puro ao invés de html, usando header("Content-type: text/plain");
+
+
+## FUNÇÃO PRINT
+    -> semelhante a funcionalidade do echo
+    -> Pode imprimir uma string que foi passada como argumento.
+    -> Ex:
+        print("testando); 
+
+
+## FUNÇÃO PRINTF
+    -> Semelhante a função print
+    -> Permite a impressão de valores de forma dinâmica utilizando o símbolo %;
+    -> Ex: 
+        print("Número %d", 1);
+    -> Alguns dados prossuem representação específica. Ex:
+        %s -> string
+        %d -> int
+        %f -> float (%.2f refepresenta duas casas a)
+
+
+## COMPRIMENTO DA STRING
+    -> Para saber quantos caracters tem uma string,usa-se a função strlen(), passando como parâmetr a string
+    -> Ex:
+        strlen($string);
+    
+    -> Podemos usar essa função para percorrer cada um dos caracteres de uma string, por meio de uma esstrutura de recepção
+
+
+## LIMPAR STRINGS
+    -> Podemos utilizar funções para remover espaços em branco em uma string
+    -> trim: limpa espaços antes e depois da string
+    -> ltrim: limpa espaços antes da string
+    -> rtrim: limpa espaços depois da string
+
+
