@@ -51,3 +51,71 @@
     -> rtrim: limpa espaços depois da string
 
 
+## ALTERANDO O CASE DA STRING COMPLETA
+    -> strtolower: transforma todas as letras em minúculas
+    -> strtoupper: transforma todas as letras em maiúsculas
+
+
+## ALTERANFO O CASE DE PALAVRA
+    -> ucfirts: primeira letra da string em maiúscula
+    -> ucwords: primeira letra de cada palavra em maiúscula
+
+
+## REMOVENDO TAGS HTML
+    -> Usa-se a função strip_tags para transformar um dado com tags em texto puro
+    -> Utilizado geralmente para salvar dados no banco
+
+
+## RESGATANDO PARTE DA STRING
+    -> substr(str,inicio,fim);
+    -> str: é a string na qual vamos procurar algo
+    -> inicio: é o índice inicial da palavra ou texto;
+    -> fim: é o índice final da palavra ou texto; (quantos caracteres vai pegar após o numero de ínicio)
+    -> Não afeta a string original
+
+
+## STRING REVERSA
+    -> strrev: serve para inverter a string recebida como parâmetro
+
+
+## REPETIÇÃO DE STRING
+    -> str_repeat: serve para repetir n vezes uma string
+    -> O primeiro argumento é a string que será repetida
+    -> o segundo argumento é o número de repetições
+    -> str_repeat($str, 2);
+
+
+## STRING PARA ARRAY
+    -> explode: converte uma string em ARRAY
+    -> Primeiro argumento é o separador
+    -> Segundo argumento é a string que vai ser convertida
+    -> Cada palavra se torna um item do array
+    -> o separador deve existir dentro da string, pois vai ser ele a referência para separar as palavras
+
+
+## ARRAY PARA STRING
+    -> implode: converte um array em STRING
+    -> Primeiro argumento é o separador
+    -> Segundo argumento é a string que vai ser convertida
+    -> Cada palavra se torna um item do array
+
+
+## ENCONTRANDO TEXTO NA STRING
+    -> Encontrando a primeira ocorrência:
+        --> Com a função strpos podemos encontrar algum texto na string
+        --> se recevermos algum valor é que o texto foi encontrado, e este é o valor do índice inicial
+        --> se for retornado false, o texto não esta na string
+    -> Pode encontrar palavras completas e também pedaços de palavras
+
+    -> Encontrando a última ocorrência
+        --> Para isso, usa-se a função strrpos
+
+    -> Retornando o resto da string
+        --> Para isso, usa-se a função strstr
+        --> Se aglum texto for encontrado, a função vai retornar o resto da string após o texto encontrado
+
+
+## DECOMPONDO URL
+    -> usa-se a função parse_url
+    -> Recebemos um array com todas as partes que a URL tem
+    -> Alguns elementos que podem ser retornados são: protocolo, host, parâmetros
