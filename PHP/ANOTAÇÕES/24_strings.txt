@@ -1,15 +1,16 @@
 -- 24/03/2025 --
 
-## STRINGS
+## STRINGS  -------------------------------------------------
 
-## INTERPOLAÇÃO DE STRINGS
+## INTERPOLAÇÃO DE STRINGS  ---------------------------------
     -> pode ser feitar com aspas duplas e a variável ou com chaves e a variável
     -> ex:
         - "Interpolando a variável$teste"
         -  "Interpolando a variável{$teste}"
-    -> O ideal é manter o mesmopadrão durante todo o projeto
-    
-## VALORES DE ESCAPE
+    -> O ideal é manter o mesmopadrão durante todo o projeto    
+
+
+## VALORES DE ESCAPE  ---------------------------------------
     -> Existem algumas funções especiais em strings. Alguns deles são:
         --> \n = nova linha;
         --> \t = tab;
@@ -18,14 +19,14 @@
     -> Em alguns casos precisa transformar o arquivo em texto puro ao invés de html, usando header("Content-type: text/plain");
 
 
-## FUNÇÃO PRINT
+## FUNÇÃO PRINT  --------------------------------------------
     -> semelhante a funcionalidade do echo
     -> Pode imprimir uma string que foi passada como argumento.
     -> Ex:
         print("testando); 
 
 
-## FUNÇÃO PRINTF
+## FUNÇÃO PRINTF  -------------------------------------------
     -> Semelhante a função print
     -> Permite a impressão de valores de forma dinâmica utilizando o símbolo %;
     -> Ex: 
@@ -36,7 +37,7 @@
         %f -> float (%.2f refepresenta duas casas a)
 
 
-## COMPRIMENTO DA STRING
+## COMPRIMENTO DA STRING  -----------------------------------
     -> Para saber quantos caracters tem uma string,usa-se a função strlen(), passando como parâmetr a string
     -> Ex:
         strlen($string);
@@ -44,29 +45,29 @@
     -> Podemos usar essa função para percorrer cada um dos caracteres de uma string, por meio de uma esstrutura de recepção
 
 
-## LIMPAR STRINGS
+## LIMPAR STRINGS  ------------------------------------------
     -> Podemos utilizar funções para remover espaços em branco em uma string
     -> trim: limpa espaços antes e depois da string
     -> ltrim: limpa espaços antes da string
     -> rtrim: limpa espaços depois da string
 
 
-## ALTERANDO O CASE DA STRING COMPLETA
+## ALTERANDO O CASE DA STRING COMPLETA  ---------------------
     -> strtolower: transforma todas as letras em minúculas
     -> strtoupper: transforma todas as letras em maiúsculas
 
 
-## ALTERANFO O CASE DE PALAVRA
+## ALTERANFO O CASE DE PALAVRA  -----------------------------
     -> ucfirts: primeira letra da string em maiúscula
     -> ucwords: primeira letra de cada palavra em maiúscula
 
 
-## REMOVENDO TAGS HTML
+## REMOVENDO TAGS HTML  -------------------------------------
     -> Usa-se a função strip_tags para transformar um dado com tags em texto puro
     -> Utilizado geralmente para salvar dados no banco
 
 
-## RESGATANDO PARTE DA STRING
+## RESGATANDO PARTE DA STRING  ------------------------------
     -> substr(str,inicio,fim);
     -> str: é a string na qual vamos procurar algo
     -> inicio: é o índice inicial da palavra ou texto;
@@ -74,18 +75,18 @@
     -> Não afeta a string original
 
 
-## STRING REVERSA
+## STRING REVERSA  ------------------------------------------
     -> strrev: serve para inverter a string recebida como parâmetro
 
 
-## REPETIÇÃO DE STRING
+## REPETIÇÃO DE STRING  -------------------------------------
     -> str_repeat: serve para repetir n vezes uma string
     -> O primeiro argumento é a string que será repetida
     -> o segundo argumento é o número de repetições
     -> str_repeat($str, 2);
 
 
-## STRING PARA ARRAY
+## STRING PARA ARRAY  ---------------------------------------
     -> explode: converte uma string em ARRAY
     -> Primeiro argumento é o separador
     -> Segundo argumento é a string que vai ser convertida
@@ -93,14 +94,14 @@
     -> o separador deve existir dentro da string, pois vai ser ele a referência para separar as palavras
 
 
-## ARRAY PARA STRING
+## ARRAY PARA STRING  ---------------------------------------
     -> implode: converte um array em STRING
     -> Primeiro argumento é o separador
     -> Segundo argumento é a string que vai ser convertida
     -> Cada palavra se torna um item do array
 
 
-## ENCONTRANDO TEXTO NA STRING
+## ENCONTRANDO TEXTO NA STRING  -----------------------------
     -> Encontrando a primeira ocorrência:
         --> Com a função strpos podemos encontrar algum texto na string
         --> se recevermos algum valor é que o texto foi encontrado, e este é o valor do índice inicial
@@ -115,7 +116,7 @@
         --> Se aglum texto for encontrado, a função vai retornar o resto da string após o texto encontrado
 
 
-## DECOMPONDO URL
+## DECOMPONDO URL  ------------------------------------------
     -> usa-se a função parse_url
     -> Recebemos um array com todas as partes que a URL tem
     -> Alguns elementos que podem ser retornados são: protocolo, host, parâmetros
