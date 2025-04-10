@@ -1,0 +1,64 @@
+-- 05/04/2025 --
+
+## CashFlow
+    -> Continue without code
+    -> File > New> Project > Blank Solution (Nome: CashFlow)
+    -> Criar duas pastas dentro da solution (src e tests)
+    -> Criar manualmente essas mesmas duas pastas dentro da solution la no explorador de arquivos
+    -> Botão direito na pasta src > Add > New Project > ASP.NET Core Web Api (Nome: CashFlow.API) (verificar se o caminho do projeto qestá apontando para a pasta src)
+
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Domain)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Application)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Communication)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Exception)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Infrastructure)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+
+    -> Na pasta dependencies do CashFlow.Api > botão direito > Add Project Reference > marcar os projetos Application, Communication, Exception e Infrastructure
+    -> Na pasta dependencies do CashFlow.Application > botão direito > Add Project Reference > marcar os projetos Communication, Exception e Domain
+    -> Na pasta dependencies do CashFlow.Infrastructure > botão direito > Add Project Reference > marcar o projeto Domain
+
+    -> Criar um API.Controller - Empty com o nome ExpensesController
+    
+    -> No projeto Communication, criar as pastas Requests, Responses e Enums
+    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpensesJson, e torná-la public
+    -> Dentro da classe RequestRegisterExpensesJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
+    
+    -> Dentro da pasta Enums, criar uma classe PaymentType, e mudar seu tipo de internal class para public enum
+    -> Dentro do enum PaymentType inserir Cash, CreditCard, DebitCard e EletronicTransfer
+
+    -> No controller da API, criar um método POST com nome Register, para como parâmetro - e pelo body - a RequestRegisterExpensesJson
+
+    -> No projeto Application, criar uma pasta useCases
+    -> Dentro da pasta useCases, criar uma pasta Expenses (pra reunir todos os useCases relacionados às despesas)
+    -> Dentro da pasta Expenses, criar uma pasta para cada caso (register, update, get, etc)
+
+    -> Dentro da pasta Register em useCases, criar uma classe com o nome RegisterExpenseUseCase, e torná-la public
+        -> Dentro dessa class, criar uma função vid public referenciando a ResponseRegisteredExpenseJson e passando como parâmetro a RequestRegisterExpensesJson
+        -> Por enquanto, apenas retornar uma nova instância da classe ResponseRegisteredExpenseJson
+           
+                public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request)
+                {
+                    return new ResponseRegisteredExpenseJson();
+                }
+
+
+    -> Dentro da pasta Responses, criar uma classe com o nome ResponseRegisteredExpenseJson, e passar como dado de retorno apenas o Title
+
+                public class ResponseRegisteredExpenseJson
+                {
+                    public string Title { get; set; } = string.Empty;
+                }
+
+    -> Voltando no controller, no endpoint post, criar uma var useCase que armazena uma nova instância na RegisterExpenseUseCase 
+        -> Criar uma var response que acessará a função execute da instância RegisterExpenseUseCase, armazenada na var useCase
+        -> Retornar um Created com os parâmetros string.Empty e response
+
+                [HttpPost]
+                public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+                {
+                    var useCase = new RegisterExpenseUseCase();
+                
+                    var response = useCase.Execute(request);
+                
+                    return Created(string.Empty, response);
+                }
