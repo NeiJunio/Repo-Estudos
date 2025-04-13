@@ -10,7 +10,8 @@
         - Os valores na chave primária não podem se repetir e não podem     ser nulos.
         - Normalmente, é usada em colunas como id, cpf, matrícula, etc.
 
-    -> SINTAXE: :
+    -> SINTAXE:
+    
         CREATE TABLE NomeDaTabela (
             NomeColuna1 TipoDeDado [restrições],
             NomeColuna2 TipoDeDado [restrições],

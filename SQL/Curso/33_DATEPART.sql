@@ -9,6 +9,7 @@
 como ano, mês, dia, hora, minuto, segundo, etc.
     
     - SINTAXE:
+    
         DATEPART(parte_da_data, data)
 
         -- parte_da_data: A parte da data que você deseja obter (ex: year, month, day).

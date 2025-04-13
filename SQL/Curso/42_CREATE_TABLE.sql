@@ -7,6 +7,7 @@
     -> Esse comando define o nome da tabela e as colunas que ela vai conter, especificando o tipo de dado de cada uma.
 
     -> SINTAXE:
+    
         CREATE TABLE NomeDaTabela (
             NomeColuna1 TipoDeDado [restrições],
             NomeColuna2 TipoDeDado [restrições],
@@ -49,3 +50,10 @@ CREATE TABLE Pedidos (
         DataPedido DATE,
         FOREIGN KEY (ClienteID) REFERENCES Clientes(ClienteID)
     );
+
+/*
+    Exercícios:
+
+    1-) Criar um banco chamado Youtube, e após isso, criar uma tabela com o nome Canal, com os campos CanalId, Nome, ContagemInscritos, DataCriação. (Id será PK, nome deve receber ate 150 caracteres, contagem deverá ser int e Data deverá ser DateTime)
+
+*/
