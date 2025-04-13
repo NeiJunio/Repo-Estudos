@@ -15,8 +15,8 @@
 */
 -- Exemplo prático:
 SELECT A.ContactName, A.Region, B.ContactName, B.Region
-FROM Customers A, Customers B
-WHERE A.Region = B.Region;
+  FROM Customers A, Customers B
+  WHERE A.Region = B.Region;
 
 /* Explicação:
     - A consulta faz um self join da tabela Customers com ela mesma.

@@ -39,7 +39,7 @@ como ano, mês, dia, hora, minuto, segundo, etc.
 */
 
 SELECT DataPedido, DATEPART(year, DataPedido) AS AnoPedido
-FROM Pedidos;
+  FROM Pedidos;
 
 -- Dica: Você pode usar o DATEPART junto com cláusulas WHERE, GROUP BY ou ORDER BY para filtrar ou agrupar por partes da data!
 
