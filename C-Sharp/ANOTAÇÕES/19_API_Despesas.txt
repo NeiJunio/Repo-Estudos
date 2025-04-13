@@ -62,3 +62,178 @@
                 
                     return Created(string.Empty, response);
                 }
+
+    
+    -> No UseCase do Register, criar uma função private void, com nome Validate e passar os mesmo parâmetros da função Execute
+    -> voltando na função Execute desse mesmo Usecase, chamar a função Validate, passando a request como parametro
+
+    -> na função Validate:
+        --> criar uma var com nome titleIsEmpty, que recebe string.IsNullOrWhiteSpace(request.Title)
+            -> lançar um if, verificando se o titleIsEmpty, e dentro do if, colocar throw new ArgumentException("The title is required")
+
+        -- estamos lançando uma exceção com uma mensagem
+
+            -> lançar um if verificando se o Amount á menor ou igual a zero. Se for, lançar uma exception com a mensagem "The amount must be greater tahn zero"
+
+            -> validação de data
+                --> criar uma var result passando DateTime.compare(request.Date, DateTime.UtcNow);
+
+                --> lança um if verificando se a result é maior que 0, significando que a data é futura. Se true, lançar uma mensagem Expenses cannot be for the future 
+
+            -> Validação de pagamento
+                -> cria um var paymentTypeIsValid acessando a prop IsDefined do enum, e para como parametro typeof(PaymentType), request.paymentType
+
+                --> nesse caso, verifica se o valor vindo da request esta incluso no enum
+
+                --> lançar um if verificando se paymentType == false. Se for, lançar uma mensagem PaymentType is not valid
+
+            --> Deverá ficar assim a princípio:
+
+            public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request)
+            {
+                Validate(request);
+
+                return new ResponseRegisteredExpenseJson();
+            }
+
+            private void Validate(RequestRegisterExpenseJson request)
+            {
+                var titleIsEmpty = string.IsNullOrWhiteSpace(request.Title);
+                if (titleIsEmpty)
+                {
+                    throw new ArgumentException("The title is required");
+                }
+
+                if (request.Amount <= 0)
+                {
+                    throw new ArgumentException("The amount must be greater than zero");
+                }
+
+                var result = DateTime.Compare(request.Date, DateTime.UtcNow);
+                if (result > 0)
+                {
+                    throw new ArgumentException("Expenses cannot be for the future");
+                }
+
+                var paymentTypeIsValid = Enum.IsDefined(typeof(PaymentType), request.PaymentType);
+                if (paymentTypeIsValid == false)
+                {
+                    throw new ArgumentException("PaymentType is not valid");
+                }
+            }
+
+
+    --> Adicionar um try catch dentro metodo post register no controller
+        -> um catch vai passar com parametro ArgumentException ex, e dentro dele vai passar um badrequest como parametro acessando a message da ArgumentException
+        -> O segundo catch não recebe parametro, e vari retornar um statusCode como parametros statusCodes.status500InternalServerErro, e uma mensagem Unknown Error
+
+        -> A princípio o controller deve ficar assim, com um catch pra tratar as ArgumentException e um para tratar qualquer outro tipo de erro diferente:
+
+        [HttpPost]
+        public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+        {
+            try
+            {
+                var useCase = new RegisterExpenseUseCase();
+
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unknown Error");
+            }
+        }
+
+    
+    -> Melhorando respostas de erros:
+
+        -> criando uma nova classe public de response (no projeto communication), com o nome ResponseErrorJson. Dentro dela, Adicionar uma string ErrorMessage
+
+        public class ResponseErrorJson
+        {
+            public string ErrorMessage { get; set; } = string.Empty;
+        }
+
+    -> Voltando no controller:
+        -> dentro do catch que trata as ArgumentException, criar um var errorResponse que cria uma nova instância da classe ResponseErrorJson. Dentro dessa instância, ErrorMessage deverá receber a message da ArgumentException. Por último, retorna a var errorResponse como parametro do retunr BadRequest
+
+        -> dentro do catch puro, fazer a mesma coisa, porem Error Message deverá receber diretamente uma string com a mensagem de erro. O return devera retornar um statusCode com os parametros statusCodes.status500InternalServerErro, e a var ErrorMessage.
+
+        -> ficara assim: 
+        
+        [HttpPost]
+        public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+        {
+            try
+            {
+                var useCase = new RegisterExpenseUseCase();
+
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+            }
+            catch(ArgumentException ex)
+            {
+                var errorResponse = new ResponseErrorJson
+                {
+                    ErrorMessage = ex.Message
+                };
+
+                return BadRequest(errorResponse);
+            }
+            catch
+            {
+                var errorResponse = new ResponseErrorJson
+                {
+                    ErrorMessage = "Unknown Error"
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+            }
+        }
+
+    
+    -> Criar um construtor dentro da ResponseErrorJson:
+
+        --> o construtor deve ser public e receber o mesmo nome da classe, e como parametro deverá errar a string errorMessage
+        --> dentro do construtor, atribuir o errorMessage que vem do parametro à string ErrorMessage
+
+        public class ResponseErrorJson
+        {
+            public string ErrorMessage { get; set; } = string.Empty;        
+
+            public ResponseErrorJson(string errorMessage)
+            {
+                ErrorMessage = errorMessage;
+            }
+        }
+
+        -> Voltando no controller, na var errorResponse, criar uma nova instância na classe ResponseErrorJson passando a ex.Message da ArgumentException como parametro
+
+        try
+        {
+            var useCase = new RegisterExpenseUseCase();
+        
+            var response = useCase.Execute(request);
+        
+            return Created(string.Empty, response);
+        }
+        catch(ArgumentException ex)
+        {
+            var errorResponse = new ResponseErrorJson(ex.Message);
+            
+        
+            return BadRequest(errorResponse);
+        }
+        catch
+        {
+            var errorResponse = new ResponseErrorJson("Unknown Error");
+        
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+        }
