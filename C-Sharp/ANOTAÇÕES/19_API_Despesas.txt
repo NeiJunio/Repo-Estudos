@@ -237,3 +237,148 @@
         
             return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
         }
+
+
+    -> Instalando o FluentValidation no projeto de Application
+        - abrir o projeto de Application no cmd
+        - usar o comando dotnet add package FluentValidation --version 11.11.0 (verificar a verão mais recente)
+
+        ou
+        
+        - botão direito em cima do projeto Application > Manage NuGet Package > mudar para aba de pesquisa > procurar por FluentValidation > install > apply
+
+    -> Dentro da classe register do projeto Application, criar uma classe public com o nome RegisterExpenseValidator 
+        - fazer uma herança na classe AbstractValidor<informar o tipo de validação, nesse caso é o RequestRegisterExpenseJson>
+        - após isso, montar um construtor com cto
+        - adicionar as regras dentro do construtor
+
+        public class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpenseJson>
+        {
+            public RegisterExpenseValidator()
+            {
+                RuleFor(expense => expense.Title).NotEmpty().WithMessage("The Title is      required");
+                RuleFor(expense => expense.Amount).GreaterThan(0).WithMessage("The Amount must      be greater than zero");
+                RuleFor(expense => expense.Date).LessThanOrEqualTo(DateTime.UtcNow).WithMessage     ("Expanses cannot be for the future");
+                RuleFor(expense => expense.PaymentType).IsInEnum().WithMessage("Payment Type        is not valid.");
+                // RuleFor(lambda acessando uma das propriedades).verificação.      respostaEmCasoDeErro
+            }
+        }
+
+    -> Voltando no UseCase, remover todos os if, criar uma variável com nome validator, e essa variável deve receber uma nova instância da classe RegisterExpenseValidator.
+
+    -> Após isso, criar uma variável result que receber a validator acessando a função validade, e passando como parâmetro a request
+
+    -> Após, criar um if verificando se a prop IsValid da var result é false. se for, abrir um bloco de código com uma variável errorMessages, que acessa os Errors da var result, passando um select com uma função lambda como parâmetro. Nessa função lambda, acessar a prop ErrorMessage. No final, adicionar ToList(), para transformar os erros em uma lista. Adicionar tambem uma nova ArgumentException passando como parametro -----------------------------------------------------
+
+        public class RegisterExpenseUseCase
+        {
+            public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson     request)
+            {
+                Validate(request);
+        
+                return new ResponseRegisteredExpenseJson();
+            }
+        
+            private void Validate(RequestRegisterExpenseJson request)
+            {
+                var validator = new RegisterExpenseValidator();
+        
+                var result = validator.Validate(request);
+        
+        
+                if (result.IsValid == false)
+                {
+                    var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+        
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+    
+    -> Dentro do projeto de Exception, criar uma pasta com nome ExceptionBase para armazenar as exceptions customizadas
+    -> Criar uma classe public abstract com nome CashFlowException com herança na classe SystemException
+
+    -> botão direito em cima da pasta ExceptionBase, e criar uma nova classe public com nome ErrorOnValidationException com herança na classe CashFlowException    
+
+    -> Na classe ErrorOnValidationException, criar uma public List de strings com nome error, e em seguida criar um construtor com o mesmo nome da classe, passando como parametro a list de strings errorMessages, e dentro desse construtor, atribuir errorMessages à variável Errors
+
+    voltando no Usecase, substituir throw new ArgumentException(); por throw new ErrorOnValidationException(errorMessages)
+
+    -> na classe ResponseErrorJson, substituir a string errorMessage, por uma lista de strings ErrorMessages, e construir um novo construtor passando como parametro a lista de string errorMessage,e  dentro dele atribuir errorMessage do parametro à variavel errorMessages.
+        -> no outro construtor, atribuir uma novalista de strings com a errorMessage, à variavel errorMessages
+
+    
+    -> Criando filtro de exception
+    -> NO projeto de api, criar uma pasta filters
+    -> botão direito, criar uma classe public ExceptioFilter com "herança" na interface IExceptionFilter, após isso, criar a implementaçao da interface
+
+        public class ExceptionFilter : IExceptionFilter
+        {
+            public void OnException(ExceptionContext context)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+    -> Criar uma função private void, com o nome HandleProjectException, passando como parametro a ExceptionContext
+
+    
+    -> Criar uma função private void, com o nome ThrowUnknownError, passando como parametro a ExceptionContext. 
+
+    -> Na função OnException, fazer um if else verificando se a context.Exception é um ErrorOnValidationException.
+
+    -> Dentro da função ThrowUnknownError criar uma var errorResponse =que recebe uma nova instância na classe ResponseErrorJson, passando como parâmetro a string "Unknown error". Em seguida, acessar context.HttpContext.Response.StatusCode  ue receberá o StatusCodes.Status500InternalServerError.Por último, acessar a context.result que recebe uma nova instância na classe ObjectResult, passando a errorResponse como parâmetro
+    -> voltando no else, chamar a classe ThrowUnknownError, passando context como parâmetro
+
+    -> no if, substituir context.Exception is ErrorOnValidationException por context.Exception is CashFlowExceptionException. E dentro do if, chamar a classe HandleProjectException, passando context como parametro
+
+    -> dentro da função HandleProjectException, criar um if verificando se a context.Exception é um ErrorOnValidationException. Se for, deve criar uma var ex que recebe (ErrorOnValidationException)context.Exception. tbm Criar uma var errorResponse que recebe uma nova instância na classe ResponseErrorJson, passando como parametro a ex.Errors.  Em seguida, acessar context.HttpContext.Response.StatusCode  que receberá o StatusCodes.Status400BadRequest.Por último, acessar a context.result que recebe uma nova instância na classe BadRequestObjectResult, passando a errorResponse como parâmetro
+
+    -> no program da api, antes da build adicionar a seguinte linhe:
+        builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
+
+    -> No controler, remover o try catch, e deixar apenas isso:
+        var useCase = new RegisterExpenseUseCase();
+
+        var response = useCase.Execute(request);
+
+        return Created(string.Empty, response);
+
+    -> voltando na função HandleProjectException, criar um else como uma var errorResponse que recebe uma nova instância na classe ResponseErrorJson, passando como parametro a prop Message do context.Exception (context.Exception.Message). Após isso: usar o mesmo retorno de badRequest do if.
+
+    -> Por enquanto,o arquivo da ExceptionFilter deve ficar assim:
+
+        public class ExceptionFilter : IExceptionFilter
+        {
+            public void OnException(ExceptionContext context)
+            {
+                if (context.Exception is CashFlowException)
+                {
+                    HandleProjectException(context);
+                }
+                else
+                {
+                    ThrowUnknownError(context);
+                }
+            }
+        
+            private void HandleProjectException(ExceptionContext context)
+            {
+                if (context.Exception is ErrorOnValidationException)
+                {
+                    var ex = (ErrorOnValidationException)context.Exception;
+                    var errorResponse = new ResponseErrorJson(ex.Errors);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Result = new BadRequestObjectResult(errorResponse);
+                }
+            }
+            private void ThrowUnknownError(ExceptionContext context)
+            {
+                var errorResponse = new ResponseErrorJson("Unknown error");
+        
+                context.HttpContext.Response.StatusCode = StatusCodes.      Status500InternalServerError;
+                context.Result = new ObjectResult(errorResponse);
+            }
+        }
+

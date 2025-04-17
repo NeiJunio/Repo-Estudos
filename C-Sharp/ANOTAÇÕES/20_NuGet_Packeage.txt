@@ -1,0 +1,4 @@
+-- 14/04/2025 -- 
+
+## NUGET PACKAGE
+    - É um gerenciador de bibliotecas, que permite utilicar e compartilhar códigos de maneira muito mais eficiente
