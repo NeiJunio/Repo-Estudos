@@ -382,3 +382,8 @@
             }
         }
 
+    -> botão direito no projeto de Exception > criar novo item > selecionar Resources File, e nomear com ResourceErrorMessages (lembrar de alterar o modificador de acesso para public)
+
+    -> Remover a mensagem Unknown error do filter na funcão ThrowUnknownError, e substituir por ResourceErrorMessages.UNKNOWN_ERROR, ou pelo nome da referente chave que foi especificada (se não aparecer o modificar de acesso, acesse as propriedades do arquivo ResourceErrorMessages.resx, e no campo que tiver ResXFileCodeGenerator, altere para PublicResXFileCodeGenerator)
+
+    -> Adicionar todas as mensagens de erros dentro desse arquivo ResourceErrorMessages, e nos arquivos onde eram passadas essas strings, acessar a variável correspondente do ResourceErrorMessages. (ex: ResourceErrorMessages.PAYMENT_TYPE_INVALID)
