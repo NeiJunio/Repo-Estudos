@@ -387,3 +387,66 @@
     -> Remover a mensagem Unknown error do filter na funcão ThrowUnknownError, e substituir por ResourceErrorMessages.UNKNOWN_ERROR, ou pelo nome da referente chave que foi especificada (se não aparecer o modificar de acesso, acesse as propriedades do arquivo ResourceErrorMessages.resx, e no campo que tiver ResXFileCodeGenerator, altere para PublicResXFileCodeGenerator)
 
     -> Adicionar todas as mensagens de erros dentro desse arquivo ResourceErrorMessages, e nos arquivos onde eram passadas essas strings, acessar a variável correspondente do ResourceErrorMessages. (ex: ResourceErrorMessages.PAYMENT_TYPE_INVALID)
+
+    -> Localização de API (Identificar qual o idioma do aparelho antes de retornar o conteúdo)
+        - Identificar idioma / país / tag
+        - escrever a tag respeitando o case sensitive
+        - se a tag não tiver a localização, será utilizado o idioma na sua forma genérica
+        - nomeDoArquivoResource.tag.resx (ex: ResourceErrorMessages.pt-BR.resx)
+
+        -> Criar 3 arquivos resource:
+            - ResourceErrorMessages.pt-BR.resx
+            - ResourceErrorMessages.pt-PT.resx
+            - ResourceErrorMessages.fr.resx
+        
+        - As chaves do arquivo resource devem permanecer as mesmas, independente do idioma
+        - o arquivo default (sem tag) serve para quando for solicitadouma resposta, e não tiver o idioma definido. Ex: temos arquivos com as tags pt-BR, pt-PT e fr. Se solicitarem resposta em italiano, como não temos o arquvio com a tag correspondente, será mostrado as respostas no idioma default, nesse caso, em inglês.
+
+    
+    -> Criando Middleware
+        - no projeto de API, criar uma pasta com nome Middleware
+        - dentro da pasta, criar uma classe com nome CultureMiddleware
+        - criar um método public async Task com o nome Invoke, recebendo HttpContext context como parâmetro (public async Task Invoke(HttpContext context){ })
+
+        - acima do método Invoke, criar um construtor que recebe RequestDelegate next como parametro. Dentro dele a variável privada _next receberá next;
+            public CultureMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+
+        - acima do construtor, criar uma variável private readonly RequestDelegate _next;
+            private readonly RequestDelegate _next;
+
+        - na função Invoke: 
+            - criar uma var culture que recebe context.Request.Headers.AcceptLanguage.FirstOrDefault();. Essa varíavel vai buscar a lista de linguagens do Header e pegar o primeiro valor
+                var culture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
+
+            - criar uma var cultureInfo que recebe uma nova instância na classe CultureInfo, passando como parâmetro uma linguagem padrão, nesse caso, "en"
+                var cultureInfo = new CultureInfo("en");
+
+            - criar um if, verificando se a string culture é false. Se for false, a var cultureInfo receberá uma nova instância da classe CultureInfo, recebendo como parâmetro a var culture, ou seja, cultureInfo começa com um valor padrão, e se  a culture(que recebe o valor do header), não for vazia, a cultureInfo receberá como valor uma nova instância da CultureInfo, mas agora com a culture(que é o valor do header) como parametro (dentro do if, se ele for false, sobrescreve o valor da cultureInfo)
+                if(string.IsNullOrWhiteSpace(culture) == false)
+                {
+                    cultureInfo = new CultureInfo(culture);
+                }
+            
+            - após o if,  CultureInfo.CurrentCulture e CultureInfo.CurrentUICulture recebem cultureInfo.
+                CultureInfo.CurrentCulture = cultureInfo;
+                CultureInfo.CurrentUICulture = cultureInfo;
+
+            - por último, adicionar a permissão para o fluxo continuar
+                await _next(context)
+
+
+            - no Program da API, antes do UseHttpRedirection, adicionar a seguinte linha
+                app.UseMiddleware<CultureMiddleware>();
+
+                - dessa forma, vai enxergar o nosso middleware, para poder vefificar seu conteúdo
+
+
+            - voltar no início da classe Invoke e criar um var com nome supportedLanguages que acessa CultureInfo.GetCultures(CultureTypes.AllCultures).ToList(); --> serve para acessar todas as linguagens que o .NET suporta
+
+            - substitui o nome da var culture para requestCulture (em todas as ocorrências)
+
+            - no if, adicionar uma validação se supportedLanguages.Exists(language => language.Name.Equals(requestCulture))
