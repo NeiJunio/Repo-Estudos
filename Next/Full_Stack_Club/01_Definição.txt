@@ -1,0 +1,10 @@
+-- 21/04/2025  --
+
+## NEXT.JS
+
+## Definição
+    -> É um Framework FullStack do React (Enquanto o React é uma biblioteca)
+    -> Roda código no BackEnd e no FrontEnd
+
+    -> As bibliotecas em geral resolvem problemas específicos
+    -> os frameworks resolvem vários problemas por meio de várias bibliotecas, que juntas, formam uma solução mais completa

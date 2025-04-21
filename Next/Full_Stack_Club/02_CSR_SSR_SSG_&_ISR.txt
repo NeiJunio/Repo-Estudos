@@ -1,0 +1,27 @@
+-- 21/04/2025 --
+
+## CSR, SSR, SSG & ISR
+
+## Client Side Rendering (CSR)
+    -> Aplicação totalmente renderizada no lado do client
+    -> O conteúdo da página é inserido por js
+
+    -> É renderizado um HTML vazio e um script JS. Quando executa essa aplicação, o React busca os dados no script e lança no HTML
+
+    -> Vantagens de SPAs:
+        -- Navegação muito mais rápida entre páginas, pois não exige chamada entre um servidor
+        -- SPAs altamente interativas e performáticas
+        -- Separação clara entre FrontEnd e BackEnd
+    
+    -> Desvantagens de SPAs:
+        -- Alta carga de JS (pode atrasar no carregamento inicial por exemplo) -> Enquanto não carregar os arquivos por completo, não será mostrado nada na tela
+        -- Problemas com SEO, relacionados com motores de busca (pode ser resolvidos com SSG e SSR)
+
+        IMAGEM: CSR & SPA.png
+
+    -> Quando a renderização fica do lado do cliente, cada requisição deve ser finalizada. No caso da imagem a seguir, a requisição para buscar as tarefas demorará muito tempo, pois primeiro é feita uma requisição para mostrar a tela, e somente quando essa requisição finalizar, é que vai INICIAR a busca por tarefas
+
+        IMAGEM: CSR e SPA & Data Fetching.png 
+
+
+--> Continuar a partir da aula de SSR (3ª aula do módulo 2)
