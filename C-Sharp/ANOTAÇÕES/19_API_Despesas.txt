@@ -20,20 +20,20 @@
     -> Criar um API.Controller - Empty com o nome ExpensesController
     
     -> No projeto Communication, criar as pastas Requests, Responses e Enums
-    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpensesJson, e torná-la public
-    -> Dentro da classe RequestRegisterExpensesJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
+    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpenseJson, e torná-la public
+    -> Dentro da classe RequestRegisterExpenseJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
     
     -> Dentro da pasta Enums, criar uma classe PaymentType, e mudar seu tipo de internal class para public enum
     -> Dentro do enum PaymentType inserir Cash, CreditCard, DebitCard e EletronicTransfer
 
-    -> No controller da API, criar um método POST com nome Register, para como parâmetro - e pelo body - a RequestRegisterExpensesJson
+    -> No controller da API, criar um método POST com nome Register, para como parâmetro - e pelo body - a RequestRegisterExpenseJson
 
     -> No projeto Application, criar uma pasta useCases
     -> Dentro da pasta useCases, criar uma pasta Expenses (pra reunir todos os useCases relacionados às despesas)
     -> Dentro da pasta Expenses, criar uma pasta para cada caso (register, update, get, etc)
 
     -> Dentro da pasta Register em useCases, criar uma classe com o nome RegisterExpenseUseCase, e torná-la public
-        -> Dentro dessa class, criar uma função vid public referenciando a ResponseRegisteredExpenseJson e passando como parâmetro a RequestRegisterExpensesJson
+        -> Dentro dessa class, criar uma função vid public referenciando a ResponseRegisteredExpenseJson e passando como parâmetro a RequestRegisterExpenseJson
         -> Por enquanto, apenas retornar uma nova instância da classe ResponseRegisteredExpenseJson
            
                 public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request)
@@ -197,7 +197,7 @@
                 return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
             }
         }
-
+ __**__
     
     -> Criar um construtor dentro da ResponseErrorJson:
 
@@ -450,3 +450,145 @@
             - substitui o nome da var culture para requestCulture (em todas as ocorrências)
 
             - no if, adicionar uma validação se supportedLanguages.Exists(language => language.Name.Equals(requestCulture))
+
+            o arquivo Middleware deve ficar assim:
+
+            public class CultureMiddleware
+            {
+                private readonly RequestDelegate _next;
+                public CultureMiddleware(RequestDelegate next)
+                {
+                    _next = next;
+                }
+                public async Task Invoke(HttpContext context)
+                {
+                    var supportedLanguages = CultureInfo.GetCultures(CultureTypes.AllCultures).ToList();
+
+                    var requestCulture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
+
+                    var cultureInfo = new CultureInfo("en");
+
+                    if(string.IsNullOrWhiteSpace(requestCulture) == false && supportedLanguages.Exists          (language => language.Name.Equals(requestCulture)))
+                    {
+                        cultureInfo = new CultureInfo(requestCulture);
+                    }
+
+                    CultureInfo.CurrentCulture = cultureInfo;
+                    CultureInfo.CurrentUICulture = cultureInfo;
+
+                    await _next(context);
+                }
+            }
+
+
+    -> CRIANDO TESTES DE UNIDADES
+
+    -> botão direito na pasta tests -> new project -> xUnit Test Project -> nome: Validators.Tests.
+        -> Apontar a localização para a pasta de testes
+    
+    -> na aba test, selecionar a opção run all tests e fixar a barra de tests do lado esquerdo
+    -> Deletar a classe UnitTest1.cs
+    -> dentro da pasta de tests, criar uma pasta Expenses, e dentro dela, uma pasta Register
+    -> Dentro da pasta Register nos tests, criar uma classe public RegisterExpenseValidatorTests. 
+
+    -> Dentro da classe RegisterExpenseValidatorTests, criar uma função public void com o nome do resultado esperado (antes da função, adicionar [Fact] para identificar que é uma função de teste)
+        public void Success() { }
+
+        -> Arrange é onde se configura todas as instâncias de tudo que a gente precisa para executar esse teste
+
+    -> Na pasta dependencies do projeto tests, botão direito, add projeto de reeferencia e apontar para o projeto de Application e para o projeto Communication, para que o projeto de tests "enxergue" eles
+
+    -> Dentro da classe Success, criar uma nova instância da classe RegisterExpenseValidator, e armazenar essa instância numa var validator
+        var validator = new RegisterExpenseValidator();
+
+    -> Criar uma var request que recebe uma nova instância na classe RequestRegisterExpenseJson, e dentro dessa instância, deve passar dados fictícios simulando os dados de uma request
+        var request = new RequestRegisterExpenseJson
+        {
+            Amount = 100,
+            Date = DateTime.Now,
+            Description = "description",
+            Title = "title",
+            PaymentType = CashFlow.Communication.Enums.PaymentType.CreditCard
+        };
+    
+    -> Criar uma var result = validator.Validade(request) -- Essa linha vai simular a chamada da requisição, a ação (act)
+
+    -> após isso, adcionar a seguinte linha (representando a parte de assert):
+        Assert.True(result.IsValid)
+
+        - vai verificar se result.IsValid é true
+
+        - Para executar, basta clicar com o botao direito e escolher Run Tests ou Debug Tests (Run Tests não para no breakpoint, passa direto)
+
+    --> A princípio, ficará assim a função de teste Success:
+
+        [Fact]
+        public void Success()
+        {
+            // arrange
+            var validator = new RegisterExpenseValidator();
+            var request = new RequestRegisterExpenseJson
+            {
+                Amount = 100,
+                Date = DateTime.Now.AddDays(-1),
+                Description = "description",
+                Title = "title",
+                PaymentType = CashFlow.Communication.Enums.PaymentType.CreditCard
+            };
+
+            // act
+            var result = validator.Validate(request);
+
+            // assert
+            Assert.True(result.IsValid);
+        }
+
+
+    -> CRIANDO UM REQUISIÇÃO COM DADOS FALSOS GERADOS PARA O TESTS
+
+    -> Botão direito em cima da pasta tests -> add new project -> class libray com nome CommonTestUtilities (e apontar o caminho para a pasta tests)
+        -> Dentro dessa class libray, criar uma pasta com o nome Requests
+        -> Dentro dessa pasta Request, criar uma classe public com o nome RequestRegisterExpenseJsonBuilder
+    -> a class libray CommonTestUtilities precisa "enxergar" o project Communication (adicionar referência)
+
+    -> Dentro da class RequestRegisterExpenseJsonBuilder, criar uma função public com nome de Build referenciando, referenciando a RequestRegisterExpenseJson
+
+        -> INSTALANDO BIBLIOTECA:
+            - Botão direito em cima da class libray CommonTestUtilities -> Manage NuGet Packages -> na aba Browse buscar por Bogus e instalá-la 
+    
+        -> retornar um new Faker, relacionado com a RequestRegisterExpenseJson, e adicionar para cara regra RuleFor duas funções lambdas: uma para acessar a propriedade da Request (Amount, Title, etc) e outra para acessar uma propriedade da biblioteca Faker(faker.Commerce.ProductName(), faker.Commerce.ProductDescription(), etc);
+
+        --> Deverá ficar assim a função Build:
+
+        public RequestRegisterExpenseJson Build()
+        {
+            return new Faker<RequestRegisterExpenseJson>()
+                .RuleFor(r => r.Title, faker => faker.Commerce.ProductName())
+                .RuleFor(r => r.Description, faker => faker.Commerce.ProductDescription())
+                .RuleFor(r => r.Date, faker => faker.Date.Past())
+                .RuleFor(r => r.PaymentType, faker => faker.PickRandom<PaymentType>()) // Acessa um         dos valores do enum de tipos de pagamento
+                .RuleFor(r => r.Amount, faker => faker.Random.Decimal(min: 1, max: 1000)); // Gera um       número aleatório entre 1 e 1000 (pode escolher qual número desejar para mínimo e    máximo, ou pode também não especificar limites de máximo e mínimo)
+        }
+
+        -> No project Validators.Tests, adicionar referência ao project CommonTestUtilities
+
+        -> transformar a função Build em public static
+            public static RequestRegisterExpenseJson Build(){ ... }
+        
+        -> Voltando na class Success dos tests, a var result agora receberá RequestRegisterExpenseJsonBuilder.Build();
+
+            -> A função Success ficará assim:
+
+                [Fact]
+                public void Success()
+                {
+                    // arrange
+                    var validator = new RegisterExpenseValidator();
+                    var request = RequestRegisterExpenseJsonBuilder.Build();
+                
+                    // act
+                    var result = validator.Validate(request);
+                
+                    // assert
+                    Assert.True(result.IsValid);
+                }
