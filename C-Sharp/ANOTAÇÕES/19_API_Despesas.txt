@@ -592,3 +592,25 @@
                     // assert
                     Assert.True(result.IsValid);
                 }
+
+    
+    ### bibliotecas para a parte de assert dos testes
+
+    -> Botão direito em cima de Validators.Tests -> Manage NuGet Package -> na aba browse, buscar por FluentAssertions e instalar a ultima versão 7.x.x
+
+    -> Dois cliques em cima do project Validators.Tests e alterar a linha da FluentAssertions para essa (adicionando colchetes):
+        <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
+
+    -> No arquivo RegisterExpenseValidatorTests, substituir Assert.True(result.IsValid) por result.IsValid.Should().BeTrue();
+
+    OU
+
+    // SEGUIR ESSA DE PREFERÊNCIA
+    -> Botão direito em cima de Validators.Tests -> Manage NuGet Package -> na aba browse, buscar por Shouldly
+
+    -> No arquivo RegisterExpenseValidatorTests, substituir Assert.True(result.IsValid) por result.IsValid.ShouldBeTrue();
+
+
+
+    CRIANDO TESTES DE ERROS
+    
