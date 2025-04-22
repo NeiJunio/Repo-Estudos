@@ -24,4 +24,21 @@
         IMAGEM: CSR e SPA & Data Fetching.png 
 
 
---> Continuar a partir da aula de SSR (3ª aula do módulo 2)
+## Server Side Rendering (SSR)
+    -> O Servidor ja envia o HTML com conteúdo renderizado
+    -> Esse conteúdo já é exibido imediatamente para o usuário quando ele acessa a aplicação
+    -> Enquanto a aplicação carrega completamente, algumas coisas ja serão mostradas na tela para o usuário
+    -> Posso pegar dados diretamente do banco
+
+    -> Problemas que o SSR resolve:
+        --> SEO: como o HTML da aplicação já possui conteúdo, os motores de busca como o Google conseguem achá-la
+        --> Menor carga de JS: ao invés de a aplicação ser montada totalmente por JS(React), um processo mais rápido e leve, chamado Hydrationserá feito
+    
+    -> Problemas gerados:
+        --> Infraestrutura mais cara, pois necessita de um servidor rodando
+        --> Cada acesso a uma pagina, exige uma chamada no servidor
+
+## Hydration: é o processo de pegar uma arvore de HTML já montada e adicionar interatividade (JS)
+
+
+-- CONTINUAR A PARTIR DA AULA DE SSG 

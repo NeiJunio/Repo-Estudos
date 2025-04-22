@@ -1,0 +1,27 @@
+-- 22/04/2025 --
+
+## HYDRATION
+    -> é o processo de pegar uma arvore de HTML já montada e adicionar interatividade (JS)
+    ->  processo em que o JavaScript do lado do cliente (browser) assume o controle de um HTML que foi renderizado no servidor.
+
+    -> Explicando com mais detalhes:
+        --> Quando você usa Server-Side Rendering (SSR) ou Static Site Generation (SSG) no Next.js, o HTML da página é gerado no servidor e enviado para o navegador. Isso permite que o conteúdo seja exibido rapidamente para o usuário, mesmo antes  do JavaScript ser carregado.
+
+        --> Porém, esse HTML é estático — ele ainda não tem interatividade (ex: botões não funcionam, eventos de clique não estão ativos). Para que a página se torne interativa, o Next.js precisa:
+
+            - Carregar o JavaScript necessário no cliente.
+
+            - "Hidratar" os elementos HTML, conectando-os ao React novamente.
+
+            - Assim, os componentes React voltam a funcionar no navegador como esperado.
+
+        --> Esse processo é o que chamamos de hydration.
+
+    -> Por que o hydration é importante?
+        --> Performance inicial: O usuário vê algo rapidamente.
+        --> SEO-friendly: Motores de busca conseguem ler o conteúdo do HTML.
+        --> Interatividade: A página se torna funcional depois da hidratação.
+
+    -> Cuidados com o hydration:
+        --> Diferenças entre o HTML do servidor e o que o React espera no cliente podem causar erros de hydration.
+        --> Evite usar dados aleatórios ou valores que mudam entre renderizações diretamente no HTML do servidor.
