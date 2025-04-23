@@ -21,6 +21,10 @@
 
     -> Quando a renderização fica do lado do cliente, cada requisição deve ser finalizada. No caso da imagem a seguir, a requisição para buscar as tarefas demorará muito tempo, pois primeiro é feita uma requisição para mostrar a tela, e somente quando essa requisição finalizar, é que vai INICIAR a busca por tarefas
 
+
+    -> CONCEITO:
+        -->  A definição de Client-Side Rendering (CSR) refere-se ao processo em que a renderização do conteúdo da página é feita no navegador do cliente, utilizando JavaScript. Isso significa que o servidor envia um HTML básico e o JavaScript é responsável por buscar e renderizar os dados necessários no cliente.
+
         IMAGEM: CSR e SPA & Data Fetching.png 
 
 
@@ -41,4 +45,44 @@
 ## Hydration: é o processo de pegar uma arvore de HTML já montada e adicionar interatividade (JS)
 
 
--- CONTINUAR A PARTIR DA AULA DE SSG 
+## Static Site Generation (SSG)
+    -> O HTML é gerado apenas uma vez, o momento da compilação
+    -> Não requer um servidor sendo executado
+
+    -> Problemas que o SSR resolve:
+        --> SEO: como o HTML da aplicação já possui conteúdo, os motores de busca como o Google conseguem achá-la
+        --> Menor carga de JS: ao invés de a aplicação ser montada totalmente por JS(React), um processo mais rápido e leve, chamado Hydrationserá feito
+
+    -> Problemas gerados:
+        --> Conteúdo pode ficar desatualizado, pois o HTML foi gerado apenas uma vez
+        --> Não é adequado para aplicações dinâmicas
+
+
+## Incremental Static Regeneration (ISR)
+    -> O HTML é gerado inicialmente no momento da compilação
+    -> Esse HTML pode ser regenerado durante o ciclo de vida da aplicação
+
+    -> Problemas que o SSR resolve:
+        --> SEO: como o HTML da aplicação já possui conteúdo, os motores de busca como o Google conseguem achá-la
+        --> Menor carga de JS: ao invés de a aplicação ser montada totalmente por JS(React), um processo mais rápido e leve, chamado Hydrationserá feito
+
+    -> Problemas gerados:
+        --> Conteúdo pode ficar desatualizado
+
+
+## CSR vs SSR vs SSG vs ISR
+
+    -> CSR:
+        -- Quando SEO e carregamento inicial não é importante
+        -- Quando a aplicação é altamente dinâmica
+        -- Ex: dashboard e ferramentas de edição online
+
+    --> SSR:
+        -- Quando o SEO e o carregamento inicial é importante
+        -- Quando a aplicação é altamente dinâmica
+        -- Ex: E-commerces e redes sociais
+
+    -- SSG ou ISR
+        -- Quando o SEO e o carregamento inicial é importante
+        -- Quando a aplicação não é dinâmica
+        -- Ex: portfólios, páginas de venda e blogs
