@@ -1,0 +1,27 @@
+-- 23/04/2025 --
+
+## BANCO DE DADOS & INJEÇÃO DE DEPENDÊNCIAS
+
+    -> Botão direito na aba schemas dentro do Workbench -> create schema com o nome cashflowdb
+    -> schema = database
+    -> Botão direito em cima de tables -> create tables
+        - name: Expenses
+        - campos:
+            -- Id (DataType BIGINT, PK, NN, AI)
+            -- Title (Dataype Varchar(255), NN)
+            -- Description (Dataype Varchar(2000))
+            -- Date (Datatype DateTime, NN)
+            -- Amount (DataType Decimal(10, 2), NN)
+            -- PaymentType (DataType Int, NN)
+
+            SQL:
+
+            CREATE TABLE `cashflowdb`.`expenses` (
+                `Id` BIGINT NOT NULL AUTO_INCREMENT,
+                `Title` VARCHAR(255) NOT NULL,
+                `Description` VARCHAR(2000) NULL,
+                `Date` DATETIME NOT NULL,
+                `Amount` DECIMAL(10,2) NOT NULL,
+                `PaymentType` INT NOT NULL,
+                PRIMARY KEY (`Id`)
+            );
