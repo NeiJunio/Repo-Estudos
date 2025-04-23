@@ -612,5 +612,132 @@
 
 
 
-    CRIANDO TESTES DE ERROS
+    CRIANDO TESTES DE ERROS para cada regra do Validator
+
+    -> erro do titulo
+        -> criar uma função public void com nome Error_Title_Empty
+        -> copia a função Success
+        -> abaixo da var request, atribuir string.Empty à propriedade Title da request
+            request.Title = string.Empty
+
+        -> Mudar o assert de BeTrue para BeFalse
+        -> Garantir que só tenha uma mensagem de erro , e que a mensagem de erro seja a do título, com a seguinte linha:
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED); 
+            
+        -> nas dependencies do projeto Validator.Tests, adicionando referencia ao projeto de exception
+
+                [Fact]
+                public void Error_Title_Empty()
+                {
+                    // arrange
+                    var validator = new RegisterExpenseValidator();
+                    var request = RequestRegisterExpenseJsonBuilder.Build();
+                    request.Title = string.Empty;
+
+                    // act
+                    var result = validator.Validate(request);
+
+                    // assert
+                    result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                    // Garante que só exista UM erro retornado
+                    result.Errors.ShouldHaveSingleItem();
+
+                    // E que esse erro seja o do título
+                    result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
+                }
+
+            
+    -> erro de data:
+        -> Copiar e colar função que verifica o titulo, e renomeá-la para Error_Date_Future
+        -> substituir request.Title por request.Date, e atribuir DateTime.UtcNow.AddDAys(1) a ela
+        -> por útlimo, substituir a prop TITLE_REQUIRED por EXPENSES_CANNOT_FOR_THE_FUTURE
+
+            [Fact]
+            public void Error_Date_Future()
+            {
+                // arrange
+                var validator = new RegisterExpenseValidator();
+                var request = RequestRegisterExpenseJsonBuilder.Build();
+                request.Date = DateTime.UtcNow.AddDays(1);
+
+                // act
+                var result = validator.Validate(request);
+
+                // assert
+                result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.     EXPENSES_CANNOT_FOR_THE_FUTURE);
+            }
+
     
+    -> erro de tipo de pagamento:
+        -> Copiar e colar função que verifica o titulo, e renomeá-la para Error_Payment_Type_Invalid
+        -> mudar a request para request.PaymentType, e atribuir um casting com um valor
+            request.PaymentType = (PaymentType)700
+        -> por útlimo, substituir a prop TITLE_REQUIRED por PAYMENT_TYPE_INVALID
+
+
+    -> erro de preço:
+        -> Copiar e colar função que o tió de pagamento, e renomeá-la para Error_Amount_Invalid
+        -> mudar a request para request.Amount, e atribuir amount para ela (esse amount vem do parâmetro da função, que vai ler os valores definidos no InlineData)
+        -> passar decimal amount como parametro da função
+        -> substituir o fact por Theory, e embaixo dele, adicionar:
+            [InlineData(valor)] -- os valores adicionados serão utilizados como parâmetro da função (pode adicionar + de um)
+
+            [Theory]
+            [InlineData(0)]
+            [InlineData(-1)]
+            public void Error_Amount_Invalid(decimal amount)
+            {
+                // arrange
+                var validator = new RegisterExpenseValidator();
+                var request = RequestRegisterExpenseJsonBuilder.Build();
+                request.Amount = amount;
+
+                // act
+                var result = validator.Validate(request);
+
+                // assert
+                result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.         AMOUNT_MUST_BE_GREATER_THAN_ZERO);
+            }
+
+    -> seguir a mesma lógica para adicionar strings vazias, amontoados de espaços em branco e nulo. O parametro vai ser string title, e a request.Title recebe title
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("       ")]
+        [InlineData(null)]
+        ublic void Error_Title_Empty(string title)
+        {
+           // arrange
+           var validator = new RegisterExpenseValidator();
+           var request = RequestRegisterExpenseJsonBuilder.Build();
+           request.Title = title;
+
+           // act
+           var result = validator.Validate(request);
+
+           // assert
+           result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+           // Garante que só exista UM erro retornado
+           result.Errors.ShouldHaveSingleItem();
+
+           // E que esse erro seja o do título
+           result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
+        }
