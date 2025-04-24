@@ -741,3 +741,98 @@
            // E que esse erro seja o do título
            result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
         }
+
+    
+    -> CRIANDO AS ENTIDADES (ENTITIES)
+        -> Dentro do project Domain, criar uma pasta com nome Entities
+        -> dentro dessa pasta, criar uma classe public com o nome Expense, e adicionar os dados que existem na tabela: 
+            public class Expense
+            {
+                public long Id { get; set; }
+                public string Title { get; set; } = string.Empty;
+                public string? Description { get; set; } // pode ser vazia
+                public DateTime Date { get; set; }
+                public decimal Amount { get; set; }
+                public PaymentType PaymentType { get; set; }  // Localiza os dados do enum PaymentType
+            }
+
+        -> DEntro do projetc Domain, Criar uma pasta com o nome Enums
+        -> Dentro dessa pasta, criar uma classe public com o nome PaymentType, e dentro dela inserir os valores, identico à pasta enums que existe no project Communication
+            public enum PaymentType
+            {
+                Cash = 0,
+                CreditCard = 1,
+                DebitCard = 2,
+                EletronicTransfer = 3
+            }
+
+    
+    -> Instalando pacotes Entity Framework no project Infrastructure
+        -> Botão direito no project Infrastructure -> Manage NuGet Package -> na aba browsw procurar por Microsoft.EntityFrameworkCore
+        -> Botão direito no project Infrastructure -> Manage NuGet Package -> na aba browsw procurar por Pomelo.EntityFrameworkCore.MySql
+
+
+    -> Criando o Database Context
+        -> Botão direito no project Infrastructure -> uma nova pasta com nome DataAccess
+        -> Dentro dessa pasta, criar uma classe public com o nome CashFlowDbContext
+        -> Essa classe deve fazer uma herança com a classe DbContext
+        -> Dentro da classe, var public DbSet<Expense> (dentro dos sinais <> vem a minha entidade base) seguido do nome Expenses { get; set; } (o nome tem que ser igual ao nome da tabela, mas com maiúscula)
+        -> passar a localização do banco (tem que sobrescrever uma função):
+            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            {
+                var connectionString = "Server=localhost;DataBase=cashflowdb;Uid=root;Pwd=@Password123;";
+                var version - new Version(8, 0, 42); // versão do meu servidor mysql
+                var serverVersion = new MySqlServerVersion(version)
+
+                optionsBuilder.UseMySql(connectionString)
+            }
+
+        -> a classe deverá ficar assim:
+
+            public class CashFlowDbContext : DbContext
+            { 
+                public DbSet<Expense> Expenses { get; set; }
+
+                protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                {
+                    var connectionString = "Server=localhost;DataBase=cashflowdb;Uid=root;          Pwd=@Password123;";
+
+                    var version = new Version(8, 0, 42);
+                    var serverVersion = new MySqlServerVersion(version);
+
+                    optionsBuilder.UseMySql(connectionString, serverVersion);
+                }
+            }
+
+        
+    -> Salvando uma despesa no banco
+        
+        Temporário para teste {
+            -> botão direito nas dependencies do projeto Application -> referenciar o projeto de Infrastructure
+
+            -> Dentro do useCase RegisterExpenseUseCase, abaixo do Validate, criar uma var dbContext que recebe uma nova instância da classe CashFlowDbContext
+
+                var dbContext = new CashFlowDbContext();
+
+            -> Abaixo, criar uma var entity:
+                var entity = new Expense
+                {
+                    Amount = request.Amount,
+                    Date = request.Date,
+                    Description = request.Description,
+                    Title = request.Title,
+                    PaymentType = (Domain.Enums.PaymentType)request.PaymentType
+                };    
+            
+            -> abaixo, acessar a propriedade Add() da entidade Expense que vem la a dbContext, e passar entity como parâmetro:
+
+                dbContext.Expense.Add(entity);
+
+            -> Abaixo, acessar a propriedade SaveChanges do dbContext, para salvar os dados
+
+                dbContext.SaveChanges();
+
+            -> project Application -> dependencies -> projetc -> Botao direito em cima do projeto Infrastructure -> Remove
+
+            -> Remover a var dbContext e o acesso as prop Add e SaveChanges
+        }

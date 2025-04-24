@@ -1,0 +1,18 @@
+-- 24/02/2025 --
+
+## ENTITY FRAMEWORK
+
+## O QUE É?
+    -> É um ORM (Object-Relational Mapping ou Mapeamento de Objeto Relacional) que mapeia objetos para banco de dados
+    -> Simplifica querys do banco de dados e evita erros de sintaxe, deixando o código reduzido e objetivo
+    -> Recebe uma entidade, que é uma classe espelhada na tabela do banco
+
+    -> Necessita de uma ConnectionString, que é basicamente um url contendo a localização e as credenciais para se conectar ao banco de dados (essa url pode ser diferente dependendo do banco que será conectado)
+
+    -> suporta os seguintes bancos de dados
+        --> SQL Server
+        --> SQLite
+        --> PostgreSQL
+        --> MySQL e MariaDB
+        --> Azure Cosmos
+        --> In memory (testes)

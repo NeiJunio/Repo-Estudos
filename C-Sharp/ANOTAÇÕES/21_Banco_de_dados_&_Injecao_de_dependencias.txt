@@ -2,6 +2,7 @@
 
 ## BANCO DE DADOS & INJEÇÃO DE DEPENDÊNCIAS
 
+    -> Sempre que for usar, buscar por SERVICES no computador, e iniciar a opção Mysql80
     -> Botão direito na aba schemas dentro do Workbench -> create schema com o nome cashflowdb
     -> schema = database
     -> Botão direito em cima de tables -> create tables
@@ -25,3 +26,22 @@
                 `PaymentType` INT NOT NULL,
                 PRIMARY KEY (`Id`)
             );
+
+        -> Inserindo dados:
+                INSERT INTO expenses (Title, Date, Description, PaymentType, Amount)
+		        	          VALUES ("Iphone 15", "2025-02-11 14:30:00", "String da        description", 1, 1350.99);
+
+                INSERT INTO expenses (Title, Date, Description, PaymentType, Amount)
+		        	          VALUES ("S25", "2025-03-13 13:40:00", "String da description      s25", 2, 1250.99);
+
+                INSERT INTO expenses (Title, Date, Description, PaymentType, Amount)
+		        	          VALUES ("Youtube", "2025-03-13 13:40:00", "String da description      youtube", 2, 50.99);
+
+        -> Excluindo dados:
+                DELETE FROM expenses
+                      WHERE Id = 2;
+
+        -> Atualizando dados:
+                UPDATE expenses
+                   SET Description = 'String atualizada com update'
+                 WHERE Id = 1;

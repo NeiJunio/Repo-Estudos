@@ -10,3 +10,6 @@
     -> .NET Core é suporte a windows, linux e mac
 
 
+
+-> ctrl + shift + f9 : Remove todos os breakpoint
+-> Ctrl + Alt + B : abre janela onde é possível ver todos os breakpoints ativos, e deletá-los individualmente ou todos de uma vez
