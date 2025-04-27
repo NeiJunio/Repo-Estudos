@@ -1,0 +1,201 @@
+-- 26/04/2025 --
+
+## INJEÇÃO DE DEPENDÊNCIAS (DI - Dependency Injection)
+    -> é um padrão de design onde uma classe não cria diretamente as suas dependências (objetos que ela usa), mas sim recebe essas dependências de fora — geralmente no construtor, método ou propriedade.
+    -> ao invés da classe criar o que precisa, ela depende que alguém forneça (injete) esses objetos prontos pra ela.
+
+
+    -> Singleton
+        --> Cria só uma instância para o projeto inteiro (e ela é usada pra sempre).
+        --> Mesmo se forem requisições diferentes ou usuários diferentes, é o mesmo objeto.
+
+        services.AddSingleton<MeuServico>();
+
+
+        --> Sempre retorna o mesmo ID, mesmo em requisições diferentes.
+
+    
+    -> Transient
+        --> Um objeto novo é criado toda vez que ele for solicitado.
+        --> cada vez que você pede, ganha uma instância novinha.
+
+        services.AddTransient<MeuServico>();
+
+        public class MeuServico
+        {
+            public Guid Id { get; } = Guid.NewGuid();
+        }
+
+        public class MeuController : ControllerBase
+        {
+            private readonly MeuServico _servico1;
+            private readonly MeuServico _servico2;
+
+            public MeuController(MeuServico servico1, MeuServico servico2)
+            {
+                _servico1 = servico1;
+                _servico2 = servico2;
+            }
+
+            [HttpGet]
+            public IActionResult Get()
+            {
+                return Ok(new { Id1 = _servico1.Id, Id2 = _servico2.Id });
+            }
+        }
+
+        --> Resultado: Dois IDs diferentes, porque cada injeção criou um objeto novo.
+
+
+    -> Scoped
+        --> Cria um objeto por requisição HTTP.
+        --> Dentro da mesma requisição, o objeto é o mesmo. Mas para outra requisição, é outro.
+
+        services.AddScoped<MeuServico>();   
+        
+        Mesmo código do MeuServico e MeuController.
+
+        --> Dentro da mesma requisição: os dois IDs são iguais.
+        --> Em outra requisição (outro clique, outro request): novo ID.
+
+        --> Quando você registra um serviço como Scoped, ele é criado uma vez para cada requisição HTTP.
+
+        --> Dentro de uma mesma requisição, todas as classes que dependem desse serviço vão compartilhar a mesma instância.
+        --> Em outra requisição, uma nova instância será criada.
+         
+        --> Então Scoped é uma espécie de meio-termo:
+            ---> Não cria um objeto novo toda hora (como Transient),
+            ---> Nem reaproveita pra sempre (como Singleton).
+         
+        --> É como se, para cada requisição feita ao servidor, o ASP.NET Core dissesse: 
+            "Vou criar esse objeto e usá-lo enquanto essa requisição estiver viva. Depois descarto."
+
+
+            Exemplo prático:
+
+            Controller:
+
+                public class MyDependencyController : ControllerBase
+                {
+                    [HttpGet("Singleton")]
+                    public IActionResult Singleton([FromServices] SingletonUseCase useCase)
+                    {
+                        var result = useCase.Execute();
+
+                        return Ok(result);
+                    }
+
+
+                    [HttpGet("Transient")]
+                    public IActionResult Transient([FromServices] TransientUseCase useCase)
+                    {
+                        var result = useCase.Execute();
+
+                        return Ok(result);
+                    }
+
+
+                    [HttpGet("Scoped")]
+                    public IActionResult Scoped([FromServices] UseCaseA useCaseA, [FromServices] UseCaseB useCaseB)
+                    {
+                        var resultA = useCaseA.Execute();
+                        var resultB = useCaseB.Execute();
+
+                        return Ok($"{resultA} - ${resultB}");
+                    }
+                }
+
+
+            UseCases:
+
+                public class SingletonUseCase
+                {
+                  public Guid Id { get;set; }
+
+                    public SingletonUseCase()
+                    {
+                        Id = Guid.NewGuid();
+                    }
+
+                    public string Execute()
+                    {
+                        return $"From Singleton with Id: {Id}";
+                    }
+                }
+
+
+                public class TransientUseCase
+                {
+                  public Guid Id { get;set; }
+
+                    public TransientUseCase()
+                    {
+                        Id = Guid.NewGuid();
+                    }
+
+                    public string Execute()
+                    {
+                        return $"From Transient with Id: {Id}";
+                    }
+                }
+
+
+                public class ScopedUseCase
+                {
+                  public Guid Id { get;set; }
+
+                    public ScopedUseCase()
+                    {
+                        Id = Guid.NewGuid();
+                    }
+
+                    public string Execute()
+                    {
+                        return $"From Scoped with Id: {Id}";
+                    }
+                }
+
+
+                public class UseCaseB
+                {
+                    private readonly ScopedUseCase _scopedUse;
+
+                    public UseCaseB(ScopedUseCase scopedUseCase)
+                    {
+                        _scopedUse = scopedUseCase;
+                    }
+
+                    public string Execute()
+                    {
+                        return _scopedUse.Execute();
+                    }
+                }
+
+                public class UseCaseA
+                {
+                    private readonly ScopedUseCase _scopedUse;
+
+                    public UseCaseA(ScopedUseCase scopedUseCase)
+                    {
+                        _scopedUse = scopedUseCase;
+                    }
+
+                    public string Execute()
+                    {
+                        return _scopedUse.Execute();
+                    }
+                }
+
+
+            Program:
+
+                builder.Services.AddSingleton<SingletonUseCase>();
+                builder.Services.AddTransient<TransientUseCase>();
+                builder.Services.AddScoped<ScopedUseCase>();
+                builder.Services.AddScoped<UseCaseA>();
+                builder.Services.AddScoped<UseCaseB>();
+
+                var app = builder.Build();
+
+        
+        -> Dessa forma, usando [FromServices], só sera criada a instância do método chamado (não vai criar instância singleton, transient e scoped todas jun tas não. Só vai criar a que estiver especificada na requisição HTTP. Ex: se o Get é Scoped, só vai criar a scoped.)

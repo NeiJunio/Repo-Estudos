@@ -1,0 +1,59 @@
+-- 26/04/2025 --
+
+## INTERFACES
+    -> É um contrato que define métodos a serem implementados por uma classe.
+    -> Classe na qual só pode estar escrevendo as assinaturaas dos métodos
+
+    -> Uma interface define o que uma classe deve fazer (assinatura de métodos, propriedades, eventos), mas não como ela faz. Ou seja, Ela não tem implementação (não tem o corpo dos métodos).
+
+    -> Só diz: "Se você usar essa interface, você tem que implementar esses métodos/propriedades".
+
+    -> Assinatura:
+        -> Composta por:
+            --> Nome
+            --> Tipo de retorno
+            --> Parâmetros
+
+
+    -> Diferença entre interface e classe abstrata??
+
+        -> Resposta Objetiva: Interface é um contrato: ela define o que uma classe deve fazer, mas não como. Já a classe abstrata é uma base: ela pode obrigar métodos a serem implementados e também trazer código pronto. Uso interface para comportamentos diferentes entre classes, e classe abstrata quando as classes são parecidas e compartilham código.        
+
+
+        -> R: Em uma interface so pode ter funções e métodos abstratos (se tiver dois, os dois serão abstratos), enquanto na classe abstrata eu posso ter um método abstrato e um que pode ser usado como implementação real
+
+        -> R: 
+            --> Interface: é um contrato.
+                {
+                    - Só diz o que deve ser feito (assinatura de métodos, propriedades).
+
+                    - Não tem código pronto (até C# 8.0, onde apareceram default  implementations, mas pra entrevista, fique no clássico).
+
+                    - Uma classe pode implementar várias interfaces.
+                }
+
+            --> Classe Abstrata: é uma base para herança.
+                {
+                    Pode ter código já implementado (métodos completos) e métodos abstratos (que forçam a implementação).
+
+                    Serve para compartilhar código comum entre classes semelhantes.
+                }
+
+
+        -> R: Uma interface define apenas o contrato — o que uma classe precisa fazer — mas não traz nenhuma implementação. Já uma classe abstrata pode definir tanto contratos quanto fornecer implementações prontas para métodos. A interface é ideal para múltiplos comportamentos que podem ser aplicados a classes diferentes. Já a classe abstrata é usada quando queremos criar uma estrutura comum entre classes relacionadas
+
+
+    
+    -> Não pode esquercer:
+        - Todos os métodos em uma interface são públicos (não pode usar nada private)
+        - Uma interface não pode ser instanciada (não pode fazer um new)
+        - Uma classe pode implementar mais de uma interface (classeA: Interface1, Interface2)
+        - Uma interface não pode ster construtor
+        - Uma classe deve implementar TODOS os métodos de uma interface
+        - Sempre nomear começando com I maiúsculo
+
+    -> Vantagens:
+        - Sistemas fracamente acoplados
+        - Deixa o código mais flexível
+        - Deixa o código fácil de ser expandido
+        - A realização de testes fica mais fácil

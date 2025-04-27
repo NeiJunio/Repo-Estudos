@@ -836,3 +836,28 @@
 
             -> Remover a var dbContext e o acesso as prop Add e SaveChanges
         }
+
+
+    -> CRIANDO INTERFACES:
+        -> Dentro do project Domain - > criar uma pasta Repositories  e dentro dela, criar uma pasta com nome Expenses
+
+        -> botão direito na pasta Expenses -> adicionar novo item do tipo interface e nomeá-lo como IExpensesRepository e deixá-lo public
+
+        -> adicionar uma função void com nome Add passando como parâmetro Expense expense (a refêrencia à entidade Expense será chamada de expense) (-> não precisa especificar que é public nessa função)
+            
+            void Add(Expense expense);
+
+    
+    -> CRIANDO REPOSITÓRIO PARA DESPESAS
+        -> no project Infrastructure, dentro da pasta DataAccess, criar uma pasta com nome Repositories
+        -> Dentro dessa pasta, criar uma classe com nome ExpensesRepository e mantém ela internal
+
+        -> fazer referência tipo herança com a interface IExpensesRepository, e implementar seus métodos
+
+        -> tornar a classe CashFlowDbContext internal
+
+        -> Voltando na ExpensesRepository, dentro do método, criar uma var dbContext que recebe uma nova instância da classe CashFlowDbContext.
+
+        -> Em seguida, acessar a propriedade Expenses.Add(Expense)
+        -> por último, acessar a propriedade SaveChanges
+        
