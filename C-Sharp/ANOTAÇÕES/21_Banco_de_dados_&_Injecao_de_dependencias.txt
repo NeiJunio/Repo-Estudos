@@ -45,3 +45,7 @@
                 UPDATE expenses
                    SET Description = 'String atualizada com update'
                  WHERE Id = 1;
+
+    
+    EXPORTANDO BANCO:
+        -aba a

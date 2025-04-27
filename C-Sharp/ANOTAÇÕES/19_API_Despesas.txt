@@ -861,3 +861,87 @@
         -> Em seguida, acessar a propriedade Expenses.Add(Expense)
         -> por último, acessar a propriedade SaveChanges
         
+    
+    
+    -> COnfigurando injecção de dependências para o repositório
+        -> No program da API, antes da Build, adicionar a seguinte linha:
+
+            builder.services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+    -> no projeto de Infrastructure, adicionar uma classe public static com nome DependencyInjectionExtension
+        -> dentro dela, adicionar uma função static void AddInfrastructure, passando this IServiceCollection services como parâmetro.
+        -> Dentro da função, adicionar a seguinte linha
+
+            builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+        (instanciar dentro do arquivo program no projeto API)
+
+        -> voltando no arquivo program, substituir a linha
+
+            builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+            por
+            
+            builder.Services.AddInfrastructure();
+
+        -> O arquivo DependencyInjectionExtension ficará assim:
+
+            public static class DependencyInjectionExtension
+            {
+               public static void AddInfrastructure(this    IServiceCollection services)
+               {
+                   services.AddScoped<IExpensesRepository,  ExpensesRepository>();
+               }
+            }
+
+    
+    -> CONFIGURANDO INJEÇÃO DE DEPEDÊNCIAS PARA O APPLICATION
+        -> no useCase RegisterExpenseUseCase, adicionar:
+            - uma variável private readonly IExpensesRepository com nome _repository
+
+            - um construtor que recebe IExpensesRepository repository como parâmetro, e que dentro dele, _repository recebe repository
+
+                private readonly IExpensesRepository    _repository;
+
+                public RegisterExpenseUseCase   (IExpensesRepository repository)
+                {
+                  _repository = repository;  
+                }
+            
+
+            - Dentro da função Execute, após a var entity, acesar a propriedade Add da var _repository, passando entity como parâmetro
+
+                _repository.Add(entity)
+
+        -> Dentro da pasta Register dos useCase, criar um item do tipo interface public com nome IRegisterExpenseUseCase, e dentro dela, adicionar a seguinte assinatura do método:
+
+            ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request);
+
+        -> na raiz do projeto Application, criar uma classe public  static com o nome DependencyInjectionExtension, e dentro dela, criar uma função public void com nome AddApplication, passando this IServiceCollection services como parâmetro (se não importar automático o IServiceCollection, é só instalar o Nuget Package Microsoft.Extensions.DependencyInjection, na mesma versão que está o projeto)
+
+            -> dentro da função AddApplication, adicionar a seguinte linha:
+
+                services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
+
+
+        -> Obs: voltar na RegisterExpenseUseCase e implemntar a interface IRegisterExpenseUseCase (: IRegisterExpenseUseCase)
+
+        -> No parâmetros do controller, passar via FromServices a interafce IRegisterExpenseUseCase com nome use case, e remover a var useCase
+
+            [HttpPost]
+            public IActionResult Register(
+                [FromServices] IRegisterExpenseUseCase useCase, 
+                [FromBody] RequestRegisterExpenseJson request)
+            {
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+
+            }
+        
+        -> Por último, no Program, adicionar a seguinte referência antes da build e após o AddInfrastructure: 
+
+            builder.Services.AddApplication();
+
+            -> pode ser necessário importar manualmente o projeto Application:
+                using CashFlow.Application;

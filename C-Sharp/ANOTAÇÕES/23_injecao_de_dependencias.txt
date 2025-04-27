@@ -199,3 +199,5 @@
 
         
         -> Dessa forma, usando [FromServices], só sera criada a instância do método chamado (não vai criar instância singleton, transient e scoped todas jun tas não. Só vai criar a que estiver especificada na requisição HTTP. Ex: se o Get é Scoped, só vai criar a scoped.)
+
+    
