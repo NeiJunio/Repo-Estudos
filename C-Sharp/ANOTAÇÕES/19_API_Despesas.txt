@@ -895,7 +895,7 @@
             }
 
     
-    -> CONFIGURANDO INJEÇÃO DE DEPEDÊNCIAS PARA O APPLICATION
+    -> CONFIGURANDO INJEÇÃO DE DEPENDÊNCIAS PARA O APPLICATION
         -> no useCase RegisterExpenseUseCase, adicionar:
             - uma variável private readonly IExpensesRepository com nome _repository
 
@@ -945,3 +945,160 @@
 
             -> pode ser necessário importar manualmente o projeto Application:
                 using CashFlow.Application;
+
+        
+    -> REGISTRANDO DBCONTEXT COM INJEÇÃO DE DEPENDÊNCIAS
+        -> no arquivo DependencyInjectionExtension, criar duas funções private static void:
+            - uma com nome AddRepositories, recebendo IServiceCollection services como parâmetro e dentro dela a linha:
+                services.AddScoped<IExpensesRepository, ExpensesRepository>();
+            - uma com nome AddDbContext, recebendo IServiceCollection services como parâmetro e dentro dela a linha:
+                services.AddDbContext<CashFlowDbContext>();
+        
+        -> Dentro da função AddInfrastructure, chamar as duas funções private AddRepositories e AddDbContext, passando services como parâmetro para ambas
+
+        -> a classe DependencyInjectionExtension ficará assim:
+
+            public static class DependencyInjectionExtension
+            {
+                public static void AddInfrastructure(this IServiceCollection services)
+                {
+                    AddRepositoriess(services);
+                    AddDbContext(services);
+                }
+
+                private static void AddRepositoriess(IServiceCollection services)
+                {
+                    services.AddScoped<IExpensesRepository, ExpensesRepository>();
+                }
+
+                private static void AddDbContext(IServiceCollection services)
+                {
+                    services.AddDbContext<CashFlowDbContext>();
+                }
+            }
+
+
+        -> No arquivo ExpensesRepository, criar: 
+            - uma var para armazenar a propriedade CashFlowDbContext _dbContext:
+                private readonly CashFlowDbContext _dbContext
+        
+            - um construtor que receberá CashFlowDbContext dbContext como parâmetro, e dentro do construtor, _dbContext receberá dbContext vindo dos parâmetros:
+                public ExpensesRepository(CashFlowDbContext dbContext)
+                {
+                    _dbContext = dbContext;
+                }
+
+            -> Na classe Add, pode remover a linha que acessava a dbContext, e modificar o nome das propriedades para _dbContext.
+
+            -> A classe ExpensesRepository deverá ficar assim:
+
+                internal class ExpensesRepository : IExpensesRepository
+                {
+                    private readonly CashFlowDbContext _dbContext;
+
+                    public ExpensesRepository(CashFlowDbContext dbContext)
+                    {
+                        _dbContext = dbContext;
+                    }
+                    public void Add(Expense expense)
+                    {
+                        _dbContext.Expenses.Add(expense);
+
+                        _dbContext.SaveChanges();
+                    }
+                }
+
+    
+    -> UTILIZANDO APPSETTINGS PARA CONNECTIONSTRING
+        -> Dentro do arquivo appsettings.development, no projeto de API,adicionar a seguinte linha:
+            "ConnectionStrings": {
+              "Connection": "Server=localhost;DataBase=cashflowdb;Uid=root;Pwd=@Password123;"
+            }
+
+        -> Na classe CashFlowDbContext, remover a função OnConfiguring e adicionar o seguinte construtor:
+            public CashFlowDbContext(DbContextOptions options) : base(options) { }
+
+                - o arquivo CashFlowDbContext ficará assim:
+                    internal class CashFlowDbContext : DbContext
+                    {
+                        public CashFlowDbContext(DbContextOptions options) : base(options) { }
+
+                        public DbSet<Expense> Expenses { get; set; }
+                    }
+
+        -> Adicionar as configurações que existiam na função OnConfiguring la no arquivo DependencyInjectionExtension, dentro da classe AddDbContext
+
+        -> para concluir a injeção de dependências, no arquivo DependencyInjectionExtension, fazer as seguintes configurações:
+            - na função AddInfrastructure, passar IConfiguration configuration como parâmetro, e dentro dela, na chamada da função AddDbContext, também passar configuration como parametro.
+
+            - na função AddDbContext, passar IConfiguration configuration como parâmetro, e a var connectionString, deverá receber configuration.GetConnectionString("Connection");
+
+                ficará assim:
+
+                public static class DependencyInjectionExtension
+                {
+                    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+                    {
+                        AddRepositoriess(services);
+                        AddDbContext(services, configuration);
+                    }
+                
+                    private static void AddRepositoriess(IServiceCollection services)
+                    {
+                        services.AddScoped<IExpensesRepository, ExpensesRepository>();
+                    }
+                
+                    private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+                    {
+                        var connectionString = configuration.GetConnectionString("Connection"); ;
+                
+                        var version = new Version(8, 0, 42);
+                        var serverVersion = new MySqlServerVersion(version);
+                
+                
+                        services.AddDbContext<CashFlowDbContext>(config => config.UseMySql(connectionString, serverVersion));
+                    }
+                }
+
+            - no Program, na chamada da propriedade AddInfrastructure, passar builder.Configuration como parametro
+                builder.Services.AddInfrastructure(builder.Configuration);
+
+
+    -> ENTENDENDO E IMPLEMENTANDO UNIDADE DE TRABALHO
+        -> Dentro de Repositories, criar outra interface, public, agora com nome IUnitOfWork, e dentro dela, retornar:
+            public interface IUnitOfWork
+            {
+                void Commit();
+            }
+        
+        -> Dentro de DataAccess, criar uma classe internal com o nome UnitOfWork, que implementa a interface IUnitOfWork. E dentro da interface, implementar o SaveChanges
+            
+        -> Dentro dessa classe, deve conter a variável que acessa o _dbContext, e uma função com nome UnitOfWork, que recebe CashFlowDbContext dbContext como parâmetro, dentro da qual _dbContext recebe dbContext
+
+        -> Ficará assim:
+            internal class UnitOfWork : IUnitOfWork
+            {
+                private readonly CashFlowDbContext _dbContext;
+
+                public UnitOfWork(CashFlowDbContext dbContext)
+                {
+                    _dbContext = dbContext;
+                }
+
+                public void Commit()
+                {
+                    _dbContext.SaveChanges();
+                }
+            }
+
+        -> Dentro dos Repositories existentes, remover as funções SaveChanges();
+        
+        -> No useCase RegisterExpenseUseCase, implementar a variável:
+            private readonly IUnitOfWork _unitOfWork
+
+        -> Adicionar IUnitOfWork unitOfWork como parâmetro do construtor RegisterExpenseUseCase. E dentro do construtor, _unitOfWork deverá receber unitOfWork. Por último, após acessar a propriedade Add, implementar a seguinte linha que chama a propriedade de Salvamento:
+
+            _unitOfWork.Commit();
+
+        -> configurar a injeção de dependências no arquivo DependencyInjectionExtension, adicionando a seguinte linha dentro da função AddRepositories:
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
