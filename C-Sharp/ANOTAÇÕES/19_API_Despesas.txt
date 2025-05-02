@@ -926,7 +926,7 @@
 
         -> Obs: voltar na RegisterExpenseUseCase e implemntar a interface IRegisterExpenseUseCase (: IRegisterExpenseUseCase)
 
-        -> No parâmetros do controller, passar via FromServices a interafce IRegisterExpenseUseCase com nome use case, e remover a var useCase
+        -> No parâmetros do controller, passar via FromServices a interface IRegisterExpenseUseCase, tornar Task<ResponseRegisteredExpenseJson> IRegisterExpenseUseCase com nome use case, e remover a var useCase
 
             [HttpPost]
             public IActionResult Register(
@@ -1102,3 +1102,38 @@
 
         -> configurar a injeção de dependências no arquivo DependencyInjectionExtension, adicionando a seguinte linha dentro da função AddRepositories:
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+    
+    -> ALTERANDO NOSSO PROJETO PARA USAR O TIPO TASK
+        -> no arquivo ExpensesRepository,tornar a função Add async Task ao invés de void, tornar seu conteúdo await e substituir a prop Add por AddAsync
+            public async Task Add(Expense expense)
+            {
+                await _dbContext.Expenses.AddAsync(expense);
+            }
+
+        -> Na interface IExpensesRepository, substituir void por Task
+            public interface IExpensesRepository
+            {
+                Task Add(Expense expense);
+            }
+
+        -> No arquivo IUnitOfWork, tornar a função Commit async Task ao invés de void, tornar seu conteúdo await e substituira prop SaveChanges por SaveChangesAsync
+            public async Task Commit()
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+        
+        -> Na interface IUnitOfWork, substituir void por Task
+            public interface IUnitOfWork
+            {
+                Task Commit();
+            }
+        
+        -> Na função Execute, do RegisterExpenseUseCase, tornar async Taks<ResponseRegisteredExpenseJson>,e as chamadas das interfaces tornar await
+            await _repository.Add(entity);
+
+            await _unitOfWork.Commit();
+
+        -> Na interface IRegisterExpenseUseCase, tornar Task<ResponseRegisteredExpenseJson>
+
+        -> no controller, tornar a função async Task<IActionResult> e o conteúdo da var response tornar await

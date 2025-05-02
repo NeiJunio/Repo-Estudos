@@ -1,0 +1,82 @@
+-- 02/05/2025 --
+
+## Tasks
+    -> É uma classe que permite executar métodos de forma assíncrona (em segundo plano)
+    - Representa uma tarefa que deve ser feita, e informa o seu estatus de andamento 
+    - Métodos assincronos são utilizados quando uma parte do codigo tem que ser executada em paralelo ou quando precisamos executar uma operação que não sabemos quanto tempo vai levar (ex: acesso a banco, envio de emails)
+
+    - no exemplo seguinte:
+        -- será executada a var task, que por sua vez vai iniciar a linha await Task.Delay(20000). Ao executar essa linha, vai voltar para o return Ok, e somente depois de 20 seg é que vai executar a var x = 7;
+
+
+    [HttpGet]
+    public IActionResult Tasks()
+    {
+        Task task = MyAsyncMethod(); // a var task representa a tarefa a ser executada
+        
+        return Ok(Guid.NewGuid());
+    }
+
+    private async Task MyAsyncMethod() // Pra definir como assíncrono, deve usar async Task. 
+    {
+        await Task.Delay(20000); // await signfica que essa função vai ficar sendo executada ate terminar, mas enquanto isso, outras linhas podem ser executadas
+
+        var x = 7;
+    }
+
+
+    - no exemplo seguinte:
+        -- será executada a linha await MyAsyncMethod (representando que toda a função MyAsyncMethod é assíncrona, ou seja, tudo que estiver dentro dela estará sendo executado em segundo plano), que chamará a linha await Task.Delay(20000). Ao executar essa linha, a aplicação ficará parada durante 20 segundos ate a conclusão da mesma, e somente após isso, a função passará para a linha var x =7, e depois retornará para a linha return Ok que por sua vez vai iniciar a linha await Task.Delay(20000). Ao executar essa linha, vai voltar para o return return Ok(Guid.NewGuid());
+
+
+    [HttpGet]
+    public async Task<IActionResult> Tasks()
+    {
+        await MyAsyncMethod(); // a var task representa a tarefa a ser executada
+        
+        return Ok(Guid.NewGuid());
+    }
+
+    private async Task MyAsyncMethod() // Pra definir como assíncrono, deve usar async Task. 
+    {
+        await Task.Delay(20000); // await signfica que essa função vai ficar sendo executada ate terminar, mas enquanto isso, outras linhas podem ser executadas
+
+        var x = 7;
+    }
+
+
+    - no exemplo seguinte:
+        -- inicia o método assíncrono na linha var task = MyAsyncMethod (automaticamente a linha await Task.Delay(20000) inicia e começa a contagem).
+        -- apó9s isso, posso fazer outra atividade, nesse caso, é a interação do loop do for
+        -- após a interação, eu quero receber o resultado do método assincrono, e para isso, eu chamo await task, para capturar o resultado do método MyAsyncMethod que está armazenado na var task
+
+
+    [HttpGet]
+    public async Task<IActionResult> Tasks()
+    {
+        var task = MyAsyncMethod(); // a var task representa a tarefa a ser executada
+        
+        for(i = 0; i < 100; i++)
+        {
+            Console.WriteLine(i); // vai imprimir do 0 ao 99
+        }
+
+       var result = await task; // aqui eu capturo o resultado o método assincrono, que vai ser 7, vindo do return do MyAsyncMethod();
+
+        return Ok(Guid.NewGuid());
+    }
+
+    private async Task<int> MyAsyncMethod() // Pra definir como assíncrono, deve usar async Task. 
+    {
+        await Task.Delay(20000); // await signfica que essa função vai ficar sendo executada ate terminar, mas enquanto isso, outras linhas podem ser executadas
+
+        return 7;
+    }
+
+    - Observação: se eu usar var task = await MyAsyncMethod(), a aplicação vai ficar parada nessa linha até concluir a contagem dos 20seg e retornar 7
+
+
+    private async Task<int> MyAsyncMethod() // Pra definir como assíncrono, deve usar async Task. Dentro dos <> informa o tipo de dado que será retornado
+    {
+        return 7;
+    } =
