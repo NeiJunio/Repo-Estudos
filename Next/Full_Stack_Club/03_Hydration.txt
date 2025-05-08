@@ -1,6 +1,6 @@
 -- 22/04/2025 --
 
-## HYDRATION
+## HYDRATION  --------------------------------------------
     -> é o processo de pegar uma arvore de HTML já montada e adicionar interatividade (JS)
     ->  processo em que o JavaScript do lado do cliente (browser) assume o controle de um HTML que foi renderizado no servidor.
 

@@ -1,11 +1,11 @@
 -- 26/04/2025 --
 
-## INJEÇÃO DE DEPENDÊNCIAS (DI - Dependency Injection)
+## INJEÇÃO DE DEPENDÊNCIAS (DI - Dependency Injection)  ---------------------------------------
     -> é um padrão de design onde uma classe não cria diretamente as suas dependências (objetos que ela usa), mas sim recebe essas dependências de fora — geralmente no construtor, método ou propriedade.
     -> ao invés da classe criar o que precisa, ela depende que alguém forneça (injete) esses objetos prontos pra ela.
 
 
-    -> Singleton
+    -> Singleton  ------------------------------------------------
         --> Cria só uma instância para o projeto inteiro (e ela é usada pra sempre).
         --> Mesmo se forem requisições diferentes ou usuários diferentes, é o mesmo objeto.
 
@@ -15,7 +15,7 @@
         --> Sempre retorna o mesmo ID, mesmo em requisições diferentes.
 
     
-    -> Transient
+    -> Transient  ------------------------------------------------
         --> Um objeto novo é criado toda vez que ele for solicitado.
         --> cada vez que você pede, ganha uma instância novinha.
 
@@ -47,7 +47,7 @@
         --> Resultado: Dois IDs diferentes, porque cada injeção criou um objeto novo.
 
 
-    -> Scoped
+    -> Scoped  ---------------------------------------------------
         --> Cria um objeto por requisição HTTP.
         --> Dentro da mesma requisição, o objeto é o mesmo. Mas para outra requisição, é outro.
 

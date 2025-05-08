@@ -1,8 +1,8 @@
 -- 21/04/2025 --
 
-## CSR, SSR, SSG & ISR
+## CSR, SSR, SSG & ISR  -----------------------------------------------
 
-## Client Side Rendering (CSR)
+## Client Side Rendering (CSR)  ---------------------------------------
     -> Aplicação totalmente renderizada no lado do client
     -> O conteúdo da página é inserido por js
 
@@ -28,7 +28,7 @@
         IMAGEM: CSR e SPA & Data Fetching.png 
 
 
-## Server Side Rendering (SSR)
+## Server Side Rendering (SSR)  ---------------------------------------
     -> O Servidor ja envia o HTML com conteúdo renderizado
     -> Esse conteúdo já é exibido imediatamente para o usuário quando ele acessa a aplicação
     -> Enquanto a aplicação carrega completamente, algumas coisas ja serão mostradas na tela para o usuário
@@ -45,7 +45,7 @@
 ## Hydration: é o processo de pegar uma arvore de HTML já montada e adicionar interatividade (JS)
 
 
-## Static Site Generation (SSG)
+## Static Site Generation (SSG)  --------------------------------------
     -> O HTML é gerado apenas uma vez, o momento da compilação
     -> Não requer um servidor sendo executado
 
@@ -58,7 +58,7 @@
         --> Não é adequado para aplicações dinâmicas
 
 
-## Incremental Static Regeneration (ISR)
+## Incremental Static Regeneration (ISR)  -----------------------------
     -> O HTML é gerado inicialmente no momento da compilação
     -> Esse HTML pode ser regenerado durante o ciclo de vida da aplicação
 
@@ -70,7 +70,7 @@
         --> Conteúdo pode ficar desatualizado
 
 
-## CSR vs SSR vs SSG vs ISR
+## CSR vs SSR vs SSG vs ISR  ------------------------------------------
 
     -> CSR:
         -- Quando SEO e carregamento inicial não é importante

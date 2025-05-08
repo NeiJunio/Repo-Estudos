@@ -1,6 +1,6 @@
 -- 23/04/2025 --
 
-## BANCO DE DADOS & INJEÇÃO DE DEPENDÊNCIAS
+## BANCO DE DADOS & INJEÇÃO DE DEPENDÊNCIAS  ------------------------------------------------
 
     -> Sempre que for usar, buscar por SERVICES no computador, e iniciar a opção Mysql80
     -> Botão direito na aba schemas dentro do Workbench -> create schema com o nome cashflowdb
@@ -47,5 +47,18 @@
                  WHERE Id = 1;
 
     
-    EXPORTANDO BANCO:
-        -aba a
+    EXPORTANDO BANCO  ----------------------------------------
+        - na aba administration, selecionar a opção Data Export
+        - Em seguida, na tela que aparecer, faça os seguintes procedimentos:
+            -- Selecione o Banco de Dados que deseja exportar; Em seguida, verifique as tabelas dele do lado direito;
+            -- Marque a opção “Dump stored Procedures and Functions“;
+            -- Marque a opção “Dump Events“;
+            --  Marque a opção “Export to Self-Contained File” e em seguida selecione o local em que deseja salvar o Banco clicando no botão dos 3 pontinhos (…). Não esqueça de dar um nome para o arquivo do Banco. Ao fazer isso verifique se o caminho e o nome estão corretos no campo da localidade;
+            -- Ao fazer tudo clique em “Start Export“.
+        
+    IMPORTANDO BANCO  ----------------------------------------
+        - na aba administration, selecionar a opção Data Import/Restore
+        - Em seguida, na tela que aparecer, faça os seguintes procedimentos:
+            --  Marque a opção “Import from Self-Contained File” e em seguida selecione o local e o arquivo do Banco de Dados clicando no botão dos 3 pontinhos (…). Ao fazer isso verifique se o caminho e o nome estão corretos no campo da localidade;
+            -- Em “Default Target Schema” selecione o nome do Banco de Dados que irá receber o arquivo .sql. No caso da Hostnet, só existirá uma opção;
+            --  Ao fazer tudo clique em “Start Import“.

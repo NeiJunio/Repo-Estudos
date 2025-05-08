@@ -1,8 +1,8 @@
 -- 21/04/2025  --
 
-## NEXT.JS
+## NEXT.JS  --------------------------------------------------------
 
-## Definição
+## Definição  ------------------------------------------------------
     -> É um Framework FullStack do React (Enquanto o React é uma biblioteca)
     -> Roda código no BackEnd e no FrontEnd
 

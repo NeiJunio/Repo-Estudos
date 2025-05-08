@@ -1,0 +1,1139 @@
+-- 05/04/2025 --
+
+## CashFlow
+    -> Continue without code
+    -> File > New> Project > Blank Solution (Nome: CashFlow)
+    -> Criar duas pastas dentro da solution (src e tests)
+    -> Criar manualmente essas mesmas duas pastas dentro da solution la no explorador de arquivos
+    -> Botão direito na pasta src > Add > New Project > ASP.NET Core Web Api (Nome: CashFlow.API) (verificar se o caminho do projeto qestá apontando para a pasta src)
+
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Domain)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Application)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Communication)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Exception)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+    -> Botão direito na pasta src > Add > New Project > Class Library (Nome: CashFlow.Infrastructure)  (verificar se o caminho do projeto qestá apontando para a pasta src)
+
+    -> Na pasta dependencies do CashFlow.Api > botão direito > Add Project Reference > marcar os projetos Application, Communication, Exception e Infrastructure
+    -> Na pasta dependencies do CashFlow.Application > botão direito > Add Project Reference > marcar os projetos Communication, Exception e Domain
+    -> Na pasta dependencies do CashFlow.Infrastructure > botão direito > Add Project Reference > marcar o projeto Domain
+
+    -> Criar um API.Controller - Empty com o nome ExpensesController
+    
+    -> No projeto Communication, criar as pastas Requests, Responses e Enums
+    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpenseJson, e torná-la public
+    -> Dentro da classe RequestRegisterExpenseJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
+    
+    -> Dentro da pasta Enums, criar uma classe PaymentType, e mudar seu tipo de internal class para public enum
+    -> Dentro do enum PaymentType inserir Cash, CreditCard, DebitCard e EletronicTransfer
+
+    -> No controller da API, criar um método POST com nome Register, para como parâmetro - e pelo body - a RequestRegisterExpenseJson
+
+    -> No projeto Application, criar uma pasta useCases
+    -> Dentro da pasta useCases, criar uma pasta Expenses (pra reunir todos os useCases relacionados às despesas)
+    -> Dentro da pasta Expenses, criar uma pasta para cada caso (register, update, get, etc)
+
+    -> Dentro da pasta Register em useCases, criar uma classe com o nome RegisterExpenseUseCase, e torná-la public
+        -> Dentro dessa class, criar uma função vid public referenciando a ResponseRegisteredExpenseJson e passando como parâmetro a RequestRegisterExpenseJson
+        -> Por enquanto, apenas retornar uma nova instância da classe ResponseRegisteredExpenseJson
+           
+                public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request)
+                {
+                    return new ResponseRegisteredExpenseJson();
+                }
+
+
+    -> Dentro da pasta Responses, criar uma classe com o nome ResponseRegisteredExpenseJson, e passar como dado de retorno apenas o Title
+
+                public class ResponseRegisteredExpenseJson
+                {
+                    public string Title { get; set; } = string.Empty;
+                }
+
+    -> Voltando no controller, no endpoint post, criar uma var useCase que armazena uma nova instância na RegisterExpenseUseCase 
+        -> Criar uma var response que acessará a função execute da instância RegisterExpenseUseCase, armazenada na var useCase
+        -> Retornar um Created com os parâmetros string.Empty e response
+
+                [HttpPost]
+                public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+                {
+                    var useCase = new RegisterExpenseUseCase();
+                
+                    var response = useCase.Execute(request);
+                
+                    return Created(string.Empty, response);
+                }
+
+    
+    -> No UseCase do Register, criar uma função private void, com nome Validate e passar os mesmo parâmetros da função Execute
+    -> voltando na função Execute desse mesmo Usecase, chamar a função Validate, passando a request como parametro
+
+    -> na função Validate:
+        --> criar uma var com nome titleIsEmpty, que recebe string.IsNullOrWhiteSpace(request.Title)
+            -> lançar um if, verificando se o titleIsEmpty, e dentro do if, colocar throw new ArgumentException("The title is required")
+
+        -- estamos lançando uma exceção com uma mensagem
+
+            -> lançar um if verificando se o Amount á menor ou igual a zero. Se for, lançar uma exception com a mensagem "The amount must be greater tahn zero"
+
+            -> validação de data
+                --> criar uma var result passando DateTime.compare(request.Date, DateTime.UtcNow);
+
+                --> lança um if verificando se a result é maior que 0, significando que a data é futura. Se true, lançar uma mensagem Expenses cannot be for the future 
+
+            -> Validação de pagamento
+                -> cria um var paymentTypeIsValid acessando a prop IsDefined do enum, e para como parametro typeof(PaymentType), request.paymentType
+
+                --> nesse caso, verifica se o valor vindo da request esta incluso no enum
+
+                --> lançar um if verificando se paymentType == false. Se for, lançar uma mensagem PaymentType is not valid
+
+            --> Deverá ficar assim a princípio:
+
+            public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request)
+            {
+                Validate(request);
+
+                return new ResponseRegisteredExpenseJson();
+            }
+
+            private void Validate(RequestRegisterExpenseJson request)
+            {
+                var titleIsEmpty = string.IsNullOrWhiteSpace(request.Title);
+                if (titleIsEmpty)
+                {
+                    throw new ArgumentException("The title is required");
+                }
+
+                if (request.Amount <= 0)
+                {
+                    throw new ArgumentException("The amount must be greater than zero");
+                }
+
+                var result = DateTime.Compare(request.Date, DateTime.UtcNow);
+                if (result > 0)
+                {
+                    throw new ArgumentException("Expenses cannot be for the future");
+                }
+
+                var paymentTypeIsValid = Enum.IsDefined(typeof(PaymentType), request.PaymentType);
+                if (paymentTypeIsValid == false)
+                {
+                    throw new ArgumentException("PaymentType is not valid");
+                }
+            }
+
+
+    --> Adicionar um try catch dentro metodo post register no controller
+        -> um catch vai passar com parametro ArgumentException ex, e dentro dele vai passar um badrequest como parametro acessando a message da ArgumentException
+        -> O segundo catch não recebe parametro, e vari retornar um statusCode como parametros statusCodes.status500InternalServerErro, e uma mensagem Unknown Error
+
+        -> A princípio o controller deve ficar assim, com um catch pra tratar as ArgumentException e um para tratar qualquer outro tipo de erro diferente:
+
+        [HttpPost]
+        public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+        {
+            try
+            {
+                var useCase = new RegisterExpenseUseCase();
+
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Unknown Error");
+            }
+        }
+
+    
+    -> Melhorando respostas de erros:
+
+        -> criando uma nova classe public de response (no projeto communication), com o nome ResponseErrorJson. Dentro dela, Adicionar uma string ErrorMessage
+
+        public class ResponseErrorJson
+        {
+            public string ErrorMessage { get; set; } = string.Empty;
+        }
+
+    -> Voltando no controller:
+        -> dentro do catch que trata as ArgumentException, criar um var errorResponse que cria uma nova instância da classe ResponseErrorJson. Dentro dessa instância, ErrorMessage deverá receber a message da ArgumentException. Por último, retorna a var errorResponse como parametro do retunr BadRequest
+
+        -> dentro do catch puro, fazer a mesma coisa, porem Error Message deverá receber diretamente uma string com a mensagem de erro. O return devera retornar um statusCode com os parametros statusCodes.status500InternalServerErro, e a var ErrorMessage.
+
+        -> ficara assim: 
+        
+        [HttpPost]
+        public IActionResult Register([FromBody] RequestRegisterExpenseJson request)
+        {
+            try
+            {
+                var useCase = new RegisterExpenseUseCase();
+
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+            }
+            catch(ArgumentException ex)
+            {
+                var errorResponse = new ResponseErrorJson
+                {
+                    ErrorMessage = ex.Message
+                };
+
+                return BadRequest(errorResponse);
+            }
+            catch
+            {
+                var errorResponse = new ResponseErrorJson
+                {
+                    ErrorMessage = "Unknown Error"
+                };
+
+                return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+            }
+        }
+ __**__
+    
+    -> Criar um construtor dentro da ResponseErrorJson:
+
+        --> o construtor deve ser public e receber o mesmo nome da classe, e como parametro deverá errar a string errorMessage
+        --> dentro do construtor, atribuir o errorMessage que vem do parametro à string ErrorMessage
+
+        public class ResponseErrorJson
+        {
+            public string ErrorMessage { get; set; } = string.Empty;        
+
+            public ResponseErrorJson(string errorMessage)
+            {
+                ErrorMessage = errorMessage;
+            }
+        }
+
+        -> Voltando no controller, na var errorResponse, criar uma nova instância na classe ResponseErrorJson passando a ex.Message da ArgumentException como parametro
+
+        try
+        {
+            var useCase = new RegisterExpenseUseCase();
+        
+            var response = useCase.Execute(request);
+        
+            return Created(string.Empty, response);
+        }
+        catch(ArgumentException ex)
+        {
+            var errorResponse = new ResponseErrorJson(ex.Message);
+            
+        
+            return BadRequest(errorResponse);
+        }
+        catch
+        {
+            var errorResponse = new ResponseErrorJson("Unknown Error");
+        
+            return StatusCode(StatusCodes.Status500InternalServerError, errorResponse);
+        }
+
+
+    -> Instalando o FluentValidation no projeto de Application
+        - abrir o projeto de Application no cmd
+        - usar o comando dotnet add package FluentValidation --version 11.11.0 (verificar a verão mais recente)
+
+        ou
+        
+        - botão direito em cima do projeto Application > Manage NuGet Package > mudar para aba de pesquisa > procurar por FluentValidation > install > apply
+
+    -> Dentro da classe register do projeto Application, criar uma classe public com o nome RegisterExpenseValidator 
+        - fazer uma herança na classe AbstractValidor<informar o tipo de validação, nesse caso é o RequestRegisterExpenseJson>
+        - após isso, montar um construtor com cto
+        - adicionar as regras dentro do construtor
+
+        public class RegisterExpenseValidator : AbstractValidator<RequestRegisterExpenseJson>
+        {
+            public RegisterExpenseValidator()
+            {
+                RuleFor(expense => expense.Title).NotEmpty().WithMessage("The Title is      required");
+                RuleFor(expense => expense.Amount).GreaterThan(0).WithMessage("The Amount must      be greater than zero");
+                RuleFor(expense => expense.Date).LessThanOrEqualTo(DateTime.UtcNow).WithMessage     ("Expanses cannot be for the future");
+                RuleFor(expense => expense.PaymentType).IsInEnum().WithMessage("Payment Type        is not valid.");
+                // RuleFor(lambda acessando uma das propriedades).verificação.      respostaEmCasoDeErro
+            }
+        }
+
+    -> Voltando no UseCase, remover todos os if, criar uma variável com nome validator, e essa variável deve receber uma nova instância da classe RegisterExpenseValidator.
+
+    -> Após isso, criar uma variável result que receber a validator acessando a função validade, e passando como parâmetro a request
+
+    -> Após, criar um if verificando se a prop IsValid da var result é false. se for, abrir um bloco de código com uma variável errorMessages, que acessa os Errors da var result, passando um select com uma função lambda como parâmetro. Nessa função lambda, acessar a prop ErrorMessage. No final, adicionar ToList(), para transformar os erros em uma lista. Adicionar tambem uma nova ArgumentException passando como parametro -----------------------------------------------------
+
+        public class RegisterExpenseUseCase
+        {
+            public ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson     request)
+            {
+                Validate(request);
+        
+                return new ResponseRegisteredExpenseJson();
+            }
+        
+            private void Validate(RequestRegisterExpenseJson request)
+            {
+                var validator = new RegisterExpenseValidator();
+        
+                var result = validator.Validate(request);
+        
+        
+                if (result.IsValid == false)
+                {
+                    var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+        
+                    throw new ArgumentException();
+                }
+            }
+        }
+
+    
+    -> Dentro do projeto de Exception, criar uma pasta com nome ExceptionBase para armazenar as exceptions customizadas
+    -> Criar uma classe public abstract com nome CashFlowException com herança na classe SystemException
+
+    -> botão direito em cima da pasta ExceptionBase, e criar uma nova classe public com nome ErrorOnValidationException com herança na classe CashFlowException    
+
+    -> Na classe ErrorOnValidationException, criar uma public List de strings com nome error, e em seguida criar um construtor com o mesmo nome da classe, passando como parametro a list de strings errorMessages, e dentro desse construtor, atribuir errorMessages à variável Errors
+
+    voltando no Usecase, substituir throw new ArgumentException(); por throw new ErrorOnValidationException(errorMessages)
+
+    -> na classe ResponseErrorJson, substituir a string errorMessage, por uma lista de strings ErrorMessages, e construir um novo construtor passando como parametro a lista de string errorMessage,e  dentro dele atribuir errorMessage do parametro à variavel errorMessages.
+        -> no outro construtor, atribuir uma novalista de strings com a errorMessage, à variavel errorMessages
+
+    
+    -> Criando filtro de exception
+    -> NO projeto de api, criar uma pasta filters
+    -> botão direito, criar uma classe public ExceptioFilter com "herança" na interface IExceptionFilter, após isso, criar a implementaçao da interface
+
+        public class ExceptionFilter : IExceptionFilter
+        {
+            public void OnException(ExceptionContext context)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+    -> Criar uma função private void, com o nome HandleProjectException, passando como parametro a ExceptionContext
+
+    
+    -> Criar uma função private void, com o nome ThrowUnknownError, passando como parametro a ExceptionContext. 
+
+    -> Na função OnException, fazer um if else verificando se a context.Exception é um ErrorOnValidationException.
+
+    -> Dentro da função ThrowUnknownError criar uma var errorResponse =que recebe uma nova instância na classe ResponseErrorJson, passando como parâmetro a string "Unknown error". Em seguida, acessar context.HttpContext.Response.StatusCode  ue receberá o StatusCodes.Status500InternalServerError.Por último, acessar a context.result que recebe uma nova instância na classe ObjectResult, passando a errorResponse como parâmetro
+    -> voltando no else, chamar a classe ThrowUnknownError, passando context como parâmetro
+
+    -> no if, substituir context.Exception is ErrorOnValidationException por context.Exception is CashFlowExceptionException. E dentro do if, chamar a classe HandleProjectException, passando context como parametro
+
+    -> dentro da função HandleProjectException, criar um if verificando se a context.Exception é um ErrorOnValidationException. Se for, deve criar uma var ex que recebe (ErrorOnValidationException)context.Exception. tbm Criar uma var errorResponse que recebe uma nova instância na classe ResponseErrorJson, passando como parametro a ex.Errors.  Em seguida, acessar context.HttpContext.Response.StatusCode  que receberá o StatusCodes.Status400BadRequest.Por último, acessar a context.result que recebe uma nova instância na classe BadRequestObjectResult, passando a errorResponse como parâmetro
+
+    -> no program da api, antes da build adicionar a seguinte linhe:
+        builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)))
+
+    -> No controler, remover o try catch, e deixar apenas isso:
+        var useCase = new RegisterExpenseUseCase();
+
+        var response = useCase.Execute(request);
+
+        return Created(string.Empty, response);
+
+    -> voltando na função HandleProjectException, criar um else como uma var errorResponse que recebe uma nova instância na classe ResponseErrorJson, passando como parametro a prop Message do context.Exception (context.Exception.Message). Após isso: usar o mesmo retorno de badRequest do if.
+
+    -> Por enquanto,o arquivo da ExceptionFilter deve ficar assim:
+
+        public class ExceptionFilter : IExceptionFilter
+        {
+            public void OnException(ExceptionContext context)
+            {
+                if (context.Exception is CashFlowException)
+                {
+                    HandleProjectException(context);
+                }
+                else
+                {
+                    ThrowUnknownError(context);
+                }
+            }
+        
+            private void HandleProjectException(ExceptionContext context)
+            {
+                if (context.Exception is ErrorOnValidationException)
+                {
+                    var ex = (ErrorOnValidationException)context.Exception;
+                    var errorResponse = new ResponseErrorJson(ex.Errors);
+                    context.HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                    context.Result = new BadRequestObjectResult(errorResponse);
+                }
+            }
+            private void ThrowUnknownError(ExceptionContext context)
+            {
+                var errorResponse = new ResponseErrorJson("Unknown error");
+        
+                context.HttpContext.Response.StatusCode = StatusCodes.      Status500InternalServerError;
+                context.Result = new ObjectResult(errorResponse);
+            }
+        }
+
+    -> botão direito no projeto de Exception > criar novo item > selecionar Resources File, e nomear com ResourceErrorMessages (lembrar de alterar o modificador de acesso para public)
+
+    -> Remover a mensagem Unknown error do filter na funcão ThrowUnknownError, e substituir por ResourceErrorMessages.UNKNOWN_ERROR, ou pelo nome da referente chave que foi especificada (se não aparecer o modificar de acesso, acesse as propriedades do arquivo ResourceErrorMessages.resx, e no campo que tiver ResXFileCodeGenerator, altere para PublicResXFileCodeGenerator)
+
+    -> Adicionar todas as mensagens de erros dentro desse arquivo ResourceErrorMessages, e nos arquivos onde eram passadas essas strings, acessar a variável correspondente do ResourceErrorMessages. (ex: ResourceErrorMessages.PAYMENT_TYPE_INVALID)
+
+    -> Localização de API (Identificar qual o idioma do aparelho antes de retornar o conteúdo)
+        - Identificar idioma / país / tag
+        - escrever a tag respeitando o case sensitive
+        - se a tag não tiver a localização, será utilizado o idioma na sua forma genérica
+        - nomeDoArquivoResource.tag.resx (ex: ResourceErrorMessages.pt-BR.resx)
+
+        -> Criar 3 arquivos resource:
+            - ResourceErrorMessages.pt-BR.resx
+            - ResourceErrorMessages.pt-PT.resx
+            - ResourceErrorMessages.fr.resx
+        
+        - As chaves do arquivo resource devem permanecer as mesmas, independente do idioma
+        - o arquivo default (sem tag) serve para quando for solicitadouma resposta, e não tiver o idioma definido. Ex: temos arquivos com as tags pt-BR, pt-PT e fr. Se solicitarem resposta em italiano, como não temos o arquvio com a tag correspondente, será mostrado as respostas no idioma default, nesse caso, em inglês.
+
+    
+    -> Criando Middleware
+        - no projeto de API, criar uma pasta com nome Middleware
+        - dentro da pasta, criar uma classe com nome CultureMiddleware
+        - criar um método public async Task com o nome Invoke, recebendo HttpContext context como parâmetro (public async Task Invoke(HttpContext context){ })
+
+        - acima do método Invoke, criar um construtor que recebe RequestDelegate next como parametro. Dentro dele a variável privada _next receberá next;
+            public CultureMiddleware(RequestDelegate next)
+            {
+                _next = next;
+            }
+
+
+        - acima do construtor, criar uma variável private readonly RequestDelegate _next;
+            private readonly RequestDelegate _next;
+
+        - na função Invoke: 
+            - criar uma var culture que recebe context.Request.Headers.AcceptLanguage.FirstOrDefault();. Essa varíavel vai buscar a lista de linguagens do Header e pegar o primeiro valor
+                var culture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
+
+            - criar uma var cultureInfo que recebe uma nova instância na classe CultureInfo, passando como parâmetro uma linguagem padrão, nesse caso, "en"
+                var cultureInfo = new CultureInfo("en");
+
+            - criar um if, verificando se a string culture é false. Se for false, a var cultureInfo receberá uma nova instância da classe CultureInfo, recebendo como parâmetro a var culture, ou seja, cultureInfo começa com um valor padrão, e se  a culture(que recebe o valor do header), não for vazia, a cultureInfo receberá como valor uma nova instância da CultureInfo, mas agora com a culture(que é o valor do header) como parametro (dentro do if, se ele for false, sobrescreve o valor da cultureInfo)
+                if(string.IsNullOrWhiteSpace(culture) == false)
+                {
+                    cultureInfo = new CultureInfo(culture);
+                }
+            
+            - após o if,  CultureInfo.CurrentCulture e CultureInfo.CurrentUICulture recebem cultureInfo.
+                CultureInfo.CurrentCulture = cultureInfo;
+                CultureInfo.CurrentUICulture = cultureInfo;
+
+            - por último, adicionar a permissão para o fluxo continuar
+                await _next(context)
+
+
+            - no Program da API, antes do UseHttpRedirection, adicionar a seguinte linha
+                app.UseMiddleware<CultureMiddleware>();
+
+                - dessa forma, vai enxergar o nosso middleware, para poder vefificar seu conteúdo
+
+
+            - voltar no início da classe Invoke e criar um var com nome supportedLanguages que acessa CultureInfo.GetCultures(CultureTypes.AllCultures).ToList(); --> serve para acessar todas as linguagens que o .NET suporta
+
+            - substitui o nome da var culture para requestCulture (em todas as ocorrências)
+
+            - no if, adicionar uma validação se supportedLanguages.Exists(language => language.Name.Equals(requestCulture))
+
+            o arquivo Middleware deve ficar assim:
+
+            public class CultureMiddleware
+            {
+                private readonly RequestDelegate _next;
+                public CultureMiddleware(RequestDelegate next)
+                {
+                    _next = next;
+                }
+                public async Task Invoke(HttpContext context)
+                {
+                    var supportedLanguages = CultureInfo.GetCultures(CultureTypes.AllCultures).ToList();
+
+                    var requestCulture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
+
+                    var cultureInfo = new CultureInfo("en");
+
+                    if(string.IsNullOrWhiteSpace(requestCulture) == false && supportedLanguages.Exists          (language => language.Name.Equals(requestCulture)))
+                    {
+                        cultureInfo = new CultureInfo(requestCulture);
+                    }
+
+                    CultureInfo.CurrentCulture = cultureInfo;
+                    CultureInfo.CurrentUICulture = cultureInfo;
+
+                    await _next(context);
+                }
+            }
+
+
+    -> CRIANDO TESTES DE UNIDADES
+
+    -> botão direito na pasta tests -> new project -> xUnit Test Project -> nome: Validators.Tests.
+        -> Apontar a localização para a pasta de testes
+    
+    -> na aba test, selecionar a opção run all tests e fixar a barra de tests do lado esquerdo
+    -> Deletar a classe UnitTest1.cs
+    -> dentro da pasta de tests, criar uma pasta Expenses, e dentro dela, uma pasta Register
+    -> Dentro da pasta Register nos tests, criar uma classe public RegisterExpenseValidatorTests. 
+
+    -> Dentro da classe RegisterExpenseValidatorTests, criar uma função public void com o nome do resultado esperado (antes da função, adicionar [Fact] para identificar que é uma função de teste)
+        public void Success() { }
+
+        -> Arrange é onde se configura todas as instâncias de tudo que a gente precisa para executar esse teste
+
+    -> Na pasta dependencies do projeto tests, botão direito, add projeto de reeferencia e apontar para o projeto de Application e para o projeto Communication, para que o projeto de tests "enxergue" eles
+
+    -> Dentro da classe Success, criar uma nova instância da classe RegisterExpenseValidator, e armazenar essa instância numa var validator
+        var validator = new RegisterExpenseValidator();
+
+    -> Criar uma var request que recebe uma nova instância na classe RequestRegisterExpenseJson, e dentro dessa instância, deve passar dados fictícios simulando os dados de uma request
+        var request = new RequestRegisterExpenseJson
+        {
+            Amount = 100,
+            Date = DateTime.Now,
+            Description = "description",
+            Title = "title",
+            PaymentType = CashFlow.Communication.Enums.PaymentType.CreditCard
+        };
+    
+    -> Criar uma var result = validator.Validade(request) -- Essa linha vai simular a chamada da requisição, a ação (act)
+
+    -> após isso, adcionar a seguinte linha (representando a parte de assert):
+        Assert.True(result.IsValid)
+
+        - vai verificar se result.IsValid é true
+
+        - Para executar, basta clicar com o botao direito e escolher Run Tests ou Debug Tests (Run Tests não para no breakpoint, passa direto)
+
+    --> A princípio, ficará assim a função de teste Success:
+
+        [Fact]
+        public void Success()
+        {
+            // arrange
+            var validator = new RegisterExpenseValidator();
+            var request = new RequestRegisterExpenseJson
+            {
+                Amount = 100,
+                Date = DateTime.Now.AddDays(-1),
+                Description = "description",
+                Title = "title",
+                PaymentType = CashFlow.Communication.Enums.PaymentType.CreditCard
+            };
+
+            // act
+            var result = validator.Validate(request);
+
+            // assert
+            Assert.True(result.IsValid);
+        }
+
+
+    -> CRIANDO UM REQUISIÇÃO COM DADOS FALSOS GERADOS PARA O TESTS
+
+    -> Botão direito em cima da pasta tests -> add new project -> class libray com nome CommonTestUtilities (e apontar o caminho para a pasta tests)
+        -> Dentro dessa class libray, criar uma pasta com o nome Requests
+        -> Dentro dessa pasta Request, criar uma classe public com o nome RequestRegisterExpenseJsonBuilder
+    -> a class libray CommonTestUtilities precisa "enxergar" o project Communication (adicionar referência)
+
+    -> Dentro da class RequestRegisterExpenseJsonBuilder, criar uma função public com nome de Build referenciando, referenciando a RequestRegisterExpenseJson
+
+        -> INSTALANDO BIBLIOTECA:
+            - Botão direito em cima da class libray CommonTestUtilities -> Manage NuGet Packages -> na aba Browse buscar por Bogus e instalá-la 
+    
+        -> retornar um new Faker, relacionado com a RequestRegisterExpenseJson, e adicionar para cara regra RuleFor duas funções lambdas: uma para acessar a propriedade da Request (Amount, Title, etc) e outra para acessar uma propriedade da biblioteca Faker(faker.Commerce.ProductName(), faker.Commerce.ProductDescription(), etc);
+
+        --> Deverá ficar assim a função Build:
+
+        public RequestRegisterExpenseJson Build()
+        {
+            return new Faker<RequestRegisterExpenseJson>()
+                .RuleFor(r => r.Title, faker => faker.Commerce.ProductName())
+                .RuleFor(r => r.Description, faker => faker.Commerce.ProductDescription())
+                .RuleFor(r => r.Date, faker => faker.Date.Past())
+                .RuleFor(r => r.PaymentType, faker => faker.PickRandom<PaymentType>()) // Acessa um         dos valores do enum de tipos de pagamento
+                .RuleFor(r => r.Amount, faker => faker.Random.Decimal(min: 1, max: 1000)); // Gera um       número aleatório entre 1 e 1000 (pode escolher qual número desejar para mínimo e    máximo, ou pode também não especificar limites de máximo e mínimo)
+        }
+
+        -> No project Validators.Tests, adicionar referência ao project CommonTestUtilities
+
+        -> transformar a função Build em public static
+            public static RequestRegisterExpenseJson Build(){ ... }
+        
+        -> Voltando na class Success dos tests, a var result agora receberá RequestRegisterExpenseJsonBuilder.Build();
+
+            -> A função Success ficará assim:
+
+                [Fact]
+                public void Success()
+                {
+                    // arrange
+                    var validator = new RegisterExpenseValidator();
+                    var request = RequestRegisterExpenseJsonBuilder.Build();
+                
+                    // act
+                    var result = validator.Validate(request);
+                
+                    // assert
+                    Assert.True(result.IsValid);
+                }
+
+    
+    ### bibliotecas para a parte de assert dos testes
+
+    -> Botão direito em cima de Validators.Tests -> Manage NuGet Package -> na aba browse, buscar por FluentAssertions e instalar a ultima versão 7.x.x
+
+    -> Dois cliques em cima do project Validators.Tests e alterar a linha da FluentAssertions para essa (adicionando colchetes):
+        <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
+
+    -> No arquivo RegisterExpenseValidatorTests, substituir Assert.True(result.IsValid) por result.IsValid.Should().BeTrue();
+
+    OU
+
+    // SEGUIR ESSA DE PREFERÊNCIA
+    -> Botão direito em cima de Validators.Tests -> Manage NuGet Package -> na aba browse, buscar por Shouldly
+
+    -> No arquivo RegisterExpenseValidatorTests, substituir Assert.True(result.IsValid) por result.IsValid.ShouldBeTrue();
+
+
+
+    CRIANDO TESTES DE ERROS para cada regra do Validator
+
+    -> erro do titulo
+        -> criar uma função public void com nome Error_Title_Empty
+        -> copia a função Success
+        -> abaixo da var request, atribuir string.Empty à propriedade Title da request
+            request.Title = string.Empty
+
+        -> Mudar o assert de BeTrue para BeFalse
+        -> Garantir que só tenha uma mensagem de erro , e que a mensagem de erro seja a do título, com a seguinte linha:
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED); 
+            
+        -> nas dependencies do projeto Validator.Tests, adicionando referencia ao projeto de exception
+
+                [Fact]
+                public void Error_Title_Empty()
+                {
+                    // arrange
+                    var validator = new RegisterExpenseValidator();
+                    var request = RequestRegisterExpenseJsonBuilder.Build();
+                    request.Title = string.Empty;
+
+                    // act
+                    var result = validator.Validate(request);
+
+                    // assert
+                    result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                    // Garante que só exista UM erro retornado
+                    result.Errors.ShouldHaveSingleItem();
+
+                    // E que esse erro seja o do título
+                    result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
+                }
+
+            
+    -> erro de data:
+        -> Copiar e colar função que verifica o titulo, e renomeá-la para Error_Date_Future
+        -> substituir request.Title por request.Date, e atribuir DateTime.UtcNow.AddDAys(1) a ela
+        -> por útlimo, substituir a prop TITLE_REQUIRED por EXPENSES_CANNOT_FOR_THE_FUTURE
+
+            [Fact]
+            public void Error_Date_Future()
+            {
+                // arrange
+                var validator = new RegisterExpenseValidator();
+                var request = RequestRegisterExpenseJsonBuilder.Build();
+                request.Date = DateTime.UtcNow.AddDays(1);
+
+                // act
+                var result = validator.Validate(request);
+
+                // assert
+                result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.     EXPENSES_CANNOT_FOR_THE_FUTURE);
+            }
+
+    
+    -> erro de tipo de pagamento:
+        -> Copiar e colar função que verifica o titulo, e renomeá-la para Error_Payment_Type_Invalid
+        -> mudar a request para request.PaymentType, e atribuir um casting com um valor
+            request.PaymentType = (PaymentType)700
+        -> por útlimo, substituir a prop TITLE_REQUIRED por PAYMENT_TYPE_INVALID
+
+
+    -> erro de preço:
+        -> Copiar e colar função que o tió de pagamento, e renomeá-la para Error_Amount_Invalid
+        -> mudar a request para request.Amount, e atribuir amount para ela (esse amount vem do parâmetro da função, que vai ler os valores definidos no InlineData)
+        -> passar decimal amount como parametro da função
+        -> substituir o fact por Theory, e embaixo dele, adicionar:
+            [InlineData(valor)] -- os valores adicionados serão utilizados como parâmetro da função (pode adicionar + de um)
+
+            [Theory]
+            [InlineData(0)]
+            [InlineData(-1)]
+            public void Error_Amount_Invalid(decimal amount)
+            {
+                // arrange
+                var validator = new RegisterExpenseValidator();
+                var request = RequestRegisterExpenseJsonBuilder.Build();
+                request.Amount = amount;
+
+                // act
+                var result = validator.Validate(request);
+
+                // assert
+                result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+                // Garante que só exista UM erro retornado
+                result.Errors.ShouldHaveSingleItem();
+
+                // E que esse erro seja o do título
+                result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.         AMOUNT_MUST_BE_GREATER_THAN_ZERO);
+            }
+
+    -> seguir a mesma lógica para adicionar strings vazias, amontoados de espaços em branco e nulo. O parametro vai ser string title, e a request.Title recebe title
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("       ")]
+        [InlineData(null)]
+        ublic void Error_Title_Empty(string title)
+        {
+           // arrange
+           var validator = new RegisterExpenseValidator();
+           var request = RequestRegisterExpenseJsonBuilder.Build();
+           request.Title = title;
+
+           // act
+           var result = validator.Validate(request);
+
+           // assert
+           result.IsValid.ShouldBeFalse(); // usando biblioteca Shouldly
+
+           // Garante que só exista UM erro retornado
+           result.Errors.ShouldHaveSingleItem();
+
+           // E que esse erro seja o do título
+           result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
+        }
+
+    
+    -> CRIANDO AS ENTIDADES (ENTITIES)
+        -> Dentro do project Domain, criar uma pasta com nome Entities
+        -> dentro dessa pasta, criar uma classe public com o nome Expense, e adicionar os dados que existem na tabela: 
+            public class Expense
+            {
+                public long Id { get; set; }
+                public string Title { get; set; } = string.Empty;
+                public string? Description { get; set; } // pode ser vazia
+                public DateTime Date { get; set; }
+                public decimal Amount { get; set; }
+                public PaymentType PaymentType { get; set; }  // Localiza os dados do enum PaymentType
+            }
+
+        -> DEntro do projetc Domain, Criar uma pasta com o nome Enums
+        -> Dentro dessa pasta, criar uma classe public com o nome PaymentType, e dentro dela inserir os valores, identico à pasta enums que existe no project Communication
+            public enum PaymentType
+            {
+                Cash = 0,
+                CreditCard = 1,
+                DebitCard = 2,
+                EletronicTransfer = 3
+            }
+
+    
+    -> Instalando pacotes Entity Framework no project Infrastructure
+        -> Botão direito no project Infrastructure -> Manage NuGet Package -> na aba browsw procurar por Microsoft.EntityFrameworkCore
+        -> Botão direito no project Infrastructure -> Manage NuGet Package -> na aba browsw procurar por Pomelo.EntityFrameworkCore.MySql
+
+
+    -> Criando o Database Context
+        -> Botão direito no project Infrastructure -> uma nova pasta com nome DataAccess
+        -> Dentro dessa pasta, criar uma classe public com o nome CashFlowDbContext
+        -> Essa classe deve fazer uma herança com a classe DbContext
+        -> Dentro da classe, var public DbSet<Expense> (dentro dos sinais <> vem a minha entidade base) seguido do nome Expenses { get; set; } (o nome tem que ser igual ao nome da tabela, mas com maiúscula)
+        -> passar a localização do banco (tem que sobrescrever uma função):
+            protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            {
+                var connectionString = "Server=localhost;DataBase=cashflowdb;Uid=root;Pwd=@Password123;";
+                var version - new Version(8, 0, 42); // versão do meu servidor mysql
+                var serverVersion = new MySqlServerVersion(version)
+
+                optionsBuilder.UseMySql(connectionString)
+            }
+
+        -> a classe deverá ficar assim:
+
+            public class CashFlowDbContext : DbContext
+            { 
+                public DbSet<Expense> Expenses { get; set; }
+
+                protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+                {
+                    var connectionString = "Server=localhost;DataBase=cashflowdb;Uid=root;          Pwd=@Password123;";
+
+                    var version = new Version(8, 0, 42);
+                    var serverVersion = new MySqlServerVersion(version);
+
+                    optionsBuilder.UseMySql(connectionString, serverVersion);
+                }
+            }
+
+        
+    -> Salvando uma despesa no banco
+        
+        Temporário para teste {
+            -> botão direito nas dependencies do projeto Application -> referenciar o projeto de Infrastructure
+
+            -> Dentro do useCase RegisterExpenseUseCase, abaixo do Validate, criar uma var dbContext que recebe uma nova instância da classe CashFlowDbContext
+
+                var dbContext = new CashFlowDbContext();
+
+            -> Abaixo, criar uma var entity:
+                var entity = new Expense
+                {
+                    Amount = request.Amount,
+                    Date = request.Date,
+                    Description = request.Description,
+                    Title = request.Title,
+                    PaymentType = (Domain.Enums.PaymentType)request.PaymentType
+                };    
+            
+            -> abaixo, acessar a propriedade Add() da entidade Expense que vem la a dbContext, e passar entity como parâmetro:
+
+                dbContext.Expense.Add(entity);
+
+            -> Abaixo, acessar a propriedade SaveChanges do dbContext, para salvar os dados
+
+                dbContext.SaveChanges();
+
+            -> project Application -> dependencies -> projetc -> Botao direito em cima do projeto Infrastructure -> Remove
+
+            -> Remover a var dbContext e o acesso as prop Add e SaveChanges
+        }
+
+
+    -> CRIANDO INTERFACES:
+        -> Dentro do project Domain - > criar uma pasta Repositories  e dentro dela, criar uma pasta com nome Expenses
+
+        -> botão direito na pasta Expenses -> adicionar novo item do tipo interface e nomeá-lo como IExpensesRepository e deixá-lo public
+
+        -> adicionar uma função void com nome Add passando como parâmetro Expense expense (a refêrencia à entidade Expense será chamada de expense) (-> não precisa especificar que é public nessa função)
+            
+            void Add(Expense expense);
+
+    
+    -> CRIANDO REPOSITÓRIO PARA DESPESAS
+        -> no project Infrastructure, dentro da pasta DataAccess, criar uma pasta com nome Repositories
+        -> Dentro dessa pasta, criar uma classe com nome ExpensesRepository e mantém ela internal
+
+        -> fazer referência tipo herança com a interface IExpensesRepository, e implementar seus métodos
+
+        -> tornar a classe CashFlowDbContext internal
+
+        -> Voltando na ExpensesRepository, dentro do método, criar uma var dbContext que recebe uma nova instância da classe CashFlowDbContext.
+
+        -> Em seguida, acessar a propriedade Expenses.Add(Expense)
+        -> por último, acessar a propriedade SaveChanges
+        
+    
+    
+    -> COnfigurando injecção de dependências para o repositório
+        -> No program da API, antes da Build, adicionar a seguinte linha:
+
+            builder.services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+    -> no projeto de Infrastructure, adicionar uma classe public static com nome DependencyInjectionExtension
+        -> dentro dela, adicionar uma função static void AddInfrastructure, passando this IServiceCollection services como parâmetro.
+        -> Dentro da função, adicionar a seguinte linha
+
+            builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+        (instanciar dentro do arquivo program no projeto API)
+
+        -> voltando no arquivo program, substituir a linha
+
+            builder.Services.AddScoped<IExpensesRepository, ExpensesRepository>();
+
+            por
+            
+            builder.Services.AddInfrastructure();
+
+        -> O arquivo DependencyInjectionExtension ficará assim:
+
+            public static class DependencyInjectionExtension
+            {
+               public static void AddInfrastructure(this    IServiceCollection services)
+               {
+                   services.AddScoped<IExpensesRepository,  ExpensesRepository>();
+               }
+            }
+
+    
+    -> CONFIGURANDO INJEÇÃO DE DEPENDÊNCIAS PARA O APPLICATION
+        -> no useCase RegisterExpenseUseCase, adicionar:
+            - uma variável private readonly IExpensesRepository com nome _repository
+
+            - um construtor que recebe IExpensesRepository repository como parâmetro, e que dentro dele, _repository recebe repository
+
+                private readonly IExpensesRepository    _repository;
+
+                public RegisterExpenseUseCase   (IExpensesRepository repository)
+                {
+                  _repository = repository;  
+                }
+            
+
+            - Dentro da função Execute, após a var entity, acesar a propriedade Add da var _repository, passando entity como parâmetro
+
+                _repository.Add(entity)
+
+        -> Dentro da pasta Register dos useCase, criar um item do tipo interface public com nome IRegisterExpenseUseCase, e dentro dela, adicionar a seguinte assinatura do método:
+
+            ResponseRegisteredExpenseJson Execute(RequestRegisterExpenseJson request);
+
+        -> na raiz do projeto Application, criar uma classe public  static com o nome DependencyInjectionExtension, e dentro dela, criar uma função public void com nome AddApplication, passando this IServiceCollection services como parâmetro (se não importar automático o IServiceCollection, é só instalar o Nuget Package Microsoft.Extensions.DependencyInjection, na mesma versão que está o projeto)
+
+            -> dentro da função AddApplication, adicionar a seguinte linha:
+
+                services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
+
+
+        -> Obs: voltar na RegisterExpenseUseCase e implemntar a interface IRegisterExpenseUseCase (: IRegisterExpenseUseCase)
+
+        -> No parâmetros do controller, passar via FromServices a interface IRegisterExpenseUseCase, tornar Task<ResponseRegisteredExpenseJson> IRegisterExpenseUseCase com nome use case, e remover a var useCase
+
+            [HttpPost]
+            public IActionResult Register(
+                [FromServices] IRegisterExpenseUseCase useCase, 
+                [FromBody] RequestRegisterExpenseJson request)
+            {
+                var response = useCase.Execute(request);
+
+                return Created(string.Empty, response);
+
+            }
+        
+        -> Por último, no Program, adicionar a seguinte referência antes da build e após o AddInfrastructure: 
+
+            builder.Services.AddApplication();
+
+            -> pode ser necessário importar manualmente o projeto Application:
+                using CashFlow.Application;
+
+        
+    -> REGISTRANDO DBCONTEXT COM INJEÇÃO DE DEPENDÊNCIAS
+        -> no arquivo DependencyInjectionExtension, criar duas funções private static void:
+            - uma com nome AddRepositories, recebendo IServiceCollection services como parâmetro e dentro dela a linha:
+                services.AddScoped<IExpensesRepository, ExpensesRepository>();
+            - uma com nome AddDbContext, recebendo IServiceCollection services como parâmetro e dentro dela a linha:
+                services.AddDbContext<CashFlowDbContext>();
+        
+        -> Dentro da função AddInfrastructure, chamar as duas funções private AddRepositories e AddDbContext, passando services como parâmetro para ambas
+
+        -> a classe DependencyInjectionExtension ficará assim:
+
+            public static class DependencyInjectionExtension
+            {
+                public static void AddInfrastructure(this IServiceCollection services)
+                {
+                    AddRepositoriess(services);
+                    AddDbContext(services);
+                }
+
+                private static void AddRepositoriess(IServiceCollection services)
+                {
+                    services.AddScoped<IExpensesRepository, ExpensesRepository>();
+                }
+
+                private static void AddDbContext(IServiceCollection services)
+                {
+                    services.AddDbContext<CashFlowDbContext>();
+                }
+            }
+
+
+        -> No arquivo ExpensesRepository, criar: 
+            - uma var para armazenar a propriedade CashFlowDbContext _dbContext:
+                private readonly CashFlowDbContext _dbContext
+        
+            - um construtor que receberá CashFlowDbContext dbContext como parâmetro, e dentro do construtor, _dbContext receberá dbContext vindo dos parâmetros:
+                public ExpensesRepository(CashFlowDbContext dbContext)
+                {
+                    _dbContext = dbContext;
+                }
+
+            -> Na classe Add, pode remover a linha que acessava a dbContext, e modificar o nome das propriedades para _dbContext.
+
+            -> A classe ExpensesRepository deverá ficar assim:
+
+                internal class ExpensesRepository : IExpensesRepository
+                {
+                    private readonly CashFlowDbContext _dbContext;
+
+                    public ExpensesRepository(CashFlowDbContext dbContext)
+                    {
+                        _dbContext = dbContext;
+                    }
+                    public void Add(Expense expense)
+                    {
+                        _dbContext.Expenses.Add(expense);
+
+                        _dbContext.SaveChanges();
+                    }
+                }
+
+    
+    -> UTILIZANDO APPSETTINGS PARA CONNECTIONSTRING
+        -> Dentro do arquivo appsettings.development, no projeto de API,adicionar a seguinte linha:
+            "ConnectionStrings": {
+              "Connection": "Server=localhost;DataBase=cashflowdb;Uid=root;Pwd=@Password123;"
+            }
+
+        -> Na classe CashFlowDbContext, remover a função OnConfiguring e adicionar o seguinte construtor:
+            public CashFlowDbContext(DbContextOptions options) : base(options) { }
+
+                - o arquivo CashFlowDbContext ficará assim:
+                    internal class CashFlowDbContext : DbContext
+                    {
+                        public CashFlowDbContext(DbContextOptions options) : base(options) { }
+
+                        public DbSet<Expense> Expenses { get; set; }
+                    }
+
+        -> Adicionar as configurações que existiam na função OnConfiguring la no arquivo DependencyInjectionExtension, dentro da classe AddDbContext
+
+        -> para concluir a injeção de dependências, no arquivo DependencyInjectionExtension, fazer as seguintes configurações:
+            - na função AddInfrastructure, passar IConfiguration configuration como parâmetro, e dentro dela, na chamada da função AddDbContext, também passar configuration como parametro.
+
+            - na função AddDbContext, passar IConfiguration configuration como parâmetro, e a var connectionString, deverá receber configuration.GetConnectionString("Connection");
+
+                ficará assim:
+
+                public static class DependencyInjectionExtension
+                {
+                    public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+                    {
+                        AddRepositoriess(services);
+                        AddDbContext(services, configuration);
+                    }
+                
+                    private static void AddRepositoriess(IServiceCollection services)
+                    {
+                        services.AddScoped<IExpensesRepository, ExpensesRepository>();
+                    }
+                
+                    private static void AddDbContext(IServiceCollection services, IConfiguration configuration)
+                    {
+                        var connectionString = configuration.GetConnectionString("Connection"); ;
+                
+                        var version = new Version(8, 0, 42);
+                        var serverVersion = new MySqlServerVersion(version);
+                
+                
+                        services.AddDbContext<CashFlowDbContext>(config => config.UseMySql(connectionString, serverVersion));
+                    }
+                }
+
+            - no Program, na chamada da propriedade AddInfrastructure, passar builder.Configuration como parametro
+                builder.Services.AddInfrastructure(builder.Configuration);
+
+
+    -> ENTENDENDO E IMPLEMENTANDO UNIDADE DE TRABALHO
+        -> Dentro de Repositories, criar outra interface, public, agora com nome IUnitOfWork, e dentro dela, retornar:
+            public interface IUnitOfWork
+            {
+                void Commit();
+            }
+        
+        -> Dentro de DataAccess, criar uma classe internal com o nome UnitOfWork, que implementa a interface IUnitOfWork. E dentro da interface, implementar o SaveChanges
+            
+        -> Dentro dessa classe, deve conter a variável que acessa o _dbContext, e uma função com nome UnitOfWork, que recebe CashFlowDbContext dbContext como parâmetro, dentro da qual _dbContext recebe dbContext
+
+        -> Ficará assim:
+            internal class UnitOfWork : IUnitOfWork
+            {
+                private readonly CashFlowDbContext _dbContext;
+
+                public UnitOfWork(CashFlowDbContext dbContext)
+                {
+                    _dbContext = dbContext;
+                }
+
+                public void Commit()
+                {
+                    _dbContext.SaveChanges();
+                }
+            }
+
+        -> Dentro dos Repositories existentes, remover as funções SaveChanges();
+        
+        -> No useCase RegisterExpenseUseCase, implementar a variável:
+            private readonly IUnitOfWork _unitOfWork
+
+        -> Adicionar IUnitOfWork unitOfWork como parâmetro do construtor RegisterExpenseUseCase. E dentro do construtor, _unitOfWork deverá receber unitOfWork. Por último, após acessar a propriedade Add, implementar a seguinte linha que chama a propriedade de Salvamento:
+
+            _unitOfWork.Commit();
+
+        -> configurar a injeção de dependências no arquivo DependencyInjectionExtension, adicionando a seguinte linha dentro da função AddRepositories:
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+    
+    -> ALTERANDO NOSSO PROJETO PARA USAR O TIPO TASK
+        -> no arquivo ExpensesRepository,tornar a função Add async Task ao invés de void, tornar seu conteúdo await e substituir a prop Add por AddAsync
+            public async Task Add(Expense expense)
+            {
+                await _dbContext.Expenses.AddAsync(expense);
+            }
+
+        -> Na interface IExpensesRepository, substituir void por Task
+            public interface IExpensesRepository
+            {
+                Task Add(Expense expense);
+            }
+
+        -> No arquivo IUnitOfWork, tornar a função Commit async Task ao invés de void, tornar seu conteúdo await e substituira prop SaveChanges por SaveChangesAsync
+            public async Task Commit()
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+        
+        -> Na interface IUnitOfWork, substituir void por Task
+            public interface IUnitOfWork
+            {
+                Task Commit();
+            }
+        
+        -> Na função Execute, do RegisterExpenseUseCase, tornar async Taks<ResponseRegisteredExpenseJson>,e as chamadas das interfaces tornar await
+            await _repository.Add(entity);
+
+            await _unitOfWork.Commit();
+
+        -> Na interface IRegisterExpenseUseCase, tornar Task<ResponseRegisteredExpenseJson>
+
+        -> no controller, tornar a função async Task<IActionResult> e o conteúdo da var response tornar await

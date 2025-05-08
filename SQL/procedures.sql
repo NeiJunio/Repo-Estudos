@@ -1,7 +1,5 @@
+-- 07/05/2025 --
 
-gere um pdf com o seguinte conteudo:
-
-Aqui está uma Stored Procedure completa no SQL Server que realiza operações CRUD (Create, Read, Update, Delete) para uma tabela de Clientes.
 
 ##  Criando a Tabela
 

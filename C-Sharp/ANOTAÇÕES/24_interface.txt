@@ -1,6 +1,6 @@
 -- 26/04/2025 --
 
-## INTERFACES
+## INTERFACES  ------------------------------------------------------
     -> É um contrato que define métodos a serem implementados por uma classe.
     -> Classe na qual só pode estar escrevendo as assinaturaas dos métodos
 

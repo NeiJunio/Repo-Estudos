@@ -1,8 +1,8 @@
 -- 05/04/2025 --
 
-## DDD
+## DDD  -----------------------------------------------------------
 
-## Domain Driven Design
+## Domain Driven Design  ------------------------------------------
     -> Não é arquitetura
     -> É uma abordagem para modelar problemas do mundo real em código, focando em organização e expansão do projeto
     -> É um guia de organização de código

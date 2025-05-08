@@ -1,8 +1,8 @@
 -- 24/02/2025 --
 
-## ENTITY FRAMEWORK
+## ENTITY FRAMEWORK  -------------------------------------
 
-## O QUE É?
+## O QUE É?  ---------------------------------------------
     -> É um ORM (Object-Relational Mapping ou Mapeamento de Objeto Relacional) que mapeia objetos para banco de dados
     -> Simplifica querys do banco de dados e evita erros de sintaxe, deixando o código reduzido e objetivo
     -> Recebe uma entidade, que é uma classe espelhada na tabela do banco
