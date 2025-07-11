@@ -1137,3 +1137,82 @@
         -> Na interface IRegisterExpenseUseCase, tornar Task<ResponseRegisteredExpenseJson>
 
         -> no controller, tornar a função async Task<IActionResult> e o conteúdo da var response tornar await
+
+    
+    -> CONFIGURANOD AUTOMAPPER
+        -> No projeto Application, instalar os NuGet Packeages AutoMapper e AutoMapper.Extensions.Microsoft.DependencyInjection (ambos devem estar na mesma versão)
+        -> Criar uma pasta com o nome de AutoMapper
+        -> Criar uma classe com nome AutoMapping que tem herança na classe Profile
+        -> Criar um construtor
+        -> criar duas funções private void com os nomes RequestToEntity e EntityToResponse
+        -> Dentro da função ResquestTo Entity, criar um CreatedMap<origem, destino>();
+        -> Dentro da função EntityToResponse, criar um CreatedMap<destino, resposta>();
+        -> Chamar essas duas funções dentro do construtor
+
+            public class AutoMapping : Profile
+            {
+                public AutoMapping()
+                {
+                    RequestToEntity();
+                    EntityToResponse();
+                }
+
+                private void RequestToEntity()
+                {
+                    CreateMap<RequestRegisterExpenseJson, Expense>();
+                }
+
+                private void EntityToResponse()
+                {
+                    CreateMap<Expense, ResponseRegisteredExpenseJson>();
+                }
+            }
+
+        -> Após isso, na classe DependencyInjectionExtension, criar duas classes private void, com nomes AddAutoMapper e AddUseCases, passando IServiceCollection services como parametro para ambas
+        -> Na classe AddAutoMapper, acessar a propriedade AddAutoMapper da services e passar typeof(AutoMapping);
+        -> Na classe AddUseCases, acessar a propriedade AddScoped
+
+            public static class DependencyInjectionExtension
+            {
+                public static void AddApplication(this IServiceCollection services)
+                {
+                    AddAutoMapper(services);
+                    AddUseCases(services);
+                }
+
+                private static void AddAutoMapper(IServiceCollection services)
+                {
+                    services.AddAutoMapper(typeof(AutoMapping));
+                }
+                private static void AddUseCases(IServiceCollection services)
+                {
+                    services.AddScoped<IRegisterExpenseUseCase, RegisterExpenseUseCase>();
+                }
+            }
+
+        -> No arquivo RegisterExpenseUseCase, criar um private readonly Imapper _mapper
+        -> na classe RegisterExpenseUseCase, criar um _mapper = mapper
+        -> a var entity agora receberá _mapper.Map<Expense>(request); ou seja, vai "copiar" os dados/estrutura da resquest para a Expense
+        -> no return teremos _mapper.Map<ResponseRegisteredExpenseJson>(entity);
+
+            private readonly IMapper _mapper;
+
+            public RegisterExpenseUseCase(IExpensesRepository repository, IUnitOfWork unitOfWork, IMapper mapper)
+            {
+                _repository = repository;
+                _unitOfWork = unitOfWork;
+                _mapper = mapper;
+            }
+            
+            public async Task<ResponseRegisteredExpenseJson> Execute(RequestRegisterExpenseJson request)
+            {
+                Validate(request);
+                
+                var entity = _mapper.Map<Expense>(request);
+            
+                await _repository.Add(entity);
+            
+                await _unitOfWork.Commit();
+            
+                return _mapper.Map<ResponseRegisteredExpenseJson>(entity);
+            }
