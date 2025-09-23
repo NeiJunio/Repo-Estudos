@@ -148,9 +148,9 @@
     -> Por último, essa função não tem obrigação de retornar nenhum tipo de dado, então como resposta usaremos return NoContent();
 
      -> S: Single-Responsibility (princípio da responsabilidade única): cada classe vai representar apenas uma regra de negócios (uma pra registrar, uma pra editar, uma pra excluir e uma pra buscar por id)
-     -> O:
+     -> O: Open Closed (uma classe, um módulo, uma função, deve estar aberto para extensão e fechado para modificação)
      -> L:
-     -> I:
+     -> I: Interface Segregation (classes não devem ser forçadas a depender de métodos que não usam)
      -> D:
 
 
