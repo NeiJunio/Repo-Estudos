@@ -15,17 +15,18 @@
 
     -> Na pasta dependencies do CashFlow.Api > botão direito > Add Project Reference > marcar os projetos Application, Communication, Exception e Infrastructure
     -> Na pasta dependencies do CashFlow.Application > botão direito > Add Project Reference > marcar os projetos Communication, Exception e Domain
+
     -> Na pasta dependencies do CashFlow.Infrastructure > botão direito > Add Project Reference > marcar o projeto Domain
 
     -> Criar um API.Controller - Empty com o nome ExpensesController
-    
     -> No projeto Communication, criar as pastas Requests, Responses e Enums
-    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpenseJson, e torná-la public
-    -> Dentro da classe RequestRegisterExpenseJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
-    
-    -> Dentro da pasta Enums, criar uma classe PaymentType, e mudar seu tipo de internal class para public enum
-    -> Dentro do enum PaymentType inserir Cash, CreditCard, DebitCard e EletronicTransfer
 
+    -> Dentro da pasta Requests, criar uma classe com nome RequestRegisterExpenseJson, e torná-la public
+    
+    -> Dentro da classe RequestRegisterExpenseJson, requisitar os campos Title, Description, Date(DateTime), Amount(decimal) e PaymentType (Enum)
+    -> Dentro da pasta Enums, criar uma classe PaymentType, e mudar seu tipo de internal class para public enum
+
+    -> Dentro do enum PaymentType inserir Cash, CreditCard, DebitCard e EletronicTransfer
     -> No controller da API, criar um método POST com nome Register, para como parâmetro - e pelo body - a RequestRegisterExpenseJson
 
     -> No projeto Application, criar uma pasta useCases
@@ -201,7 +202,7 @@
     
     -> Criar um construtor dentro da ResponseErrorJson:
 
-        --> o construtor deve ser public e receber o mesmo nome da classe, e como parametro deverá errar a string errorMessage
+        --> o construtor deve ser public e receber o mesmo nome da classe, e como parametro deverá receber a string errorMessage
         --> dentro do construtor, atribuir o errorMessage que vem do parametro à string ErrorMessage
 
         public class ResponseErrorJson
@@ -246,6 +247,7 @@
         ou
         
         - botão direito em cima do projeto Application > Manage NuGet Package > mudar para aba de pesquisa > procurar por FluentValidation > install > apply
+
 
     -> Dentro da classe register do projeto Application, criar uma classe public com o nome RegisterExpenseValidator 
         - fazer uma herança na classe AbstractValidor<informar o tipo de validação, nesse caso é o RequestRegisterExpenseJson>
@@ -305,9 +307,10 @@
 
     voltando no Usecase, substituir throw new ArgumentException(); por throw new ErrorOnValidationException(errorMessages)
 
-    -> na classe ResponseErrorJson, substituir a string errorMessage, por uma lista de strings ErrorMessages, e construir um novo construtor passando como parametro a lista de string errorMessage,e  dentro dele atribuir errorMessage do parametro à variavel errorMessages.
-        -> no outro construtor, atribuir uma novalista de strings com a errorMessage, à variavel errorMessages
 
+    -> na classe ResponseErrorJson, substituir a string errorMessage, por uma lista de strings ErrorMessages, e construir um novo construtor passando como parametro a lista de string errorMessage,e  dentro dele atribuir errorMessage do parametro à variavel errorMessages.
+
+        -> no outro construtor, atribuir uma novalista de strings com a errorMessage, à variavel errorMessages
     
     -> Criando filtro de exception
     -> NO projeto de api, criar uma pasta filters
@@ -323,7 +326,6 @@
 
     -> Criar uma função private void, com o nome HandleProjectException, passando como parametro a ExceptionContext
 
-    
     -> Criar uma função private void, com o nome ThrowUnknownError, passando como parametro a ExceptionContext. 
 
     -> Na função OnException, fazer um if else verificando se a context.Exception é um ErrorOnValidationException.
@@ -382,6 +384,7 @@
             }
         }
 
+
     -> botão direito no projeto de Exception > criar novo item > selecionar Resources File, e nomear com ResourceErrorMessages (lembrar de alterar o modificador de acesso para public)
 
     -> Remover a mensagem Unknown error do filter na funcão ThrowUnknownError, e substituir por ResourceErrorMessages.UNKNOWN_ERROR, ou pelo nome da referente chave que foi especificada (se não aparecer o modificar de acesso, acesse as propriedades do arquivo ResourceErrorMessages.resx, e no campo que tiver ResXFileCodeGenerator, altere para PublicResXFileCodeGenerator)
@@ -422,6 +425,7 @@
             - criar uma var culture que recebe context.Request.Headers.AcceptLanguage.FirstOrDefault();. Essa varíavel vai buscar a lista de linguagens do Header e pegar o primeiro valor
                 var culture = context.Request.Headers.AcceptLanguage.FirstOrDefault();
 
+
             - criar uma var cultureInfo que recebe uma nova instância na classe CultureInfo, passando como parâmetro uma linguagem padrão, nesse caso, "en"
                 var cultureInfo = new CultureInfo("en");
 
@@ -435,6 +439,10 @@
                 CultureInfo.CurrentCulture = cultureInfo;
                 CultureInfo.CurrentUICulture = cultureInfo;
 
+
+
+
+
             - por último, adicionar a permissão para o fluxo continuar
                 await _next(context)
 
@@ -443,7 +451,6 @@
                 app.UseMiddleware<CultureMiddleware>();
 
                 - dessa forma, vai enxergar o nosso middleware, para poder vefificar seu conteúdo
-
 
             - voltar no início da classe Invoke e criar um var com nome supportedLanguages que acessa CultureInfo.GetCultures(CultureTypes.AllCultures).ToList(); --> serve para acessar todas as linguagens que o .NET suporta
 
@@ -543,7 +550,6 @@
             Assert.True(result.IsValid);
         }
 
-
     -> CRIANDO UM REQUISIÇÃO COM DADOS FALSOS GERADOS PARA O TESTS
 
     -> Botão direito em cima da pasta tests -> add new project -> class libray com nome CommonTestUtilities (e apontar o caminho para a pasta tests)
@@ -593,7 +599,6 @@
                     Assert.True(result.IsValid);
                 }
 
-    
     ### bibliotecas para a parte de assert dos testes
 
     -> Botão direito em cima de Validators.Tests -> Manage NuGet Package -> na aba browse, buscar por FluentAssertions e instalar a ultima versão 7.x.x
@@ -742,6 +747,7 @@
            result.Errors.Single().ErrorMessage.ShouldBe(ResourceErrorMessages.TITLE_REQUIRED);
         }
 
+
     
     -> CRIANDO AS ENTIDADES (ENTITIES)
         -> Dentro do project Domain, criar uma pasta com nome Entities
@@ -765,7 +771,6 @@
                 DebitCard = 2,
                 EletronicTransfer = 3
             }
-
     
     -> Instalando pacotes Entity Framework no project Infrastructure
         -> Botão direito no project Infrastructure -> Manage NuGet Package -> na aba browsw procurar por Microsoft.EntityFrameworkCore
@@ -837,7 +842,6 @@
             -> Remover a var dbContext e o acesso as prop Add e SaveChanges
         }
 
-
     -> CRIANDO INTERFACES:
         -> Dentro do project Domain - > criar uma pasta Repositories  e dentro dela, criar uma pasta com nome Expenses
 
@@ -846,6 +850,7 @@
         -> adicionar uma função void com nome Add passando como parâmetro Expense expense (a refêrencia à entidade Expense será chamada de expense) (-> não precisa especificar que é public nessa função)
             
             void Add(Expense expense);
+
 
     
     -> CRIANDO REPOSITÓRIO PARA DESPESAS
@@ -892,9 +897,7 @@
                {
                    services.AddScoped<IExpensesRepository,  ExpensesRepository>();
                }
-            }
 
-    
     -> CONFIGURANDO INJEÇÃO DE DEPENDÊNCIAS PARA O APPLICATION
         -> no useCase RegisterExpenseUseCase, adicionar:
             - uma variável private readonly IExpensesRepository com nome _repository
@@ -945,8 +948,8 @@
 
             -> pode ser necessário importar manualmente o projeto Application:
                 using CashFlow.Application;
+            }
 
-        
     -> REGISTRANDO DBCONTEXT COM INJEÇÃO DE DEPENDÊNCIAS
         -> no arquivo DependencyInjectionExtension, criar duas funções private static void:
             - uma com nome AddRepositories, recebendo IServiceCollection services como parâmetro e dentro dela a linha:
@@ -1062,6 +1065,8 @@
 
             - no Program, na chamada da propriedade AddInfrastructure, passar builder.Configuration como parametro
                 builder.Services.AddInfrastructure(builder.Configuration);
+    
+
 
 
     -> ENTENDENDO E IMPLEMENTANDO UNIDADE DE TRABALHO
@@ -1102,6 +1107,41 @@
 
         -> configurar a injeção de dependências no arquivo DependencyInjectionExtension, adicionando a seguinte linha dentro da função AddRepositories:
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
 
     
     -> ALTERANDO NOSSO PROJETO PARA USAR O TIPO TASK
